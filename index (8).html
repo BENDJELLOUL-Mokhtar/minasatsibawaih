@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة سيبويه — قسم اللغة العربية | جامعة ابن خلدون تيارت</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b1120;--bg2:#111827;--bg3:#1a2535;--bg4:#243040;
+  --gold:#c9962a;--gold2:#e8b84b;--gold3:#f5d98a;
+  --teal:#0891b2;--teal2:#22d3ee;
+  --violet:#7c3aed;--green:#16a34a;--red:#dc2626;--orange:#ea580c;
+  --txt:#eee8d8;--txt2:#9ca3a0;--txt3:#6b7280;
+  --bdr:rgba(255,255,255,.07);
+}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.page{display:none}.page.active{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* MOTTO */
+.motto{background:linear-gradient(90deg,rgba(201,150,42,.08),rgba(8,145,178,.08));border-bottom:1px solid rgba(201,150,42,.15);text-align:center;padding:6px;font-size:.77rem;color:var(--gold3);font-family:'Amiri',serif}
+
+/* TOPBAR */
+.bar{position:sticky;top:0;z-index:200;background:rgba(11,17,32,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr)}
+.bar-in{max-width:1400px;margin:0 auto;padding:0 1.5rem;height:62px;display:flex;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.logo-m{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#7a4808);display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:1.3rem;color:#fff;box-shadow:0 0 20px rgba(201,150,42,.2)}
+.logo-t{font-family:'Amiri',serif;font-size:.95rem;color:var(--gold2);line-height:1.25}
+.logo-s{font-size:.58rem;color:var(--txt3)}
+.nav{display:flex;align-items:center;gap:2px;margin-right:auto;flex-wrap:wrap}
+.nb{background:transparent;border:1px solid transparent;color:var(--txt2);padding:5px 10px;border-radius:7px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:500;transition:all .2s;white-space:nowrap}
+.nb:hover,.nb.on{background:rgba(201,150,42,.1);border-color:rgba(201,150,42,.3);color:var(--gold2)}
+.nb.cta{background:var(--gold);color:var(--bg);font-weight:800;border-color:var(--gold)}
+.nb.cta:hover{background:var(--gold2)}
+.nb.out{color:#f87171;border-color:rgba(248,113,113,.2)}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:4.5rem 2rem 3.5rem;text-align:center;background:radial-gradient(ellipse 70% 50% at 50% -5%,rgba(201,150,42,.12),transparent 65%),var(--bg)}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(201,150,42,.1);border:1px solid rgba(201,150,42,.28);color:var(--gold2);padding:4px 13px;border-radius:20px;font-size:.75rem;font-weight:600;margin-bottom:1.2rem}
+.hero h1{font-family:'Amiri',serif;font-size:clamp(1.8rem,4.5vw,3.2rem);color:var(--txt);line-height:1.3;margin-bottom:.4rem}
+.hero h1 b{color:var(--gold2)}
+.hero-sub{font-family:'Amiri',serif;font-size:1.1rem;color:var(--teal2);margin-bottom:1rem}
+.hero-desc{color:var(--txt2);font-size:.93rem;max-width:580px;margin:0 auto 1.8rem;line-height:1.9}
+.hero-row{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+
+/* QUOTE */
+.quote{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-top:1px solid rgba(201,150,42,.15);border-bottom:1px solid rgba(201,150,42,.15);padding:1.5rem;text-align:center}
+.quote-t{font-family:'Amiri',serif;font-size:1.25rem;color:var(--gold3);line-height:2;margin-bottom:.3rem}
+.quote-s{font-size:.75rem;color:var(--txt3)}
+
+/* PROF */
+.prof{background:var(--bg2);border-bottom:1px solid var(--bdr);padding:2rem}
+.prof-in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center}
+.prof-av{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#6b3606);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border:3px solid var(--gold2);box-shadow:0 0 20px rgba(201,150,42,.2);flex-shrink:0}
+.prof-name{font-family:'Amiri',serif;font-size:1.5rem;color:var(--gold2);margin-bottom:3px}
+.prof-meta{color:var(--txt2);font-size:.83rem;line-height:2}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag{background:rgba(201,150,42,.08);border:1px solid rgba(201,150,42,.2);color:var(--gold3);padding:2px 8px;border-radius:20px;font-size:.68rem}
+
+/* SECTION */
+.sec{padding:3rem 1.5rem;max-width:1400px;margin:0 auto;width:100%}
+.sec-title{font-family:'Amiri',serif;font-size:1.75rem;color:var(--gold2);text-align:center;margin-bottom:.4rem}
+.sec-sub{color:var(--txt2);text-align:center;font-size:.84rem;margin-bottom:.5rem}
+.hr{width:48px;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;margin:0 auto 2rem}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.87rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.bg{background:var(--gold);color:var(--bg)}.bg:hover{background:var(--gold2);transform:translateY(-1px)}
+.bo{background:transparent;color:var(--gold2);border:1.5px solid var(--gold)}.bo:hover{background:rgba(201,150,42,.08)}
+.bt{background:var(--teal);color:#fff}.bt:hover{background:var(--teal2);color:var(--bg)}
+.bv{background:var(--violet);color:#fff}.bv:hover{filter:brightness(1.15)}
+.bgh{background:transparent;color:var(--txt2);border:1px solid var(--bdr)}.bgh:hover{border-color:var(--gold);color:var(--gold2)}
+.bgr{background:var(--green);color:#fff}.bgr:hover{filter:brightness(1.1)}
+.br{background:var(--red);color:#fff}.br:hover{filter:brightness(1.1)}
+.sm{padding:6px 12px;font-size:.78rem;border-radius:7px}
+.xs{padding:4px 9px;font-size:.72rem;border-radius:6px}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.85rem}
+
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:1.25rem;transition:all .25s;position:relative;overflow:hidden}
+.card:hover{border-color:rgba(201,150,42,.25);box-shadow:0 6px 28px rgba(0,0,0,.45)}
+.ct::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.ct-g::before{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.ct-t::before{background:linear-gradient(90deg,var(--teal),var(--teal2))}
+.ct-v::before{background:linear-gradient(90deg,var(--violet),#a855f7)}
+.ct-r::before{background:linear-gradient(90deg,var(--red),#f87171)}
+
+/* BRANCH TABS */
+.branch-tabs{display:flex;gap:4px;background:var(--bg3);border-radius:10px;padding:4px;margin-bottom:1.5rem}
+.btab{flex:1;padding:10px 8px;text-align:center;border-radius:7px;cursor:pointer;font-size:.83rem;color:var(--txt2);border:none;background:transparent;font-family:'Tajawal',sans-serif;font-weight:600;transition:all .2s}
+.btab.on{background:var(--gold);color:var(--bg);font-weight:800}
+.btab:hover:not(.on){color:var(--txt);background:rgba(255,255,255,.04)}
+
+/* SEM TABS */
+.sem-tabs{display:flex;gap:3px;background:var(--bg4);border-radius:8px;padding:3px;margin-bottom:1.2rem;width:fit-content}
+.stab{padding:7px 18px;text-align:center;border-radius:6px;cursor:pointer;font-size:.8rem;color:var(--txt2);border:none;background:transparent;font-family:'Tajawal',sans-serif;font-weight:500;transition:all .2s}
+.stab.on{background:var(--teal);color:#fff;font-weight:700}
+
+/* MODULE CARD */
+.mod{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;margin-bottom:.9rem;overflow:hidden;transition:border-color .2s}
+.mod:hover{border-color:rgba(201,150,42,.22)}
+.mod-header{padding:.9rem 1.1rem;display:flex;align-items:center;gap:.9rem;cursor:pointer;background:var(--bg3)}
+.mod-header:hover{background:var(--bg4)}
+.mod-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#7a4808);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--bg);font-size:.78rem;flex-shrink:0}
+.mod-info{flex:1}
+.mod-info h4{font-size:.9rem;color:var(--txt);margin-bottom:1px;font-weight:600}
+.mod-info p{font-size:.7rem;color:var(--txt3)}
+.mod-badge{display:flex;gap:4px;align-items:center}
+.badge-lec{background:rgba(8,145,178,.14);border:1px solid rgba(8,145,178,.28);color:#67e8f9;padding:2px 7px;border-radius:12px;font-size:.64rem}
+.badge-td{background:rgba(22,163,74,.14);border:1px solid rgba(22,163,74,.28);color:#4ade80;padding:2px 7px;border-radius:12px;font-size:.64rem}
+.badge-merged{background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.28);color:#c084fc;padding:2px 7px;border-radius:12px;font-size:.64rem}
+.badge-assigned{background:rgba(234,88,12,.14);border:1px solid rgba(234,88,12,.28);color:#fb923c;padding:2px 7px;border-radius:12px;font-size:.64rem}
+.mod-arrow{color:var(--txt3);font-size:.8rem;transition:transform .2s;flex-shrink:0}
+.mod-body{display:none;border-top:1px solid var(--bdr);background:rgba(0,0,0,.15)}
+.mod-body.open{display:block}
+
+/* CONTENT ITEMS */
+.ci{padding:.75rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.ci:last-child{border-bottom:none}
+.ci-num{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#fff;margin-top:1px}
+.ci-lec .ci-num{background:var(--teal)}
+.ci-td .ci-num{background:var(--green)}
+.ci-merged .ci-num{background:var(--violet)}
+.ci-txt{flex:1;font-size:.82rem;color:var(--txt2);line-height:1.6}
+.ci-txt strong{color:var(--txt);font-size:.75rem;display:block;margin-bottom:1px}
+.ci-actions{display:flex;gap:4px;align-items:flex-start;margin-top:1px}
+
+/* PDF VIEWER */
+.pdfbox{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:1.2rem}
+.pdfbar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(201,150,42,.06);border-bottom:1px solid var(--bdr)}
+.pdfbar span{color:var(--gold2);font-size:.82rem;font-weight:600;flex:1}
+.pdff{width:100%;height:480px;border:none}
+.upz{border:2px dashed rgba(201,150,42,.2);border-radius:10px;padding:2rem;text-align:center;color:var(--txt2);cursor:pointer;transition:all .2s;background:rgba(201,150,42,.02)}
+.upz:hover{border-color:var(--gold);color:var(--gold2);background:rgba(201,150,42,.05)}
+.upz input{display:none}
+
+/* QUIZ */
+.qbox{background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:1.25rem}
+.qhdr{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.qhdr h3{font-family:'Amiri',serif;font-size:1.2rem;color:var(--gold2)}
+.qcard{background:var(--bg3);border-radius:9px;padding:1rem;margin-bottom:.8rem;border:1px solid var(--bdr)}
+.qcard p{font-size:.9rem;color:var(--txt);font-weight:600;margin-bottom:.75rem}
+.qopts{display:flex;flex-direction:column;gap:5px}
+.qo{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:7px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;font-size:.84rem;color:var(--txt2);line-height:1.5}
+.qo:hover{border-color:var(--gold);color:var(--txt)}
+.qo.sel{border-color:var(--teal);background:rgba(8,145,178,.1);color:var(--txt)}
+.qo.ok{border-color:var(--green);background:rgba(22,163,74,.12);color:#4ade80}
+.qo.bad{border-color:var(--red);background:rgba(220,38,38,.1);color:#f87171}
+.qo input{flex-shrink:0;margin-top:3px;accent-color:var(--gold)}
+.qexp{font-size:.77rem;color:var(--txt2);margin-top:.4rem;padding:.4rem .65rem;background:rgba(201,150,42,.06);border-radius:6px;border-right:3px solid var(--gold)}
+.sbox{text-align:center;padding:1.5rem}
+.sbig{font-size:3.5rem;font-weight:900;color:var(--gold2);line-height:1;font-family:'Amiri',serif}
+
+/* DISCUSSION */
+.dp{background:var(--bg2);border:1px solid var(--bdr);border-radius:9px;padding:1rem;margin-bottom:.75rem;transition:border-color .2s}
+.dp.prf{border-color:rgba(201,150,42,.22);background:rgba(201,150,42,.03)}
+.dh{display:flex;align-items:center;gap:8px;margin-bottom:.65rem}
+.dav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;flex-shrink:0}
+.dav.p{background:linear-gradient(135deg,var(--gold),#7a4808);color:var(--bg)}
+.dav.s{background:linear-gradient(135deg,var(--teal),#085e74);color:#fff}
+.dav.t{background:linear-gradient(135deg,var(--violet),#4c1d95);color:#fff}
+.dauth{font-size:.84rem;font-weight:700;color:var(--txt)}
+.drole{font-size:.64rem;color:var(--gold2)}
+.dtime{font-size:.67rem;color:var(--txt3);margin-right:auto}
+.dctag{font-size:.64rem;background:rgba(201,150,42,.1);color:var(--gold3);padding:2px 6px;border-radius:8px}
+.dtxt{color:var(--txt);line-height:1.75;font-size:.86rem}
+.dacts{display:flex;gap:.75rem;margin-top:.6rem}
+.dact{background:none;border:none;color:var(--txt3);font-size:.73rem;cursor:pointer;display:flex;align-items:center;gap:3px;font-family:'Tajawal',sans-serif;transition:color .2s}
+.dact:hover{color:var(--gold2)}
+.ri{margin-top:.65rem;padding-right:1.25rem;border-right:2px solid rgba(201,150,42,.18)}
+
+/* TABLE */
+.tw{overflow-x:auto;border-radius:9px;border:1px solid var(--bdr)}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--bg3);color:var(--gold2);padding:10px 13px;text-align:right;font-weight:700;border-bottom:1px solid rgba(201,150,42,.18)}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--txt2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.013)}
+.st{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:700}
+.stp{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.25)}
+.sta{background:rgba(74,222,128,.1);color:#4ade80;border:1px solid rgba(74,222,128,.25)}
+.str{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.25)}
+.stw{background:rgba(251,146,60,.1);color:#fb923c;border:1px solid rgba(251,146,60,.25)}
+
+/* FORMS */
+.fg{margin-bottom:.95rem}
+.fl{display:block;color:var(--txt2);font-size:.78rem;margin-bottom:4px;font-weight:500}
+.fi{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.07);border-radius:9px;padding:8px 12px;color:var(--txt);font-family:'Tajawal',sans-serif;font-size:.89rem;direction:rtl;transition:border-color .2s}
+.fi:focus{outline:none;border-color:var(--gold);background:var(--bg2)}
+.fi::placeholder{color:var(--txt3);opacity:.7}
+textarea.fi{resize:vertical;min-height:75px}
+select.fi{cursor:pointer}
+
+/* ALERTS */
+.al{padding:9px 13px;border-radius:7px;font-size:.8rem;margin-bottom:.85rem;line-height:1.7}
+.ali{background:rgba(8,145,178,.1);border:1px solid rgba(8,145,178,.25);color:#7dd3fc}
+.alo{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:#4ade80}
+.alw{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
+.ale{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.83);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px)}
+.ov.open{display:flex;animation:fi .25s ease}
+.md{background:var(--bg2);border:1px solid rgba(201,150,42,.2);border-radius:16px;padding:1.75rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.7)}
+.mdl{max-width:720px}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.mttl{font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2)}
+.mcl{background:transparent;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;line-height:1;transition:color .2s}
+.mcl:hover{color:var(--red)}
+
+/* TOAST */
+#toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--gold);border-radius:11px;padding:10px 18px;font-size:.84rem;color:var(--txt);z-index:999;box-shadow:0 8px 36px rgba(0,0,0,.6);display:flex;align-items:center;gap:8px;max-width:90vw;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.show{opacity:1}
+
+/* SPINNER */
+.spin{display:inline-block;width:17px;height:17px;border:3px solid rgba(201,150,42,.2);border-top-color:var(--gold);border-radius:50%;animation:rot .7s linear infinite;vertical-align:middle}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem;color:var(--txt3)}
+.eic{font-size:2.4rem;margin-bottom:.65rem;opacity:.35}
+
+/* TEACHER CARD */
+.tc{background:var(--bg3);border:1px solid var(--bdr);border-radius:9px;padding:1rem;margin-bottom:.65rem;display:flex;align-items:center;gap:.85rem;transition:all .2s}
+.tc:hover{border-color:rgba(201,150,42,.22)}
+.tc-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;background:linear-gradient(135deg,var(--violet),#4c1d95);color:#fff}
+.tc-info{flex:1}
+.tc-name{font-size:.9rem;font-weight:700;color:var(--txt);margin-bottom:2px}
+.tc-meta{font-size:.72rem;color:var(--txt3)}
+.tc-subjects{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tc-sub{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#c084fc;padding:2px 7px;border-radius:12px;font-size:.65rem}
+
+/* FOOTER */
+.foot{background:var(--bg2);border-top:1px solid var(--bdr);padding:1.5rem;text-align:center;color:var(--txt3);font-size:.76rem;line-height:2;margin-top:auto}
+.ftit{font-family:'Amiri',serif;font-size:1.1rem;color:var(--gold2);margin-bottom:.2rem}
+.fmot{color:var(--teal2);font-size:.78rem;margin-top:.35rem}
+
+/* LEARNING CARDS FLIP ANIMATION */
+.card-flip{transition:transform .6s cubic-bezier(.68,-.55,.265,1.55);transform-style:preserve-3d}
+.card-flip.flipped{transform:rotateY(180deg)}
+.card-content{transition:all .3s ease;text-align:center}
+
+@media(max-width:768px){
+  .bar-in{flex-wrap:wrap;height:auto;padding:8px 1rem;gap:5px}
+  .nav{flex-wrap:wrap;justify-content:center}
+  .hero{padding:2.5rem 1rem 2rem}
+  .sec{padding:2rem 1rem}
+  .branch-tabs{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- MOTTO -->
+<div class="motto">✦ 🤖 الذكاء الاصطناعي شريكٌ لا بديلٌ عن الإنسان ✦</div>
+
+<!-- TOPBAR -->
+<header class="bar">
+  <div class="bar-in">
+    <div class="logo" onclick="goto('home')">
+      <div class="logo-m">س</div>
+      <div>
+        <div class="logo-t">منصة سيبويه الرقمية</div>
+        <div class="logo-s">قسم اللغة العربية — جامعة ابن خلدون تيارت</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+  </div>
+</header>
+
+<div id="toast"></div>
+
+<!-- ══ PAGE: HOME ══ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-chip">🏛️ جامعة ابن خلدون — تيارت، الجزائر</div>
+    <h1>منصة <b>سيبويه</b> الرقمية</h1>
+    <div class="hero-sub">قسم اللغة والأدب العربي — السنة الثانية ل.م.د</div>
+    <p class="hero-desc">بيئة تعليمية رقمية متكاملة تضم مقررات الدراسات اللغوية والأدبية والنقدية، مع نظام تقييم بالذكاء الاصطناعي</p>
+    <div class="hero-row" id="hero-btns">
+      <button class="btn bg" onclick="openM('modal-register')">🎓 تسجيل طالب</button>
+      <button class="btn bo" onclick="openM('modal-login')">دخول ←</button>
+      <button class="btn" style="background:rgba(124,58,237,.2);color:#c084fc;border:1px solid rgba(124,58,237,.3)" onclick="openM('modal-teacher-register')">👨‍🏫 تسجيل أستاذ</button>
+    </div>
+  </section>
+  <div class="quote">
+    <div class="quote-t">«وهذا باب علم ما الكلم من العربية»</div>
+    <div class="quote-s">سيبويه — الكتاب</div>
+  </div>
+  <div class="prof">
+    <div class="prof-in">
+      <div class="prof-av">👨‍🏫</div>
+      <div>
+        <div class="prof-name">أ.د. بن جلول مختار</div>
+        <div class="prof-meta">أستاذ اللسانيات العربية · جامعة ابن خلدون، تيارت، الجزائر<br>مدير المنصة ومنسق المقررات</div>
+        <div class="tags">
+          <span class="tag">مخبر الدراسات النحوية واللغوية</span>
+          <span class="tag">بين التراث والحداثة في الجزائر</span>
+          <span class="tag">علم النحو</span><span class="tag">علم الصرف</span><span class="tag">اللسانيات</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="sec">
+    <h2 class="sec-title">الشعب الدراسية</h2>
+    <div class="hr"></div>
+    <div class="g3">
+      <div class="card ct ct-g" style="cursor:pointer" onclick="goto('courses');setBranch(0)">
+        <div style="font-size:2rem;margin-bottom:.6rem">📖</div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.25rem;color:var(--gold2);margin-bottom:.35rem">فرع الدراسات اللغوية</h3>
+        <p style="color:var(--txt2);font-size:.8rem;line-height:1.7">النحو، الصرف، اللسانيات العامة والتطبيقية، علم الدلالة، أصول النحو</p>
+      </div>
+      <div class="card ct ct-t" style="cursor:pointer" onclick="goto('courses');setBranch(1)">
+        <div style="font-size:2rem;margin-bottom:.6rem">📚</div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.25rem;color:var(--gold2);margin-bottom:.35rem">فرع الدراسات الأدبية</h3>
+        <p style="color:var(--txt2);font-size:.8rem;line-height:1.7">النص الأدبي، الأدب المقارن، الآداب العالمية، الأدب المغاربي، الأدب الشعبي</p>
+      </div>
+      <div class="card ct ct-v" style="cursor:pointer" onclick="goto('courses');setBranch(2)">
+        <div style="font-size:2rem;margin-bottom:.6rem">🔍</div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.25rem;color:var(--gold2);margin-bottom:.35rem">فرع الدراسات النقدية</h3>
+        <p style="color:var(--txt2);font-size:.8rem;line-height:1.7">المناهج النقدية، الأسلوبية، نظرية الأدب، المدارس اللسانية، فلسفة النقد</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ PAGE: COURSES ══ -->
+<div id="page-courses" class="page">
+  <div class="sec">
+    <h2 class="sec-title">المقررات الدراسية</h2>
+    <p class="sec-sub">السنة الثانية ل.م.د — قسم اللغة والأدب العربي</p>
+    <div class="hr"></div>
+    <div class="branch-tabs" id="branch-tabs">
+      <button class="btab on" onclick="setBranch(0,this)">📖 الدراسات اللغوية</button>
+      <button class="btab" onclick="setBranch(1,this)">📚 الدراسات الأدبية</button>
+      <button class="btab" onclick="setBranch(2,this)">🔍 الدراسات النقدية</button>
+    </div>
+    <div class="sem-tabs">
+      <button class="stab on" onclick="setSem(3,this)">السداسي الثالث</button>
+      <button class="stab" onclick="setSem(4,this)">السداسي الرابع</button>
+    </div>
+    <div id="courses-content"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: DISCUSSION ══ -->
+<div id="page-disc" class="page">
+  <div class="sec">
+    <h2 class="sec-title">فضاء النقاش العلمي</h2>
+    <div class="hr"></div>
+    <div class="card" style="margin-bottom:1.5rem">
+      <h3 style="color:var(--gold2);margin-bottom:.85rem;font-size:.9rem">مشاركة جديدة</h3>
+      <textarea class="fi" id="disc-txt" placeholder="سؤالك أو مداخلتك العلمية..." style="margin-bottom:.65rem"></textarea>
+      <button class="btn bg sm" onclick="postDisc()">نشر 💬</button>
+    </div>
+    <div id="disc-list"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: DASHBOARD ══ -->
+<div id="page-dashboard" class="page">
+  <div class="sec">
+    <h2 class="sec-title">لوحة تحكم المدير</h2>
+    <div class="hr"></div>
+    <div class="g4" id="dash-stats" style="margin-bottom:1.5rem"></div>
+    <div style="display:flex;gap:4px;background:var(--bg3);border-radius:9px;padding:3px;margin-bottom:1.25rem;flex-wrap:wrap">
+      <button class="stab on" onclick="dashTab('students',this)">الطلاب</button>
+      <button class="stab" onclick="dashTab('teachers',this)">الأساتذة</button>
+      <button class="stab" onclick="dashTab('courses',this)">المقررات</button>
+    </div>
+    <div id="dash-content"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: MY COURSES (TEACHER) ══ -->
+<div id="page-my-courses" class="page">
+  <div class="sec">
+    <h2 class="sec-title">مقرراتي</h2>
+    <p class="sec-sub" id="teacher-courses-sub"></p>
+    <div class="hr"></div>
+    <div id="teacher-courses-content"></div>
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- LOGIN -->
+<div class="ov" id="modal-login" onclick="if(event.target===this)closeM('modal-login')">
+  <div class="md">
+    <div class="mhdr"><span class="mttl">تسجيل الدخول</span><button class="mcl" onclick="closeM('modal-login')">×</button></div>
+    <div class="al ali" style="font-size:.73rem">
+      المدير: bendjalloul@univ-tiaret.dz / Admin2025<br>
+      طالب: youcef@etud.dz / 123456 &nbsp;|&nbsp; nour@etud.dz / 123456
+    </div>
+    <div id="login-err" class="al ale" style="display:none"></div>
+    <div class="fg"><label class="fl">البريد الإلكتروني</label><input class="fi" id="li-email" type="email" placeholder="email@example.com"></div>
+    <div class="fg"><label class="fl">كلمة السر</label><input class="fi" id="li-pw" type="password" placeholder="••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn bg" style="width:100%" onclick="doLogin()">دخول ←</button>
+  </div>
+</div>
+
+<!-- STUDENT REGISTER -->
+<div class="ov" id="modal-register" onclick="if(event.target===this)closeM('modal-register')">
+  <div class="md">
+    <div class="mhdr"><span class="mttl">تسجيل طالب جديد</span><button class="mcl" onclick="closeM('modal-register')">×</button></div>
+    <div class="al ali" style="margin-bottom:.85rem">سيراجع المدير طلبك ويرسل إليك بريداً بالنتيجة.</div>
+    <div class="fg"><label class="fl">الاسم الكامل</label><input class="fi" id="rs-name" placeholder="الاسم واللقب"></div>
+    <div class="fg"><label class="fl">البريد الإلكتروني</label><input class="fi" id="rs-email" type="email" placeholder="email@etud.dz"></div>
+    <div class="fg">
+      <label class="fl">الشعبة</label>
+      <select class="fi" id="rs-branch">
+        <option value="">اختر الشعبة</option>
+        <option value="0">الدراسات اللغوية</option>
+        <option value="1">الدراسات الأدبية</option>
+        <option value="2">الدراسات النقدية</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">كلمة السر</label><input class="fi" id="rs-pw" type="password" placeholder="••••••"></div>
+    <button class="btn bg" style="width:100%" onclick="doRegStudent()">إرسال الطلب 📤</button>
+  </div>
+</div>
+
+<!-- TEACHER REGISTER -->
+<div class="ov" id="modal-teacher-register" onclick="if(event.target===this)closeM('modal-teacher-register')">
+  <div class="md mdl">
+    <div class="mhdr"><span class="mttl">تسجيل أستاذ</span><button class="mcl" onclick="closeM('modal-teacher-register')">×</button></div>
+    <div class="al ali" style="margin-bottom:.85rem">سيراجع المدير طلبك ويحدد المقاييس الموكلة إليك.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+      <div class="fg"><label class="fl">الاسم الكامل *</label><input class="fi" id="rt-name" placeholder="الاسم واللقب"></div>
+      <div class="fg"><label class="fl">البريد الإلكتروني *</label><input class="fi" id="rt-email" type="email" placeholder="email@univ-tiaret.dz"></div>
+      <div class="fg"><label class="fl">الرتبة العلمية</label>
+        <select class="fi" id="rt-rank">
+          <option>أستاذ التعليم العالي</option>
+          <option>أستاذ محاضر أ</option>
+          <option>أستاذ محاضر ب</option>
+          <option>أستاذ مساعد أ</option>
+          <option>أستاذ مساعد ب</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">التخصص</label><input class="fi" id="rt-spec" placeholder="مثال: لسانيات عربية"></div>
+    </div>
+    <div class="fg">
+      <label class="fl">الشعبة / الشعب التي تدرس فيها</label>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:5px;color:var(--txt2);font-size:.82rem;cursor:pointer"><input type="checkbox" id="rt-b0" style="accent-color:var(--gold)"> الدراسات اللغوية</label>
+        <label style="display:flex;align-items:center;gap:5px;color:var(--txt2);font-size:.82rem;cursor:pointer"><input type="checkbox" id="rt-b1" style="accent-color:var(--gold)"> الدراسات الأدبية</label>
+        <label style="display:flex;align-items:center;gap:5px;color:var(--txt2);font-size:.82rem;cursor:pointer"><input type="checkbox" id="rt-b2" style="accent-color:var(--gold)"> الدراسات النقدية</label>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">المقاييس التي تدرسها (حدد كل ما ينطبق)</label>
+      <div id="rt-subjects-list" style="display:flex;flex-wrap:wrap;gap:5px;max-height:200px;overflow-y:auto;background:var(--bg3);border-radius:8px;padding:.75rem;border:1px solid var(--bdr)">
+        <p style="color:var(--txt3);font-size:.78rem">اختر شعبة أولاً لتظهر المقاييس</p>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">كلمة السر</label><input class="fi" id="rt-pw" type="password" placeholder="••••••"></div>
+    <button class="btn" style="width:100%;background:var(--violet);color:#fff" onclick="doRegTeacher()">إرسال طلب التسجيل 👨‍🏫</button>
+  </div>
+</div>
+
+<!-- ADD CONTENT MODAL -->
+<div class="ov" id="modal-add-content" onclick="if(event.target===this)closeM('modal-add-content')">
+  <div class="md mdl">
+    <div class="mhdr"><span class="mttl" id="add-content-title">إضافة محتوى</span><button class="mcl" onclick="closeM('modal-add-content')">×</button></div>
+    <div class="fg"><label class="fl">العنوان</label><input class="fi" id="ac-title" placeholder="عنوان المحاضرة أو العمل الموجه"></div>
+    <div class="fg"><label class="fl">الوصف</label><input class="fi" id="ac-desc" placeholder="وصف مختصر"></div>
+    <div class="fg">
+      <label class="fl">ملف PDF</label>
+      <div class="upz" onclick="document.getElementById('ac-pdf').click()">
+        <div style="font-size:1.8rem;margin-bottom:.4rem">📄</div>
+        <div id="ac-pdf-label"><strong>اضغط لرفع PDF</strong><br><small>أو اسحب الملف</small></div>
+        <input type="file" id="ac-pdf" accept=".pdf" onchange="handleAcPdf(this)">
+      </div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn bt sm" style="flex:1" onclick="extractAndGenerateFromPdf()">🔄 استخراج النص من PDF</button>
+        <button class="btn bv sm" style="flex:1" onclick="extractAndAutoGenerate()">⚡ استخراج وتوليد فوري</button>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">محتوى نصي (لتوليد الأسئلة بالذكاء الاصطناعي)</label><textarea class="fi" id="ac-content" rows="4" placeholder="ملخص أو نص المحاضرة..."></textarea></div>
+    <div style="display:flex;gap:.75rem;justify-content:flex-end">
+      <button class="btn bgh" onclick="closeM('modal-add-content')">إلغاء</button>
+      <button class="btn bg" onclick="saveContent()">إضافة ✅</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="ftit">منصة سيبويه الرقمية — قسم اللغة والأدب العربي</div>
+  <div>أ.د. بن جلول مختار — أستاذ اللسانيات العربية</div>
+  <div>جامعة ابن خلدون، تيارت، الجزائر</div>
+  <div style="opacity:.4;margin-top:2px">مخبر الدراسات النحوية واللغوية بين التراث والحداثة في الجزائر</div>
+  <div class="fmot">🤖 الذكاء الاصطناعي شريكٌ لا بديلٌ عن الإنسان</div>
+</footer>
+</div>
+
+<!-- PDF.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+
+<script>
+// ══════════════════════════════════════════════════════
+// CURRICULUM DATA — مستخرج من الملف المرفق
+// branches: 0=لغوية, 1=أدبية, 2=نقدية
+// sem: 3 أو 4
+// type: lec=محاضرة, td=عمل موجه, merged=مدمج
+// ══════════════════════════════════════════════════════
+const CURRICULUM = {
+  // ─── فرع الدراسات اللغوية ───────────────────────
+  0: {
+    3: [
+      { id:"L031", title:"النص الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الإحياء في الشعر المشرقي 1 — دراسة وتحليل"},
+          {t:"lec",n:2,txt:"الإحياء في الشعر المشرقي 2 — دراسة وتحليل"},
+          {t:"lec",n:3,txt:"الإحياء في الشعر العربي في المغرب — دراسة وتحليل"},
+          {t:"lec",n:4,txt:"التجديد في الشعر المشرقي 1 — دراسة وتحليل"},
+          {t:"lec",n:5,txt:"التجديد في الشعر المشرقي 2 — دراسة وتحليل"},
+          {t:"lec",n:6,txt:"التجديد في الشعر العربي في المغرب — دراسة وتحليل"},
+          {t:"lec",n:7,txt:"فنون نثرية: مدخل إلى الفنون النثرية"},
+          {t:"td",n:8,txt:"فنون نثرية: القصة — تحليل نص لكواني/ اليازجي..."},
+          {t:"td",n:9,txt:"فنون نثرية: المقالة — تحليل نص لبشير الإبراهيمي/طه حسين/العقاد"},
+          {t:"td",n:10,txt:"فنون نثرية: الرواية — تحليل نص لجرجي زيدان/هيكل..."},
+          {t:"td",n:11,txt:"فنون نثرية: المسرح — تحليل نص لتوفيق الحكيم..."},
+          {t:"td",n:12,txt:"فنون نثرية: أدب الرحلة — تحليل نص رحلة ابن حمدوش/حسين الورثيلاني"},
+          {t:"td",n:13,txt:"فنون نثرية: الرسائل الأدبية — الرافعي/حمزيدة/البشير الإبراهيمي..."},
+        ]
+      },
+      { id:"L032", title:"النقد الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى النقد العربي الحديث 1 — إرهاصات"},
+          {t:"lec",n:2,txt:"مدخل إلى النقد العربي الحديث 2 — مرحلياته"},
+          {t:"lec",n:3,txt:"النقد الإحيائي — حسين المرصفي"},
+          {t:"lec",n:4,txt:"إرهاصات التجديد في النقد الحديث — رمضان محود"},
+          {t:"td",n:5,txt:"جماعة الديوان — نصوص جماعة الديوان"},
+          {t:"td",n:6,txt:"جماعة أبولو — نصوص جماعة أبولو"},
+          {t:"td",n:7,txt:"جماعة الرابطة القلمية — نصوص جماعة الرابطة القلمية"},
+          {t:"lec",n:8,txt:"النقد التاريخي — طه حسين، شوقي ضيف..."},
+          {t:"lec",n:9,txt:"النقد الاجتماعي — سلامة موسى"},
+          {t:"lec",n:10,txt:"النقد النفسي — النونيي، مصطفى سويف، العقاد..."},
+          {t:"lec",n:11,txt:"النقد الواقعي — محمد مندور"},
+          {t:"lec",n:12,txt:"النقد الجديد — نص لمراد رشدي..."},
+          {t:"lec",n:13,txt:"المضايا النقدية 1 — الصدق الفني/الخيال/الجيد الأدبي..."},
+          {t:"lec",n:14,txt:"المضايا النقدية 2 — النقد الحديث بين النظري والتطبيق"},
+        ]
+      },
+      { id:"L033", title:"علم النحو 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"الإسمية: المبتدأ والخبر: تطبيقات في الدلالة الإسمية — تطبيقات..."},
+          {t:"td",n:2,txt:"الحذف في الدلالة الإسمية — حذف المسند والمسند إليه، وما يعمل عملهما"},
+          {t:"lec",n:3,txt:"الحواسق الناسخة 1 — كان وأدواتها وما يعمل عملها"},
+          {t:"lec",n:4,txt:"الحواسق الناسخة 2 — أن وأدواتها وإن وأدواتها"},
+          {t:"lec",n:5,txt:"الحواسق الناسخة 3 — ظن وأدواتها ودلالاتها وإعرابها"},
+          {t:"lec",n:6,txt:"أفعال الحواسق الناسخة — دلالاتها وإعرابها وأدواتها"},
+          {t:"td",n:7,txt:"المجرورات: الأنواع والدلالات — المجرور بحروف الجر، بالإضافة..."},
+          {t:"lec",n:8,txt:"حروف العطف: الأنواع والدلالات — معاني حروف العطف"},
+          {t:"lec",n:9,txt:"التعريف والتنكير — أنواع المعارف"},
+          {t:"lec",n:10,txt:"أسماء الإشارة والضمائر والأسماء الموصولة"},
+          {t:"lec",n:11,txt:"التوابع — إعراب الصفة والبدل والتوكيد..."},
+          {t:"lec",n:12,txt:"أسلوب النداء — حروفه وإعرابه"},
+          {t:"lec",n:13,txt:"أنواع الجمل 1 — الجمل التي لها محل من الإعراب"},
+          {t:"lec",n:14,txt:"أنواع الجمل 2 — الجمل التي لها محل من الإعراب"},
+        ]
+      },
+      { id:"L034", title:"اللسانيات العامة", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى تاريخ الفكر اللساني — الهنود واليونان"},
+          {t:"lec",n:2,txt:"تاريخ الفكر اللساني عند العرب — النحو والبلاغة والأصول"},
+          {t:"lec",n:3,txt:"اللسانيات الحديثة 1 — أول: مفهومها/موضوعها/مجالاتها — الآنية"},
+          {t:"lec",n:4,txt:"اللسانيات الحديثة 2 — الدليل اللغوي (الدال والمدلول/التركيب والاستبدال)"},
+          {t:"lec",n:5,txt:"خصائص اللسان البشري — الخطية والتقطيع المزدوج"},
+          {t:"lec",n:6,txt:"اللسانيات والتواصل اللغوي — دورة التزاطب"},
+          {t:"lec",n:7,txt:"وظائف اللغة — تطبيق الوظائف من خلال النصوص"},
+          {t:"lec",n:8,txt:"مستويات التحليل اللساني 1 — تطبيق على المستوى الفونولوجي"},
+          {t:"lec",n:9,txt:"مستويات التحليل اللساني 2 — تطبيق المستوى المورفولوجي"},
+          {t:"lec",n:10,txt:"مستويات التحليل اللساني 3 — تطبيق المستوى التركيبي"},
+          {t:"lec",n:11,txt:"مستويات التحليل اللساني 4 — تطبيق المستوى الدلالي"},
+          {t:"lec",n:12,txt:"مستويات التحليل اللساني 5 — المستوى النصي (الانسجام والاتساق)"},
+          {t:"lec",n:13,txt:"الدراسات اللسانية العربية الحديثة 1 — عبد الرحمن حاج صالح"},
+          {t:"lec",n:14,txt:"الدراسات اللسانية العربية الحديثة 2 — تمام حسان/ميشال زكريا/الفهري/حساني"},
+        ]
+      },
+      { id:"L035", title:"المناهج النقدية المعاصرة", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"merged",n:1,txt:"السيميائية — بيرس"},
+          {t:"merged",n:2,txt:"البنيوية — ليفي ستراوس، خانبندون..."},
+          {t:"merged",n:3,txt:"النقد النفسي — لاكان، مورو، دي نوفيل..."},
+          {t:"merged",n:4,txt:"البنيوية التكوينية — لوكاش، غولدمان..."},
+          {t:"merged",n:5,txt:"سوسيولوجيا النص — ابادثني، بيار زيما"},
+          {t:"merged",n:6,txt:"علم السرد — بارث، تودوروف، جنات، نرسدتفا..."},
+          {t:"merged",n:7,txt:"الأسلوبية — ميشال ريقاتير..."},
+          {t:"merged",n:8,txt:"الموضوعاتية — جورج بول، خان بير ريشار"},
+          {t:"merged",n:9,txt:"التأويلية — هيدجورج غادامير"},
+          {t:"merged",n:10,txt:"التلقي — أيزر، ياوس..."},
+          {t:"merged",n:11,txt:"التداولية — بيرس، أوسنت"},
+          {t:"merged",n:12,txt:"التفكيكية — خاك دريدا"},
+          {t:"merged",n:13,txt:"النقد الثقافي — فاوسن ميدش..."},
+          {t:"merged",n:14,txt:"النقد التكويني — جون ميشال رابيت"},
+        ]
+      },
+      { id:"L036", title:"الأسلوبية وتحليل الخطاب", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"مفهوم الأسلوبية — مصطلح الأسلوبية: مجال الأسلوبية ومجالاتها"},
+          {t:"lec",n:2,txt:"الأسلوبية التعبيرية — التطبيق على نص شعري، نص نثري"},
+          {t:"lec",n:3,txt:"الأسلوبية البنيوية — التطبيق على نص شعري، نص نثري"},
+          {t:"lec",n:4,txt:"الأسلوبية الإحصائية — التطبيق على نص شعري، نص نثري"},
+          {t:"lec",n:5,txt:"الأسلوبية النفسية — التطبيق على نص شعري، نص نثري"},
+          {t:"lec",n:6,txt:"الأسلوبية التوزيعية — محددات الأسلوب: الاختيار التركيب"},
+          {t:"lec",n:7,txt:"الظواهر الأسلوبية — الانزياح والمفارقة — التطبيق على نص"},
+          {t:"lec",n:8,txt:"ثانياً: تحليل الخطاب — ضبط مفهوم النص والخطاب"},
+          {t:"lec",n:9,txt:"أصناف الخطاب: الخطاب اللغوي وغير اللغوي — تطبيق على نماذج"},
+          {t:"td",n:10,txt:"مقاربات تحليل الخطاب 1 — ميشال فوكو"},
+          {t:"td",n:11,txt:"مقاربات تحليل الخطاب 2 — فان دايم"},
+          {t:"td",n:12,txt:"مقاربات تحليل الخطاب 3 — فريدريم مانهينو"},
+          {t:"td",n:13,txt:"مقاربات تحليل الخطاب 4 — رولن بارث"},
+          {t:"td",n:14,txt:"الأسلوبية وتحليل الخطاب — عبد السلام المسدي/الطرابلسي"},
+        ]
+      },
+      { id:"L037", title:"مدخل إلى الأدب المقارن", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"المفهوم والنشأة والتطور 1 — الفرق بين الأدب العام والأدب المقارن"},
+          {t:"lec",n:2,txt:"المفهوم والنشأة والتطور 2 — الفرق بين الأدب العالمي والأدب المقارن"},
+          {t:"lec",n:3,txt:"مقومات البحث المقارن — مجالات البحث/شروط الباحث/عدة المقارن"},
+          {t:"lec",n:4,txt:"مدارس الأدب المقارن: الفرنسية — بول فون تيغلي/جون ماري كاري"},
+          {t:"lec",n:5,txt:"مدارس الأدب المقارن: الأمريكية — رونيه ويوليم"},
+          {t:"lec",n:6,txt:"مدارس الأدب المقارن: السلافية"},
+          {t:"td",n:7,txt:"مدارس الأدب المقارن: العربية — نصوص لجلال الدين بن الشيخ/ميي هلال"},
+          {t:"td",n:8,txt:"مباحث الأدب المقارن: رحلة الآداب — الأدبين العربي والفارسي: مجنون ليلى"},
+          {t:"td",n:9,txt:"التأثر والتأثير — الموشحات والتروبادور"},
+          {t:"td",n:10,txt:"التيارات البوفارية/الفلوبيرية/الفاوستية"},
+          {t:"td",n:11,txt:"النماذج البشرية — زادق بين مولير ول بروير/بخلاء الجاحظ"},
+          {t:"td",n:12,txt:"الأجناس الأدبية — الملامح/المسرح الشعري: شوقي، راسين"},
+          {t:"td",n:13,txt:"الأدب والأسطورة — بيجاماليون/أوديب بن سوفوكليس وتوفيق الحكيم"},
+          {t:"td",n:14,txt:"الموضوعات — السيداب البحري/روبنسون كروزو/موبيديم"},
+        ]
+      },
+      { id:"L038", title:"علم الدلالة", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل إلى علم الدلالة: اصطلاحاً وتاريخاً"},
+          {t:"merged",n:2,txt:"الدلالة عند علماء العرب 1 — النحاة واللغويون وعلماء الأصول"},
+          {t:"merged",n:3,txt:"الدلالة عند علماء العرب 2 — الفلاسفة والمتكلمون والبلاغيون"},
+          {t:"merged",n:4,txt:"أنواع الدلالة: المعجمية والصرفية والصوتية"},
+          {t:"merged",n:5,txt:"أنواع الدلالة: النحوية والسياقية ودلالة المقام"},
+          {t:"merged",n:6,txt:"التغير الدلالي ومظاهره"},
+          {t:"merged",n:7,txt:"العلاقات الدلالية 1 — علاقة اللفظ بالمعنى: الاشتمال"},
+          {t:"merged",n:8,txt:"العلاقات الدلالية 2 — الترادف والاشتراك والتضاد..."},
+          {t:"merged",n:9,txt:"نظرية الحقول الدلالية"},
+          {t:"merged",n:10,txt:"نظريات التحليل الدلالي 1 — النظرية التحليلية"},
+          {t:"merged",n:11,txt:"نظريات التحليل الدلالي 2 — النظرية الوظيفية"},
+          {t:"merged",n:12,txt:"نظريات التحليل الدلالي 3 — النظرية السياقية"},
+          {t:"merged",n:13,txt:"نظريات التحليل الدلالي 4 — النظرية التأويلية"},
+          {t:"merged",n:14,txt:"علم الدلالة وعلاقته بالعلوم الأخرى"},
+        ]
+      },
+      { id:"L039", title:"أصول النحو", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل: النحو وأصول النحو — المصطلح والمفهوم"},
+          {t:"merged",n:2,txt:"أصول النحو 1 — النشأة والمرحليات"},
+          {t:"merged",n:3,txt:"أصول النحو 2 — التأليف ورواده: ابن جني، ابن الأنباري، والسيوطي"},
+          {t:"merged",n:4,txt:"السماع — مفهومه وشروطه"},
+          {t:"merged",n:5,txt:"السماع ومصادره 1 — القرآن والحديث الشريف"},
+          {t:"merged",n:6,txt:"السماع ومصادره 2 — كلام العرب (الشعر والنثر)"},
+          {t:"merged",n:7,txt:"القياس النحوي وأركانه 1 — المقيس عليه والمقيس"},
+          {t:"merged",n:8,txt:"القياس النحوي وأركانه 2 — العلة/الحكم"},
+          {t:"merged",n:9,txt:"استصحاب الحال ومواقف العلماء المساهمين والمحدثين"},
+          {t:"merged",n:10,txt:"الإجماع وأنواعه (إجماع الفقهاء، إجماع النحاة، إجماع الأصوليين)"},
+          {t:"merged",n:11,txt:"ظاهرة الإعراب"},
+          {t:"merged",n:12,txt:"الأصل والفرع: أصل الوضع، أصل الساعدة، العدول عن الأصل، الرد إلى الأصل"},
+          {t:"merged",n:13,txt:"الاجتهاد ومواقف العلماء"},
+          {t:"merged",n:14,txt:"نظرية العامل"},
+        ]
+      },
+      { id:"L040", title:"الأسلوب البلاغي والأدبي", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"lec",n:1,txt:"الأسلوب لغة واصطلاحاً — مفهوم والخصائص"},
+          {t:"lec",n:2,txt:"خصائص الأسلوب الأدبي — الفردية، الاستقرار، الوضوح، الجودة"},
+          {t:"lec",n:3,txt:"مكونات الأسلوب 1 — العناصر اللغوية"},
+          {t:"lec",n:4,txt:"مكونات الأسلوب 2 — العناصر الفكرية"},
+          {t:"lec",n:5,txt:"البلاغة وفروعها 1 — تعريف البلاغة وأهميتها"},
+          {t:"lec",n:6,txt:"البلاغة وفروعها 2 — علم المعاني"},
+          {t:"lec",n:7,txt:"البلاغة وفروعها 3 — علم البيان"},
+          {t:"lec",n:8,txt:"البلاغة وفروعها 4 — علم البديع"},
+          {t:"lec",n:9,txt:"التشبيه — التعريف، الأركان، الأنواع"},
+          {t:"lec",n:10,txt:"الاستعارة — التعريف، الفرق مع التشبيه، الأنواع"},
+          {t:"lec",n:11,txt:"الكناية — التعريف، الفائدة، أنواعها"},
+          {t:"lec",n:12,txt:"الأسلوب البلاغي المميزات — الجمالية، التأثير، الإيحاء، الإقناع"},
+          {t:"lec",n:13,txt:"تطور الأسلوب البلاغي عند العرب — العصور المختلفة"},
+          {t:"td",n:14,txt:"تحليل نماذج أدبية — جاهلية، عباسية، حديثة"},
+        ]
+      },
+    ],
+    4: [
+      { id:"L041", title:"النص الأدبي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الشعر العربي المعاصر: مدخل تاريخي"},
+          {t:"lec",n:2,txt:"قصيدة الشعر العمودي — مفدي زكرياء/سواني العهد/البارودي/معار أبو ريشة"},
+          {t:"lec",n:3,txt:"الرواد والتجربة الشعرية الجديدة 1 — تحليل نص الكوليرا لنازك الملائكة"},
+          {t:"lec",n:4,txt:"الرواد والتجربة الشعرية الجديدة 2 — تحليل نص بدر شاكر السياب/أنشودة المطر"},
+          {t:"lec",n:5,txt:"الحداثة الشعرية 1 — دراسة نص (أدونيس/محمود درويش/يوسف الخال)"},
+          {t:"lec",n:6,txt:"الحداثة الشعرية 2 — دراسة نص: نزار قباني/خليل حاوي/حجازي/عبد الصبور..."},
+          {t:"lec",n:7,txt:"الحداثة الشعرية في الجزائر — تحليل نص شعري معاصر (عز الدين مهنوبي/سليماني حوادي)"},
+          {t:"lec",n:8,txt:"قصيدة التفعيلة — أبو القاسم سعد الله/محمد الصالح بابية"},
+          {t:"lec",n:9,txt:"قصيدة النثر — أنيس الحاج/عبد العزيز شكيل/عز الدين منارصة"},
+          {t:"lec",n:10,txt:"الفنون النثرية المعاصرة (القصة) — زهراء تامر/قادة السلماني/يوسف إدريس"},
+          {t:"lec",n:11,txt:"الفن القصصي: الأعلام والاتجاهات — سهيل إدريس/إبراهيم الكوني/محمد شكري"},
+          {t:"lec",n:12,txt:"الرواية العربية المعاصرة: نشأتها وتطورها — نجيب محفوظ/واسيني الأعرج/عبد الرحمن منيف"},
+          {t:"lec",n:13,txt:"الرواية العربية المعاصرة: أعلامها — ابن هدوقة/وطار/الطيب صالح/حنا مينا/حامل الميتاين"},
+          {t:"lec",n:14,txt:"المسرح العربي المعاصر وقضاياه — دراسة نص: سعد الله ونوس/عبد القادر علولة..."},
+        ]
+      },
+      { id:"L042", title:"النقد العربي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"إرهاصات النقد العربي المعاصر — التعريف بالنظرية، الترجمة، التأليف"},
+          {t:"lec",n:2,txt:"النقد الجديد — نص للتطبيق: رشاد رشدي/محمد عياني/مصطفى ناصف"},
+          {t:"lec",n:3,txt:"النقد الأسلوبي — نص للتطبيق: عبد السلام المسدي، صالح فضل"},
+          {t:"lec",n:4,txt:"النقد البنيوي — نص للتطبيق: كمال أبو ديب، عبد العزيز بوراير، نهيلة إبراهيم"},
+          {t:"lec",n:5,txt:"النقد السيميائي — نص للتطبيق: سعيد بنكراد، رشيد بن مالك"},
+          {t:"lec",n:6,txt:"النقد الاجتماعي — نص للتطبيق: حسين مروة/محمود أمين العالم"},
+          {t:"lec",n:7,txt:"النقد الثقافي — نص للتطبيق: المشايم/إدوارد سعيد"},
+          {t:"lec",n:8,txt:"النقد النفسي — نص للتطبيق: جورج طرابيش، عز الدين إسماعيل..."},
+          {t:"lec",n:9,txt:"النقد الأيديولوجي — نص للتطبيق: سعيد علوش، نهيل سليماني، محمود أمين العالم..."},
+          {t:"lec",n:10,txt:"الحداثة والمعاصرة — نص للتطبيق: عبد السلام المسدي/عبد العزيز القائلي"},
+          {t:"lec",n:11,txt:"الالتزام في الأدب — نص للتطبيق: عبد المحسن طه بدر/عبد المنعم تومة"},
+          {t:"lec",n:12,txt:"الغموض في الشعر — نص للتطبيق: إبراهيم رماني"},
+          {t:"lec",n:13,txt:"الصورة الشعرية — نص للتطبيق: جابر عصفور/محمد الولي"},
+          {t:"lec",n:14,txt:"التناص — نص للتطبيق: محمد مفتاح"},
+        ]
+      },
+      { id:"L043", title:"علم الصرف 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"أبنية المصادر 1 — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:2,txt:"أبنية المصادر 2 — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:3,txt:"المصدر السماعي/مصدر الهيئة/المصدر الصناعي — تطبيقات"},
+          {t:"lec",n:4,txt:"التذكير والتأنيث — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:5,txt:"التثنية — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:6,txt:"الجمع السالم بنوعيه — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:7,txt:"أبنية جموع التكسير ودلالاتها 1 — الجمع القليل/جمع الجمع — تطبيقات"},
+          {t:"lec",n:8,txt:"أبنية جموع التكسير ودلالاتها 2 — الجمع الجديد الإفرادي/الجمع الجديد الدعي — تطبيقات"},
+          {t:"lec",n:9,txt:"أبنية جموع التكسير ودلالاتها 3 — صيغ منتهى الجموع — تطبيقات"},
+          {t:"lec",n:10,txt:"الإعلال والإبدال — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:11,txt:"الإدغام — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:12,txt:"التصغير — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:13,txt:"النسب — تطبيقات من خلال نصوص وكتابات أدبية"},
+          {t:"lec",n:14,txt:"الممدود والمقصور والمنقوص — تطبيقات من خلال نصوص وكتابات أدبية"},
+        ]
+      },
+      { id:"L044", title:"اللسانيات التطبيقية", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى اللسانيات التطبيقية 1 — المفهوم والنشأة والتطور"},
+          {t:"lec",n:2,txt:"مدخل إلى اللسانيات التطبيقية 2 — المجالات والمرحلية المعرفية والمنهجية"},
+          {t:"lec",n:3,txt:"المواقف اللغوية 1 — فهم اللغة، إيضاء اللغة"},
+          {t:"lec",n:4,txt:"المواقف اللغوية 2 — الكتابة، القراءة"},
+          {t:"lec",n:5,txt:"نظريات التعلم 1 — السلوكية، الارتباطية"},
+          {t:"lec",n:6,txt:"نظريات التعلم 2 — النظرية البيولوجية"},
+          {t:"lec",n:7,txt:"نظريات التعلم 3 — النظرية المعرفية"},
+          {t:"lec",n:8,txt:"مناهج تعليم اللغة 1 — المنهج التقليدي، المنهج البنوي"},
+          {t:"lec",n:9,txt:"مناهج تعليم اللغة 2 — المنهج التواصلي"},
+          {t:"lec",n:10,txt:"الازدواجية والثنائية والتعدد اللغوي"},
+          {t:"lec",n:11,txt:"التخطيط اللغوي"},
+          {t:"lec",n:12,txt:"أمراض الكلام وعيوبه"},
+          {t:"lec",n:13,txt:"اللغة والاتصال"},
+          {t:"lec",n:14,txt:"الترجمة الآلية"},
+        ]
+      },
+    ]
+  },
+  // ─── فرع الدراسات الأدبية ───────────────────────
+  1: {
+    3: [
+      { id:"A031", title:"النص الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الإحياء في الشعر المشرقي 1 — دراسة وتحليل/البارودي"},
+          {t:"lec",n:2,txt:"الإحياء في الشعر المشرقي 2 — شوقي/المنفلوطي"},
+          {t:"lec",n:3,txt:"الإحياء في الشعر العربي في المغرب — دراسة وتحليل"},
+          {t:"lec",n:4,txt:"التجديد في الشعر المشرقي 1"},
+          {t:"lec",n:5,txt:"التجديد في الشعر المشرقي 2"},
+          {t:"lec",n:6,txt:"التجديد في الشعر العربي في المغرب"},
+          {t:"lec",n:7,txt:"مدخل إلى الفنون النثرية — النثر"},
+          {t:"td",n:8,txt:"فنون نثرية: القصة — تحليل لكواني/اليازجي..."},
+          {t:"td",n:9,txt:"فنون نثرية: المقالة — بشير الإبراهيمي/طه حسين/العقاد..."},
+          {t:"td",n:10,txt:"فنون نثرية: الرواية — جرجي زيدان/هيكل..."},
+          {t:"td",n:11,txt:"فنون نثرية: المسرح — توفيق الحكيم..."},
+          {t:"td",n:12,txt:"فنون نثرية: أدب الرحلة — تحليل نص رحلة ابن حمدوش"},
+          {t:"td",n:13,txt:"فنون نثرية: الرسائل الأدبية — الرافعي/حمزيدة/البشير الإبراهيمي..."},
+        ]
+      },
+      { id:"A032", title:"النقد الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى النقد العربي الحديث 1 — إرهاصاته"},
+          {t:"lec",n:2,txt:"مدخل إلى النقد العربي الحديث 2 — مرحلياته"},
+          {t:"lec",n:3,txt:"النقد الإحيائي — حسين المرصفي"},
+          {t:"lec",n:4,txt:"إرهاصات التجديد في النقد الحديث — رمضان محود"},
+          {t:"td",n:5,txt:"جماعة الديوان — نصوص جماعة الديوان"},
+          {t:"td",n:6,txt:"جماعة أبولو — نصوص جماعة أبولو"},
+          {t:"td",n:7,txt:"جماعة الرابطة القلمية — نصوص جماعة الرابطة القلمية"},
+          {t:"lec",n:8,txt:"النقد التاريخي — طه حسين، شوقي ضيف..."},
+          {t:"lec",n:9,txt:"النقد الاجتماعي — سلامة موسى"},
+          {t:"lec",n:10,txt:"النقد النفسي — النونيي، مصطفى سويف، العقاد..."},
+          {t:"lec",n:11,txt:"النقد الواقعي — محمد مندور"},
+          {t:"lec",n:12,txt:"النقد الجديد — نص لمراد رشدي..."},
+          {t:"lec",n:13,txt:"المضايا النقدية 1 — الصدق الفني/الخيال/الجيد الأدبي..."},
+          {t:"lec",n:14,txt:"المضايا النقدية 2 — النقد الحديث بين النظري والتطبيق"},
+        ]
+      },
+      { id:"A033", title:"علم النحو 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"الإسمية: المبتدأ والخبر — تطبيقات في الدلالة الإسمية"},
+          {t:"lec",n:2,txt:"الحذف في الدلالة الإسمية — حذف المسند والمسند إليه"},
+          {t:"lec",n:3,txt:"الحواسق الناسخة 1 — كان وأدواتها"},
+          {t:"lec",n:4,txt:"الحواسق الناسخة 2 — إن وأخواتها"},
+          {t:"lec",n:5,txt:"الحواسق الناسخة 3 — ظن وأدواتها"},
+          {t:"lec",n:6,txt:"أفعال الحواسق الناسخة — دلالاتها وإعرابها"},
+          {t:"td",n:7,txt:"المجرورات: الأنواع والدلالات"},
+          {t:"lec",n:8,txt:"حروف العطف: الأنواع والدلالات"},
+          {t:"lec",n:9,txt:"التعريف والتنكير"},
+          {t:"lec",n:10,txt:"أسماء الإشارة والضمائر والأسماء الموصولة"},
+          {t:"lec",n:11,txt:"التوابع — إعراب الصفة والبدل والتوكيد"},
+          {t:"lec",n:12,txt:"أسلوب النداء"},
+          {t:"lec",n:13,txt:"أنواع الجمل 1 — الجمل التي لها محل من الإعراب"},
+          {t:"lec",n:14,txt:"أنواع الجمل 2 — الجمل التي لا محل لها من الإعراب"},
+        ]
+      },
+      { id:"A034", title:"اللسانيات العامة", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى تاريخ الفكر اللساني — الهنود واليونان"},
+          {t:"lec",n:2,txt:"تاريخ الفكر اللساني عند العرب — النحو والبلاغة والأصول"},
+          {t:"lec",n:3,txt:"اللسانيات الحديثة 1 — مفهومها/موضوعها/مجالاتها"},
+          {t:"lec",n:4,txt:"اللسانيات الحديثة 2 — الدليل اللغوي"},
+          {t:"lec",n:5,txt:"خصائص اللسان البشري"},
+          {t:"lec",n:6,txt:"اللسانيات والتواصل اللغوي"},
+          {t:"lec",n:7,txt:"وظائف اللغة"},
+          {t:"lec",n:8,txt:"مستويات التحليل اللساني 1 — الفونولوجي"},
+          {t:"lec",n:9,txt:"مستويات التحليل اللساني 2 — المورفولوجي"},
+          {t:"lec",n:10,txt:"مستويات التحليل اللساني 3 — التركيبي"},
+          {t:"lec",n:11,txt:"مستويات التحليل اللساني 4 — الدلالي"},
+          {t:"lec",n:12,txt:"مستويات التحليل اللساني 5 — النصي"},
+          {t:"lec",n:13,txt:"الدراسات اللسانية العربية الحديثة 1 — عبد الرحمن حاج صالح"},
+          {t:"lec",n:14,txt:"الدراسات اللسانية العربية الحديثة 2 — تمام حسان/ميشال زكريا"},
+        ]
+      },
+      { id:"A035", title:"المناهج النقدية المعاصرة", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"merged",n:1,txt:"السيميائية — بيرس"},
+          {t:"merged",n:2,txt:"البنيوية — ليفي ستراوس، خانبندون"},
+          {t:"merged",n:3,txt:"النقد النفسي — لاكان، مورو، دي نوفيل"},
+          {t:"merged",n:4,txt:"البنيوية التكوينية — لوكاش، غولدمان"},
+          {t:"merged",n:5,txt:"سوسيولوجيا النص — ابادثني، بيار زيما"},
+          {t:"merged",n:6,txt:"علم السرد — بارث، تودوروف، جنات"},
+          {t:"merged",n:7,txt:"الأسلوبية — ميشال ريقاتير"},
+          {t:"merged",n:8,txt:"الموضوعاتية — جورج بول، خان بير ريشار"},
+          {t:"merged",n:9,txt:"التأويلية — هيدجورج غادامير"},
+          {t:"merged",n:10,txt:"التلقي — أيزر، ياوس"},
+          {t:"merged",n:11,txt:"التداولية — بيرس، أوسنت"},
+          {t:"merged",n:12,txt:"التفكيكية — خاك دريدا"},
+          {t:"merged",n:13,txt:"النقد الثقافي — فاوسن ميدش"},
+          {t:"merged",n:14,txt:"النقد التكويني — جون ميشال رابيت"},
+        ]
+      },
+      { id:"A036", title:"الأسلوبية وتحليل الخطاب", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"مفهوم الأسلوبية — مصطلح الأسلوبية، مجالها"},
+          {t:"lec",n:2,txt:"الأسلوبية التعبيرية — التطبيق على نص"},
+          {t:"lec",n:3,txt:"الأسلوبية البنيوية — التطبيق على نص"},
+          {t:"lec",n:4,txt:"الأسلوبية الإحصائية — التطبيق على نص"},
+          {t:"lec",n:5,txt:"الأسلوبية النفسية — التطبيق على نص"},
+          {t:"lec",n:6,txt:"الأسلوبية التوزيعية — محددات الأسلوب"},
+          {t:"lec",n:7,txt:"الظواهر الأسلوبية — الانزياح والمفارقة"},
+          {t:"lec",n:8,txt:"تحليل الخطاب: ضبط مفهوم النص والخطاب"},
+          {t:"lec",n:9,txt:"أصناف الخطاب: اللغوي وغير اللغوي"},
+          {t:"td",n:10,txt:"مقاربات تحليل الخطاب 1 — ميشال فوكو"},
+          {t:"td",n:11,txt:"مقاربات تحليل الخطاب 2 — فان دايم"},
+          {t:"td",n:12,txt:"مقاربات تحليل الخطاب 3 — فريدريم مانهينو"},
+          {t:"td",n:13,txt:"مقاربات تحليل الخطاب 4 — رولن بارث"},
+          {t:"td",n:14,txt:"الأسلوبية وتحليل الخطاب — عبد السلام المسدي"},
+        ]
+      },
+      { id:"A037", title:"مدخل إلى الأدب المقارن", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"المفهوم والنشأة والتطور 1"},
+          {t:"lec",n:2,txt:"المفهوم والنشأة والتطور 2"},
+          {t:"lec",n:3,txt:"مقومات البحث المقارن"},
+          {t:"lec",n:4,txt:"مدارس الأدب المقارن: الفرنسية"},
+          {t:"lec",n:5,txt:"مدارس الأدب المقارن: الأمريكية"},
+          {t:"lec",n:6,txt:"مدارس الأدب المقارن: السلافية"},
+          {t:"td",n:7,txt:"مدارس الأدب المقارن: العربية"},
+          {t:"td",n:8,txt:"مباحث الأدب المقارن: رحلة الآداب"},
+          {t:"td",n:9,txt:"التأثر والتأثير — الموشحات والتروبادور"},
+          {t:"td",n:10,txt:"التيارات البوفارية/الفلوبيرية/الفاوستية"},
+          {t:"td",n:11,txt:"النماذج البشرية"},
+          {t:"td",n:12,txt:"الأجناس الأدبية"},
+          {t:"td",n:13,txt:"الأدب والأسطورة"},
+          {t:"td",n:14,txt:"الموضوعات"},
+        ]
+      },
+      { id:"A038", title:"مدخل إلى الأدب المغاربي", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"محمد ديب"},
+          {t:"merged",n:2,txt:"النول"},
+          {t:"merged",n:3,txt:"الحريق"},
+          {t:"merged",n:4,txt:"الدار الكبيرة"},
+          {t:"merged",n:5,txt:"مولود فرعون (ابن الفقير)"},
+          {t:"merged",n:6,txt:"مولود معمري (العفيون والعصا)"},
+          {t:"merged",n:7,txt:"آسيا جبار (البقرات البوليسية)"},
+          {t:"merged",n:8,txt:"ماكل حداد (التلميش والدرس)"},
+          {t:"merged",n:9,txt:"نص توليد لمسعدي/حديث أبو هريرة قال:"},
+          {t:"merged",n:10,txt:"مهداء بايي: اختيار نص"},
+          {t:"merged",n:11,txt:"الطاهر بن خلون (صفل الرمال)"},
+          {t:"merged",n:12,txt:"ايمسينة درضة: مبيدين الليل والنهار"},
+          {t:"merged",n:13,txt:"موليكة ماكدم (الرجال الذين يمشون)"},
+          {t:"merged",n:14,txt:"عامرة خلوص: نيف حرضع الذئبة دون أن تعضم"},
+        ]
+      },
+      { id:"A039", title:"الأدب الشعبي العام", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"الأدب الشعبي العام: المفهوم والاصطلاح"},
+          {t:"merged",n:2,txt:"الشعر الشعبي 1 — أحمد فؤاد نجم..."},
+          {t:"merged",n:3,txt:"الشعر الشعبي 2 — الحاروبادور"},
+          {t:"merged",n:4,txt:"السرد الشعبي: الملاحم الشعبية"},
+          {t:"merged",n:5,txt:"نص: خوجامش (طاهر باكر)"},
+          {t:"merged",n:6,txt:"السيرة الشعبية/سيرة الأميرة ذات الهمة"},
+          {t:"merged",n:7,txt:"المطل الشعبي: المفهوم والأنواع"},
+          {t:"merged",n:8,txt:"المعة الشعبية — دراسة نص (الزوجة البيضاء)"},
+          {t:"merged",n:9,txt:"المعة الخرافية — دراسة نص (للمرابط والثعلب)"},
+          {t:"merged",n:10,txt:"المعة الأسورية — دراسة نص (غضبة)"},
+          {t:"merged",n:11,txt:"المثل والتجربة والإنسانية — دراسة نماذج"},
+          {t:"merged",n:12,txt:"الأزلام — دراسة نماذج"},
+          {t:"merged",n:13,txt:"الأزماة الشعبية"},
+          {t:"merged",n:14,txt:"مسرح الفرحة"},
+        ]
+      },
+    ],
+    4: [
+      { id:"A041", title:"النص الأدبي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الشعر العربي المعاصر: مدخل تاريخي"},
+          {t:"lec",n:2,txt:"قصيدة الشعر العمودي — مفدي زكرياء/البارودي/معار أبو ريشة"},
+          {t:"lec",n:3,txt:"الرواد والتجربة الشعرية الجديدة 1 — نازك الملائكة"},
+          {t:"lec",n:4,txt:"الرواد والتجربة الشعرية الجديدة 2 — بدر شاكر السياب"},
+          {t:"lec",n:5,txt:"الحداثة الشعرية 1 — أدونيس/محمود درويش"},
+          {t:"lec",n:6,txt:"الحداثة الشعرية 2 — نزار قباني/خليل حاوي"},
+          {t:"lec",n:7,txt:"الحداثة الشعرية في الجزائر — عز الدين مهنوبي/سليماني حوادي"},
+          {t:"lec",n:8,txt:"قصيدة التفعيلة — أبو القاسم سعد الله/محمد الصالح بابية"},
+          {t:"lec",n:9,txt:"قصيدة النثر — أنيس الحاج/عبد العزيز شكيل/عز الدين منارصة"},
+          {t:"lec",n:10,txt:"الفنون النثرية المعاصرة — القصة"},
+          {t:"lec",n:11,txt:"الفن القصصي: الأعلام والاتجاهات"},
+          {t:"lec",n:12,txt:"الرواية العربية المعاصرة: نشأتها وتطورها"},
+          {t:"lec",n:13,txt:"الرواية العربية المعاصرة: أعلامها"},
+          {t:"lec",n:14,txt:"المسرح العربي المعاصر وقضاياه"},
+        ]
+      },
+      { id:"A042", title:"النقد العربي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"إرهاصات النقد العربي المعاصر"},
+          {t:"lec",n:2,txt:"النقد الجديد — رشاد رشدي"},
+          {t:"lec",n:3,txt:"النقد الأسلوبي — عبد السلام المسدي"},
+          {t:"lec",n:4,txt:"النقد البنيوي — كمال أبو ديب"},
+          {t:"lec",n:5,txt:"النقد السيميائي — سعيد بنكراد"},
+          {t:"lec",n:6,txt:"النقد الاجتماعي — حسين مروة"},
+          {t:"lec",n:7,txt:"النقد الثقافي — إدوارد سعيد"},
+          {t:"lec",n:8,txt:"النقد النفسي — جورج طرابيش"},
+          {t:"lec",n:9,txt:"النقد الأيديولوجي — سعيد علوش"},
+          {t:"lec",n:10,txt:"الحداثة والمعاصرة — عبد السلام المسدي"},
+          {t:"lec",n:11,txt:"الالتزام في الأدب"},
+          {t:"lec",n:12,txt:"الغموض في الشعر — إبراهيم رماني"},
+          {t:"lec",n:13,txt:"الصورة الشعرية — جابر عصفور"},
+          {t:"lec",n:14,txt:"التناص — محمد مفتاح"},
+        ]
+      },
+      { id:"A043", title:"علم الصرف 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"أبنية المصادر 1 — تطبيقات"},
+          {t:"lec",n:2,txt:"أبنية المصادر 2 — تطبيقات"},
+          {t:"lec",n:3,txt:"المصدر السماعي/مصدر الهيئة/الصناعي"},
+          {t:"lec",n:4,txt:"التذكير والتأنيث"},
+          {t:"lec",n:5,txt:"التثنية"},
+          {t:"lec",n:6,txt:"الجمع السالم بنوعيه"},
+          {t:"lec",n:7,txt:"جموع التكسير ودلالاتها 1"},
+          {t:"lec",n:8,txt:"جموع التكسير ودلالاتها 2"},
+          {t:"lec",n:9,txt:"جموع التكسير ودلالاتها 3"},
+          {t:"lec",n:10,txt:"الإعلال والإبدال"},
+          {t:"lec",n:11,txt:"الإدغام"},
+          {t:"lec",n:12,txt:"التصغير"},
+          {t:"lec",n:13,txt:"النسب"},
+          {t:"lec",n:14,txt:"الممدود والمقصور والمنقوص"},
+        ]
+      },
+      { id:"A044", title:"اللسانيات التطبيقية", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى اللسانيات التطبيقية 1"},
+          {t:"lec",n:2,txt:"مدخل إلى اللسانيات التطبيقية 2"},
+          {t:"lec",n:3,txt:"المواقف اللغوية 1"},
+          {t:"lec",n:4,txt:"المواقف اللغوية 2"},
+          {t:"lec",n:5,txt:"نظريات التعلم 1"},
+          {t:"lec",n:6,txt:"نظريات التعلم 2"},
+          {t:"lec",n:7,txt:"نظريات التعلم 3"},
+          {t:"lec",n:8,txt:"مناهج تعليم اللغة 1"},
+          {t:"lec",n:9,txt:"مناهج تعليم اللغة 2"},
+          {t:"lec",n:10,txt:"الازدواجية والثنائية والتعدد اللغوي"},
+          {t:"lec",n:11,txt:"التخطيط اللغوي"},
+          {t:"lec",n:12,txt:"أمراض الكلام وعيوبه"},
+          {t:"lec",n:13,txt:"اللغة والاتصال"},
+          {t:"lec",n:14,txt:"الترجمة الآلية"},
+        ]
+      },
+      { id:"A045", title:"نظرية الأدب", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"نظرية الأدب (الماهية والمفهوم)"},
+          {t:"lec",n:2,txt:"نظرية الأدب والعلوم الأخرى"},
+          {t:"lec",n:3,txt:"نظرية الأدب وتاريخ الأدب ونقده"},
+          {t:"lec",n:4,txt:"طبيعة الأدب"},
+          {t:"lec",n:5,txt:"وظيفة الأدب"},
+          {t:"lec",n:6,txt:"نظريات الإبداع الأدبي"},
+          {t:"lec",n:7,txt:"أ_ المحاكاة"},
+          {t:"lec",n:8,txt:"ب_ نظرية التعبير"},
+          {t:"lec",n:9,txt:"ج_ نظرية الخلق"},
+          {t:"lec",n:10,txt:"د_ نظرية الانعكاس"},
+          {t:"lec",n:11,txt:"نظرية الأجناس الأدبية"},
+          {t:"lec",n:12,txt:"أ_ نظرية الشعر"},
+          {t:"lec",n:13,txt:"ب_ نظرية الرواية"},
+          {t:"lec",n:14,txt:"ج_ نظرية الدراما"},
+        ]
+      },
+      { id:"A046", title:"المدارس اللسانية", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"مدخل المدرسة/الحولة/النظرية"},
+          {t:"lec",n:2,txt:"مساهمات دو سوسير — كتاب محاضرات في اللسانيات العامة"},
+          {t:"lec",n:3,txt:"حولة موسكو — ياكوبسون"},
+          {t:"lec",n:4,txt:"مدرسة براغ 1 — تروبوجسكوي"},
+          {t:"lec",n:5,txt:"مدرسة براغ 2 — بنفينيست"},
+          {t:"lec",n:6,txt:"مدرسة كوبنهاغن — هيومسليف"},
+          {t:"lec",n:7,txt:"المدرسة الوظيفية الفرنسية — مارتيين"},
+          {t:"lec",n:8,txt:"المدرسة السياقية — فيرث"},
+          {t:"lec",n:9,txt:"المدرسة التوزيعية — بلومفيلد/هاريس"},
+          {t:"lec",n:10,txt:"المدرسة التوليدية التحويلية 1 — تشومسكي"},
+          {t:"lec",n:11,txt:"المدرسة التوليدية التحويلية 2 — كاجد/فودور"},
+          {t:"lec",n:12,txt:"المدرسة الوظيفية الأمريكية — سيمون ديم/أحمد المتوكل"},
+          {t:"lec",n:13,txt:"مدرسة أوكسفورد — أوسخين/سيرل"},
+          {t:"lec",n:14,txt:"المدرسة الخليلية — عبد الرحمن الحاج صالح"},
+        ]
+      },
+      { id:"A047", title:"مدخل إلى الآداب العالمية", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"الآداب العالمية: المفهوم والمصطلح — غوته..."},
+          {t:"lec",n:2,txt:"الآداب الشرقية القديمة — الشهنامة لفردوسي/الرامايانة/المهانبارات"},
+          {t:"lec",n:3,txt:"الآداب الغربية القديمة — الإلياذة (فرجيل)/الكوميديا الإلهية لدانتي"},
+          {t:"lec",n:4,txt:"الأدب الإفريقي القديم — الذار الذهبي (أبولييوس)"},
+          {t:"lec",n:5,txt:"الأدب الروسي — بوشكين/تولستوي/غوغول/دوستويفسكي"},
+          {t:"lec",n:6,txt:"الأدب التركي — ناظم حكمت"},
+          {t:"lec",n:7,txt:"الأدب الألماني — غوته/شيلر/شيلوف/بريخت/غونتر غراس"},
+          {t:"lec",n:8,txt:"الأدب الفرنسي — راسين/لامارتين/جو/فلوبير/رامبو/سيندسال"},
+          {t:"lec",n:9,txt:"الأدب الإنجليزي — شيكسبير/فرجينيا وولف/فونرن"},
+          {t:"lec",n:10,txt:"الأدب الأمريكي — همنغواي/دوس باسوس/ستايبناك/إدكار ألن بو"},
+          {t:"lec",n:11,txt:"الأدب الأمريكي اللاتيني — ماركيز/ابولو نيرودا/بورثيس"},
+          {t:"lec",n:12,txt:"الأدب الإفريقي الحديث — ليوبول سيغور..."},
+          {t:"lec",n:13,txt:"الأدب الإيطالي الحديث — أمبرتو مورافيا/ألكوانت دولبيدوزا"},
+          {t:"lec",n:14,txt:"الأدب الإسباني — سرفونتيس/موراك"},
+        ]
+      },
+      { id:"A048", title:"الأدب الجزائري القديم", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل إلى الأدب الجزائري القديم"},
+          {t:"merged",n:2,txt:"رواد الأدب الجزائري القديم — بكر بن حامد التهرتي"},
+          {t:"merged",n:3,txt:"عبد الرحمن بن رستم / أفلح بن عبد الوهاب"},
+          {t:"merged",n:4,txt:"ابن رشيق المسيلي"},
+          {t:"merged",n:5,txt:"المقري"},
+          {t:"merged",n:6,txt:"ابن خلدون"},
+          {t:"merged",n:7,txt:"أبو حمو موسى الزياني"},
+          {t:"merged",n:8,txt:"سيدي أبو مدين شعيب"},
+          {t:"merged",n:9,txt:"شعراء الدولة الفاطمية (ابن هائن...)"},
+          {t:"merged",n:10,txt:"شعراء الدولة الحفصية"},
+          {t:"merged",n:11,txt:"شعراء الدولة المرينية"},
+          {t:"merged",n:12,txt:"شعراء الدولة الزيانية"},
+          {t:"merged",n:13,txt:"شعراء الدولة الزاكية"},
+          {t:"merged",n:14,txt:"شعراء الدولة الرستمية"},
+        ]
+      },
+      { id:"A049", title:"الأدب الشعبي الجزائري", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل للأدب الشعبي الجزائري / أول: النثر الشعبي الجزائري"},
+          {t:"merged",n:2,txt:"الملازي: فتوح إفريقيا (الواكدي)"},
+          {t:"merged",n:3,txt:"السيرة الشعبية: تقريبة بني هلال"},
+          {t:"merged",n:4,txt:"المعة الشعبية (حديدوان...)"},
+          {t:"merged",n:5,txt:"المعة الخرافية (لونجة بنت المول...)"},
+          {t:"merged",n:6,txt:"المعة الأسطورية (عضبة دشار...)"},
+          {t:"merged",n:7,txt:"المعة العجائبية (الشمس ما بين حيطين...)"},
+          {t:"merged",n:8,txt:"الأمثال والأمثال (نماذج مختارة)"},
+          {t:"merged",n:9,txt:"ثانياً: الشعر الشعبي الجزائري 1 — المداحون النبوية: ابن مسايب"},
+          {t:"merged",n:10,txt:"شعر المقاومة والثورة (خضر بن خلوف...)"},
+          {t:"merged",n:11,txt:"شعر الغزل (مصطفى بن إبراهيم...)"},
+          {t:"merged",n:12,txt:"الرثاء (ابن كيطون: حزنية...)"},
+          {t:"merged",n:13,txt:"الأغنية الشعبية 1 — مضامينها"},
+          {t:"merged",n:14,txt:"الأغنية الشعبية 2 — إيقاعاتها"},
+        ]
+      },
+    ]
+  },
+  // ─── فرع الدراسات النقدية ───────────────────────
+  2: {
+    3: [
+      { id:"N031", title:"النص الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الإحياء في الشعر المشرقي 1"},
+          {t:"lec",n:2,txt:"الإحياء في الشعر المشرقي 2"},
+          {t:"lec",n:3,txt:"الإحياء في الشعر المغربي"},
+          {t:"lec",n:4,txt:"التجديد في الشعر المشرقي 1"},
+          {t:"lec",n:5,txt:"التجديد في الشعر المشرقي 2"},
+          {t:"lec",n:6,txt:"التجديد في الشعر المغربي"},
+          {t:"lec",n:7,txt:"مدخل إلى الفنون النثرية"},
+          {t:"td",n:8,txt:"فنون نثرية: القصة"},
+          {t:"td",n:9,txt:"فنون نثرية: المقالة"},
+          {t:"td",n:10,txt:"فنون نثرية: الرواية"},
+          {t:"td",n:11,txt:"فنون نثرية: المسرح"},
+          {t:"td",n:12,txt:"فنون نثرية: أدب الرحلة"},
+          {t:"td",n:13,txt:"فنون نثرية: الرسائل الأدبية"},
+        ]
+      },
+      { id:"N032", title:"النقد الأدبي الحديث", unit:"وحدة الأدب العربي الحديث ونقده",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى النقد العربي الحديث 1"},
+          {t:"lec",n:2,txt:"مدخل إلى النقد العربي الحديث 2"},
+          {t:"lec",n:3,txt:"النقد الإحيائي — حسين المرصفي"},
+          {t:"lec",n:4,txt:"إرهاصات التجديد في النقد الحديث"},
+          {t:"td",n:5,txt:"جماعة الديوان"},
+          {t:"td",n:6,txt:"جماعة أبولو"},
+          {t:"td",n:7,txt:"جماعة الرابطة القلمية"},
+          {t:"lec",n:8,txt:"النقد التاريخي"},
+          {t:"lec",n:9,txt:"النقد الاجتماعي"},
+          {t:"lec",n:10,txt:"النقد النفسي"},
+          {t:"lec",n:11,txt:"النقد الواقعي"},
+          {t:"lec",n:12,txt:"النقد الجديد"},
+          {t:"lec",n:13,txt:"المضايا النقدية 1"},
+          {t:"lec",n:14,txt:"المضايا النقدية 2"},
+        ]
+      },
+      { id:"N033", title:"علم النحو 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"الإسمية: المبتدأ والخبر"},
+          {t:"lec",n:2,txt:"الحذف في الدلالة الإسمية"},
+          {t:"lec",n:3,txt:"الحواسق الناسخة 1 — كان وأدواتها"},
+          {t:"lec",n:4,txt:"الحواسق الناسخة 2 — إن وأخواتها"},
+          {t:"lec",n:5,txt:"الحواسق الناسخة 3 — ظن وأدواتها"},
+          {t:"lec",n:6,txt:"أفعال الحواسق الناسخة"},
+          {t:"td",n:7,txt:"المجرورات: الأنواع والدلالات"},
+          {t:"lec",n:8,txt:"حروف العطف"},
+          {t:"lec",n:9,txt:"التعريف والتنكير"},
+          {t:"lec",n:10,txt:"أسماء الإشارة والضمائر"},
+          {t:"lec",n:11,txt:"التوابع"},
+          {t:"lec",n:12,txt:"أسلوب النداء"},
+          {t:"lec",n:13,txt:"أنواع الجمل 1"},
+          {t:"lec",n:14,txt:"أنواع الجمل 2"},
+        ]
+      },
+      { id:"N034", title:"اللسانيات العامة", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى تاريخ الفكر اللساني"},
+          {t:"lec",n:2,txt:"تاريخ الفكر اللساني عند العرب"},
+          {t:"lec",n:3,txt:"اللسانيات الحديثة 1"},
+          {t:"lec",n:4,txt:"اللسانيات الحديثة 2"},
+          {t:"lec",n:5,txt:"خصائص اللسان البشري"},
+          {t:"lec",n:6,txt:"اللسانيات والتواصل اللغوي"},
+          {t:"lec",n:7,txt:"وظائف اللغة"},
+          {t:"lec",n:8,txt:"مستويات التحليل اللساني 1"},
+          {t:"lec",n:9,txt:"مستويات التحليل اللساني 2"},
+          {t:"lec",n:10,txt:"مستويات التحليل اللساني 3"},
+          {t:"lec",n:11,txt:"مستويات التحليل اللساني 4"},
+          {t:"lec",n:12,txt:"مستويات التحليل اللساني 5"},
+          {t:"lec",n:13,txt:"الدراسات اللسانية العربية الحديثة 1"},
+          {t:"lec",n:14,txt:"الدراسات اللسانية العربية الحديثة 2"},
+        ]
+      },
+      { id:"N035", title:"المناهج النقدية المعاصرة", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"merged",n:1,txt:"السيميائية — بيرس"},
+          {t:"merged",n:2,txt:"البنيوية — ليفي ستراوس"},
+          {t:"merged",n:3,txt:"النقد النفسي — لاكان"},
+          {t:"merged",n:4,txt:"البنيوية التكوينية — لوكاش، غولدمان"},
+          {t:"merged",n:5,txt:"سوسيولوجيا النص — زيما"},
+          {t:"merged",n:6,txt:"علم السرد — بارث، تودوروف"},
+          {t:"merged",n:7,txt:"الأسلوبية — ريقاتير"},
+          {t:"merged",n:8,txt:"الموضوعاتية — جورج بول"},
+          {t:"merged",n:9,txt:"التأويلية — غادامير"},
+          {t:"merged",n:10,txt:"التلقي — ياوس"},
+          {t:"merged",n:11,txt:"التداولية — أوسنت"},
+          {t:"merged",n:12,txt:"التفكيكية — دريدا"},
+          {t:"merged",n:13,txt:"النقد الثقافي"},
+          {t:"merged",n:14,txt:"النقد التكويني"},
+        ]
+      },
+      { id:"N036", title:"الأسلوبية وتحليل الخطاب", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"مفهوم الأسلوبية"},
+          {t:"lec",n:2,txt:"الأسلوبية التعبيرية"},
+          {t:"lec",n:3,txt:"الأسلوبية البنيوية"},
+          {t:"lec",n:4,txt:"الأسلوبية الإحصائية"},
+          {t:"lec",n:5,txt:"الأسلوبية النفسية"},
+          {t:"lec",n:6,txt:"الأسلوبية التوزيعية"},
+          {t:"lec",n:7,txt:"الظواهر الأسلوبية"},
+          {t:"lec",n:8,txt:"تحليل الخطاب: ضبط المفهوم"},
+          {t:"lec",n:9,txt:"أصناف الخطاب"},
+          {t:"td",n:10,txt:"مقاربات تحليل الخطاب 1 — فوكو"},
+          {t:"td",n:11,txt:"مقاربات تحليل الخطاب 2 — فان دايم"},
+          {t:"td",n:12,txt:"مقاربات تحليل الخطاب 3 — مانهينو"},
+          {t:"td",n:13,txt:"مقاربات تحليل الخطاب 4 — بارث"},
+          {t:"td",n:14,txt:"الأسلوبية وتحليل الخطاب — المسدي"},
+        ]
+      },
+      { id:"N037", title:"مدخل إلى الأدب المقارن", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"المفهوم والنشأة والتطور 1"},
+          {t:"lec",n:2,txt:"المفهوم والنشأة والتطور 2"},
+          {t:"lec",n:3,txt:"مقومات البحث المقارن"},
+          {t:"lec",n:4,txt:"مدارس الأدب المقارن: الفرنسية"},
+          {t:"lec",n:5,txt:"مدارس الأدب المقارن: الأمريكية"},
+          {t:"lec",n:6,txt:"مدارس الأدب المقارن: السلافية"},
+          {t:"td",n:7,txt:"مدارس الأدب المقارن: العربية"},
+          {t:"td",n:8,txt:"مباحث الأدب المقارن: رحلة الآداب"},
+          {t:"td",n:9,txt:"التأثر والتأثير"},
+          {t:"td",n:10,txt:"التيارات الأدبية"},
+          {t:"td",n:11,txt:"النماذج البشرية"},
+          {t:"td",n:12,txt:"الأجناس الأدبية"},
+          {t:"td",n:13,txt:"الأدب والأسطورة"},
+          {t:"td",n:14,txt:"الموضوعات"},
+        ]
+      },
+      { id:"N038", title:"فلسفة النقد", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل"},
+          {t:"merged",n:2,txt:"النقد والفلسفة الغربية"},
+          {t:"merged",n:3,txt:"النقد والفلسفة العربية"},
+          {t:"merged",n:4,txt:"النقد والعلوم التجريبية"},
+          {t:"merged",n:5,txt:"النقد والتاريخ"},
+          {t:"merged",n:6,txt:"النقد وعلم الاجتماع"},
+          {t:"merged",n:7,txt:"النقد وعلم النفس"},
+          {t:"merged",n:8,txt:"النقد وعلوم اللسانيات"},
+          {t:"merged",n:9,txt:"النقد والأنتروبولوجيا"},
+          {t:"merged",n:10,txt:"النقد والبلاغة"},
+          {t:"merged",n:11,txt:"النقد واللسانيات"},
+          {t:"merged",n:12,txt:"النقد والمنطق"},
+          {t:"merged",n:13,txt:"النقد والدلالة"},
+          {t:"merged",n:14,txt:"النقد والثقافة"},
+        ]
+      },
+      { id:"N039", title:"نظرية الأجناس الأدبية", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مفهوم الجنس الأدبي (الجيد والنوع)"},
+          {t:"merged",n:2,txt:"الأجناس الشعرية (الشعر اليوناني، والعربي، والفارسي)"},
+          {t:"merged",n:3,txt:"الشعر الملحمي"},
+          {t:"merged",n:4,txt:"الشعر الانمثيلي — اليونان والعرب (الشعر المسرحي)"},
+          {t:"merged",n:5,txt:"الأجناس القصصية — الكوميديا الإلهية، الكوميدي الإلهي"},
+          {t:"merged",n:6,txt:"المعة"},
+          {t:"merged",n:7,txt:"الرواية"},
+          {t:"merged",n:8,txt:"المعة المقطعية، المقال المعني، الصور"},
+          {t:"merged",n:9,txt:"السيرة الذاتية"},
+          {t:"merged",n:10,txt:"الأنواع غير السردية — الأمثال والحكم"},
+          {t:"merged",n:11,txt:"المسرحية"},
+          {t:"merged",n:12,txt:"الخطابة، الرسالة"},
+          {t:"merged",n:13,txt:"تداخل الأجناس الأدبية"},
+          {t:"merged",n:14,txt:"السيرة الأدبية، الرحلة"},
+        ]
+      },
+    ],
+    4: [
+      { id:"N041", title:"النص الأدبي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"الشعر العربي المعاصر: مدخل تاريخي"},
+          {t:"lec",n:2,txt:"قصيدة الشعر العمودي — مفدي زكرياء/البارودي"},
+          {t:"lec",n:3,txt:"الرواد والتجربة الشعرية الجديدة 1"},
+          {t:"lec",n:4,txt:"الرواد والتجربة الشعرية الجديدة 2"},
+          {t:"lec",n:5,txt:"الحداثة الشعرية 1"},
+          {t:"lec",n:6,txt:"الحداثة الشعرية 2"},
+          {t:"lec",n:7,txt:"الحداثة الشعرية في الجزائر"},
+          {t:"lec",n:8,txt:"قصيدة التفعيلة"},
+          {t:"lec",n:9,txt:"قصيدة النثر"},
+          {t:"lec",n:10,txt:"الفنون النثرية المعاصرة"},
+          {t:"lec",n:11,txt:"الفن القصصي: الأعلام والاتجاهات"},
+          {t:"lec",n:12,txt:"الرواية العربية المعاصرة: نشأتها وتطورها"},
+          {t:"lec",n:13,txt:"الرواية العربية المعاصرة: أعلامها"},
+          {t:"lec",n:14,txt:"المسرح العربي المعاصر وقضاياه"},
+        ]
+      },
+      { id:"N042", title:"النقد العربي المعاصر", unit:"وحدة الأدب العربي المعاصر ونقده",
+        items:[
+          {t:"lec",n:1,txt:"إرهاصات النقد العربي المعاصر"},
+          {t:"lec",n:2,txt:"النقد الجديد"},
+          {t:"lec",n:3,txt:"النقد الأسلوبي"},
+          {t:"lec",n:4,txt:"النقد البنيوي"},
+          {t:"lec",n:5,txt:"النقد السيميائي"},
+          {t:"lec",n:6,txt:"النقد الاجتماعي"},
+          {t:"lec",n:7,txt:"النقد الثقافي"},
+          {t:"lec",n:8,txt:"النقد النفسي"},
+          {t:"lec",n:9,txt:"النقد الأيديولوجي"},
+          {t:"lec",n:10,txt:"الحداثة والمعاصرة"},
+          {t:"lec",n:11,txt:"الالتزام في الأدب"},
+          {t:"lec",n:12,txt:"الغموض في الشعر"},
+          {t:"lec",n:13,txt:"الصورة الشعرية"},
+          {t:"lec",n:14,txt:"التناص"},
+        ]
+      },
+      { id:"N043", title:"علم الصرف 2", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"أبنية المصادر 1"},
+          {t:"lec",n:2,txt:"أبنية المصادر 2"},
+          {t:"lec",n:3,txt:"المصدر السماعي/الهيئة/الصناعي"},
+          {t:"lec",n:4,txt:"التذكير والتأنيث"},
+          {t:"lec",n:5,txt:"التثنية"},
+          {t:"lec",n:6,txt:"الجمع السالم"},
+          {t:"lec",n:7,txt:"جموع التكسير 1"},
+          {t:"lec",n:8,txt:"جموع التكسير 2"},
+          {t:"lec",n:9,txt:"جموع التكسير 3"},
+          {t:"lec",n:10,txt:"الإعلال والإبدال"},
+          {t:"lec",n:11,txt:"الإدغام"},
+          {t:"lec",n:12,txt:"التصغير"},
+          {t:"lec",n:13,txt:"النسب"},
+          {t:"lec",n:14,txt:"الممدود والمقصور والمنقوص"},
+        ]
+      },
+      { id:"N044", title:"اللسانيات التطبيقية", unit:"وحدة علوم اللغة",
+        items:[
+          {t:"lec",n:1,txt:"مدخل إلى اللسانيات التطبيقية 1"},
+          {t:"lec",n:2,txt:"مدخل إلى اللسانيات التطبيقية 2"},
+          {t:"lec",n:3,txt:"المواقف اللغوية 1"},
+          {t:"lec",n:4,txt:"المواقف اللغوية 2"},
+          {t:"lec",n:5,txt:"نظريات التعلم 1"},
+          {t:"lec",n:6,txt:"نظريات التعلم 2"},
+          {t:"lec",n:7,txt:"نظريات التعلم 3"},
+          {t:"lec",n:8,txt:"مناهج تعليم اللغة 1"},
+          {t:"lec",n:9,txt:"مناهج تعليم اللغة 2"},
+          {t:"lec",n:10,txt:"الازدواجية والثنائية والتعدد اللغوي"},
+          {t:"lec",n:11,txt:"التخطيط اللغوي"},
+          {t:"lec",n:12,txt:"أمراض الكلام"},
+          {t:"lec",n:13,txt:"اللغة والاتصال"},
+          {t:"lec",n:14,txt:"الترجمة الآلية"},
+        ]
+      },
+      { id:"N045", title:"نظرية الأدب", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"نظرية الأدب (الماهية والمفهوم)"},
+          {t:"lec",n:2,txt:"نظرية الأدب والعلوم الأخرى"},
+          {t:"lec",n:3,txt:"نظرية الأدب وتاريخ الأدب ونقده"},
+          {t:"lec",n:4,txt:"طبيعة الأدب"},
+          {t:"lec",n:5,txt:"وظيفة الأدب"},
+          {t:"lec",n:6,txt:"نظريات الإبداع الأدبي"},
+          {t:"lec",n:7,txt:"أ_ المحاكاة"},
+          {t:"lec",n:8,txt:"ب_ نظرية التعبير"},
+          {t:"lec",n:9,txt:"ج_ نظرية الخلق"},
+          {t:"lec",n:10,txt:"د_ نظرية الانعكاس"},
+          {t:"lec",n:11,txt:"نظرية الأجناس الأدبية"},
+          {t:"lec",n:12,txt:"أ_ نظرية الشعر"},
+          {t:"lec",n:13,txt:"ب_ نظرية الرواية"},
+          {t:"lec",n:14,txt:"ج_ نظرية الدراما"},
+        ]
+      },
+      { id:"N046", title:"المدارس اللسانية", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"مدخل المدرسة/الحولة/النظرية"},
+          {t:"lec",n:2,txt:"مساهمات دو سوسير"},
+          {t:"lec",n:3,txt:"حولة موسكو — ياكوبسون"},
+          {t:"lec",n:4,txt:"مدرسة براغ 1"},
+          {t:"lec",n:5,txt:"مدرسة براغ 2"},
+          {t:"lec",n:6,txt:"مدرسة كوبنهاغن"},
+          {t:"lec",n:7,txt:"المدرسة الوظيفية الفرنسية"},
+          {t:"lec",n:8,txt:"المدرسة السياقية"},
+          {t:"lec",n:9,txt:"المدرسة التوزيعية"},
+          {t:"lec",n:10,txt:"المدرسة التوليدية التحويلية 1"},
+          {t:"lec",n:11,txt:"المدرسة التوليدية التحويلية 2"},
+          {t:"lec",n:12,txt:"المدرسة الوظيفية الأمريكية"},
+          {t:"lec",n:13,txt:"مدرسة أوكسفورد"},
+          {t:"lec",n:14,txt:"المدرسة الخليلية"},
+        ]
+      },
+      { id:"N047", title:"مدخل إلى الآداب العالمية", unit:"وحدة التعليم المنهجية",
+        items:[
+          {t:"lec",n:1,txt:"الآداب العالمية: المفهوم والمصطلح"},
+          {t:"lec",n:2,txt:"الآداب الشرقية القديمة"},
+          {t:"lec",n:3,txt:"الآداب الغربية القديمة"},
+          {t:"lec",n:4,txt:"الأدب الإفريقي القديم"},
+          {t:"lec",n:5,txt:"الأدب الروسي"},
+          {t:"lec",n:6,txt:"الأدب التركي"},
+          {t:"lec",n:7,txt:"الأدب الألماني"},
+          {t:"lec",n:8,txt:"الأدب الفرنسي"},
+          {t:"lec",n:9,txt:"الأدب الإنجليزي"},
+          {t:"lec",n:10,txt:"الأدب الأمريكي"},
+          {t:"lec",n:11,txt:"الأدب الأمريكي اللاتيني"},
+          {t:"lec",n:12,txt:"الأدب الإفريقي الحديث"},
+          {t:"lec",n:13,txt:"الأدب الإيطالي الحديث"},
+          {t:"lec",n:14,txt:"الأدب الإسباني"},
+        ]
+      },
+      { id:"N048", title:"المصطلح النقدي والنقد والمعارف", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"مدخل"},
+          {t:"merged",n:2,txt:"النقد والفلسفة الغربية"},
+          {t:"merged",n:3,txt:"النقد والفلسفة العربية"},
+          {t:"merged",n:4,txt:"النقد والعلوم التجريبية"},
+          {t:"merged",n:5,txt:"النقد والتاريخ"},
+          {t:"merged",n:6,txt:"النقد وعلم الاجتماع"},
+          {t:"merged",n:7,txt:"النقد وعلم النفس"},
+          {t:"merged",n:8,txt:"النقد وعلوم اللسانيات"},
+          {t:"merged",n:9,txt:"النقد والأنتروبولوجيا"},
+          {t:"merged",n:10,txt:"النقد والبلاغة"},
+          {t:"merged",n:11,txt:"النقد واللسانيات"},
+          {t:"merged",n:12,txt:"النقد والمنطق"},
+          {t:"merged",n:13,txt:"النقد والدلالة"},
+          {t:"merged",n:14,txt:"النقد والثقافة"},
+        ]
+      },
+      { id:"N049", title:"نقد الأدبي الجزائري", unit:"وحدة التعليم الاستكشافية",
+        items:[
+          {t:"merged",n:1,txt:"النقد الجزائري — النشأة والتطور"},
+          {t:"merged",n:2,txt:"مصادر النقد الجزائري"},
+          {t:"merged",n:3,txt:"النقد الأدبي الجزائري القديم — أعلام المجتمع"},
+          {t:"merged",n:4,txt:"العمدة — ابن رشيق"},
+          {t:"merged",n:5,txt:"نفح الطيب — المقري/التلمساني"},
+          {t:"merged",n:6,txt:"النقد الأدبي الجزائري الحديث والمعاصر — نقد الشعر: محمد ناصر، محمد مصايف"},
+          {t:"merged",n:7,txt:"نقد المعة: عبد الله رهيبي..."},
+          {t:"merged",n:8,txt:"نقد الرواية: عبد المالك مرتاض..."},
+          {t:"merged",n:9,txt:"نقد المسرح: أبو العيد دودو..."},
+          {t:"merged",n:10,txt:"الاتجاه الانطباعي في النقد"},
+          {t:"merged",n:11,txt:"الاتجاه الاجتماعي"},
+          {t:"merged",n:12,txt:"الاتجاه النفسي"},
+          {t:"merged",n:13,txt:"الاتجاه اليندلي"},
+          {t:"merged",n:14,txt:"اتجاهات النقد الأدبي الجزائري"},
+        ]
+      },
+    ]
+  }
+};
+
+// Helper: get all subject titles for teacher registration
+function getAllSubjects(branches) {
+  const subs = new Set();
+  branches.forEach(b => {
+    [3,4].forEach(s => {
+      (CURRICULUM[b]?.[s] || []).forEach(m => subs.add(m.title));
+    });
+  });
+  return [...subs];
+}
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+const ADMIN = { email:"bendjalloul@univ-tiaret.dz", pw:"Admin2025" };
+
+let S = {
+  user: null,
+  page: "home",
+  branch: 0,
+  sem: 3,
+  dashTab: "students",
+  discFilter: "all",
+  acPdfUrl: null,
+  acContext: null, // {moduleId, itemIndex, type}
+  // content store: key = "moduleId:itemIndex", value = {pdfUrl, content, quiz, quizAnswers, quizSubmitted}
+  content: {},
+  students: [
+    {id:"s1",name:"يوسف مسعود",email:"youcef@etud.dz",pw:"123456",status:"approved",branch:0,date:"2025-03-01"},
+    {id:"s2",name:"نور الهدى حمادي",email:"nour@etud.dz",pw:"123456",status:"approved",branch:1,date:"2025-03-02"},
+    {id:"s3",name:"أحمد بن عمر",email:"ahmed@etud.dz",pw:"123456",status:"pending",branch:2,date:"2025-03-05"},
+  ],
+  teachers: [
+    {id:"t1",name:"د. فاطمة الزهراء سليماني",email:"sliimani@univ-tiaret.dz",pw:"teacher1",rank:"أستاذ محاضر أ",spec:"لسانيات عربية",status:"approved",branches:[0,1,2],subjects:["علم النحو 2","اللسانيات العامة"],date:"2025-02-20"},
+    {id:"t2",name:"د. محمد بن علية",email:"benalia@univ-tiaret.dz",pw:"teacher2",rank:"أستاذ محاضر ب",spec:"أدب عربي حديث",status:"pending",branches:[1,2],subjects:["النص الأدبي الحديث","النقد الأدبي الحديث"],date:"2025-03-01"},
+  ],
+  disc: [
+    {id:"d1",author:"يوسف مسعود",init:"ي",role:"student",cid:"all",text:"كيف نميّز بين الحال والتمييز في الجملة الاسمية؟",time:"منذ يومين",likes:5,replies:[]},
+    {id:"d2",author:"أ.د. بن جلول مختار",init:"م",role:"admin",cid:"all",text:"الحال وصف يبيّن هيئة صاحبه وقت الحدث كـ«جاء مسرعاً»، والتمييز يرفع الإبهام كـ«عشرين كتاباً».",time:"منذ يومين",likes:11,replies:[]},
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+// AI
+// ══════════════════════════════════════════════════════
+async function aiCall(prompt, max=1000) {
+  // Check for an API key exposed in the page (for local testing)
+  const apiKey = window.ANTHROPIC_API_KEY || localStorage.getItem('ANTHROPIC_API_KEY');
+  if(!apiKey){
+    // No remote key available — use a simple local mock generator so the UI still works for testing
+    console.warn('No ANTHROPIC_API_KEY found — using local mock generator for aiCall.');
+    return await mockAiCall(prompt, max);
+  }
+  try{
+    const payload = {
+      model: "claude-opus-4-1-20250805",
+      messages: [{role: "user", content: prompt}],
+      max_tokens: max
+    };
+    const r = await fetch("https://api.anthropic.com/v1/messages",{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Anthropic accepts the API key in the X-API-Key header (or use Authorization Bearer if your proxy expects it)
+        "X-API-Key": apiKey
+      },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok){
+      let errText = '';
+      try{ const errData = await r.json(); errText = errData.error?.message || JSON.stringify(errData); }
+      catch(e){ errText = await r.text(); }
+      throw new Error(`API Error (${r.status}): ${errText}`);
+    }
+    const d = await r.json();
+    // Try several common shapes for returned text
+    let text = '';
+    if(typeof d === 'string') text = d;
+    else if(d.completion) text = d.completion;
+    else if(d.output && Array.isArray(d.output)) text = d.output.map(o=>o.content || o.text || '').join('\n');
+    else if(d.choices && d.choices[0]) text = d.choices[0].text || (d.choices[0].message && d.choices[0].message.content) || JSON.stringify(d.choices[0]);
+    else if(d.content && d.content[0]) text = d.content[0].text || d.content[0].content || JSON.stringify(d.content[0]);
+    else text = JSON.stringify(d);
+    return typeof text === 'string' ? text : JSON.stringify(text);
+  }catch(e){
+    console.error("aiCall Error:",e);
+    throw new Error(`AI Processing Error: ${e.message}`);
+  }
+}
+
+// Simple local mock generator used when no API key is configured.
+async function mockAiCall(prompt, max=1000){
+  try{
+    const plain = (prompt||"").replace(/\s+/g,' ').trim();
+    // split into sentences (very simple heuristic)
+    const sents = plain.split(/(?<=[\.\?\!؟])\s+/).filter(Boolean);
+    const questions = [];
+    for(let i=0;i<4;i++){
+      const qtxt = sents[i] || `سؤال تجريبي ${i+1}`;
+      const options = [];
+      options.push(qtxt.split(' ').slice(0,6).join(' ') + '...');
+      options.push('خيار بديل أ');
+      options.push('خيار بديل ب');
+      options.push('خيار بديل ج');
+      questions.push({q: qtxt, options, correct: 0, explain: 'إجابة توضيحية نموذجية.'});
+    }
+    return JSON.stringify({questions});
+  }catch(e){
+    return JSON.stringify({questions:[{q:'فشل توليد الأسئلة',options:['أ','ب','ج','د'],correct:0,explain:e.message}]});
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════
+function notify(msg,ic="✅"){
+  const t=document.getElementById("toast");
+  t.innerHTML=ic+" "+msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3800);
+}
+
+// ══════════════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════════════
+function buildNav(){
+  const u=S.user; const isAdmin=u?.role==="admin"; const isTeacher=u?.role==="teacher";
+  let h="";
+  const items=[
+    {id:"home",l:"الرئيسية",always:true},
+    {id:"courses",l:"المقررات",auth:true},
+    {id:"disc",l:"النقاش",auth:true},
+    {id:"my-courses",l:"مقرراتي",teacher:true},
+    {id:"dashboard",l:"لوحة التحكم",admin:true},
+  ];
+  items.forEach(it=>{
+    if(it.always||(it.auth&&u)||(it.admin&&isAdmin)||(it.teacher&&isTeacher)){
+      h+=`<button class="nb${S.page===it.id?" on":""}" data-p="${it.id}" onclick="goto('${it.id}')">${it.l}</button>`;
+    }
+  });
+  if(!u){
+    h+=`<button class="nb" onclick="openM('modal-login')">دخول</button>`;
+    h+=`<button class="nb cta" onclick="openM('modal-register')">تسجيل طالب</button>`;
+    h+=`<button class="nb" style="color:#c084fc;border-color:rgba(192,132,252,.3)" onclick="openM('modal-teacher-register')">👨‍🏫 تسجيل أستاذ</button>`;
+  } else {
+    h+=`<button class="nb out" onclick="doLogout()">خروج</button>`;
+  }
+  document.getElementById("nav").innerHTML=h;
+  const hb=document.getElementById("hero-btns");
+  if(hb) hb.innerHTML=u
+    ?`<button class="btn bg" onclick="goto('courses')">📚 المقررات</button><button class="btn bo" onclick="goto('disc')">💬 النقاش</button>`
+    :`<button class="btn bg" onclick="openM('modal-register')">🎓 تسجيل طالب</button><button class="btn bo" onclick="openM('modal-login')">دخول ←</button><button class="btn" style="background:rgba(124,58,237,.2);color:#c084fc;border:1px solid rgba(124,58,237,.3)" onclick="openM('modal-teacher-register')">👨‍🏫 تسجيل أستاذ</button>`;
+}
+
+// ══════════════════════════════════════════════════════
+// ROUTING
+// ══════════════════════════════════════════════════════
+function goto(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const pg=document.getElementById("page-"+id);
+  if(pg){ pg.classList.add("active"); S.page=id; }
+  buildNav();
+  if(id==="courses") renderCourses();
+  if(id==="disc") renderDisc();
+  if(id==="dashboard"){ renderDashStats(); renderDashContent(); }
+  if(id==="my-courses") renderTeacherCourses();
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════
+function doLogin(){
+  const email=document.getElementById("li-email").value.trim();
+  const pw=document.getElementById("li-pw").value;
+  const err=document.getElementById("login-err");
+  err.style.display="none";
+  if(email===ADMIN.email&&pw===ADMIN.pw){
+    S.user={role:"admin",name:"أ.د. بن جلول مختار",email};
+    closeM("modal-login"); buildNav(); goto("dashboard"); notify("مرحباً أستاذ بن جلول! 👋"); return;
+  }
+  const t=S.teachers.find(x=>x.email===email&&x.pw===pw);
+  if(t){
+    if(t.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
+    if(t.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
+    S.user={role:"teacher",name:t.name,email:t.email,id:t.id};
+    closeM("modal-login"); buildNav(); goto("my-courses"); notify("مرحباً "+t.name+"! 👨‍🏫"); return;
+  }
+  const s=S.students.find(x=>x.email===email&&x.pw===pw);
+  if(!s){err.textContent="البريد أو كلمة السر غير صحيحة";err.style.display="block";return;}
+  if(s.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
+  if(s.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
+  S.user={role:"student",name:s.name,email:s.email,branch:s.branch};
+  closeM("modal-login"); buildNav(); goto("courses"); notify("مرحباً "+s.name+"! 🎓");
+}
+
+function doLogout(){ S.user=null; S.page="home"; buildNav(); goto("home"); }
+
+function doRegStudent(){
+  const name=document.getElementById("rs-name").value.trim();
+  const email=document.getElementById("rs-email").value.trim();
+  const branch=document.getElementById("rs-branch").value;
+  const pw=document.getElementById("rs-pw").value;
+  if(!name||!email||!pw||branch===""){notify("يرجى ملء جميع الحقول","⚠️");return;}
+  S.students.push({id:"s"+Date.now(),name,email,pw,branch:parseInt(branch),status:"pending",date:new Date().toISOString().slice(0,10)});
+  closeM("modal-register");
+  notify("تم إرسال طلبك — انتظر موافقة الأستاذ 📤");
+}
+
+function doRegTeacher(){
+  const name=document.getElementById("rt-name").value.trim();
+  const email=document.getElementById("rt-email").value.trim();
+  const rank=document.getElementById("rt-rank").value;
+  const spec=document.getElementById("rt-spec").value.trim();
+  const pw=document.getElementById("rt-pw").value;
+  if(!name||!email||!pw){notify("يرجى ملء الحقول الإلزامية","⚠️");return;}
+  const branches=[0,1,2].filter(i=>document.getElementById("rt-b"+i)?.checked);
+  const checked = document.querySelectorAll("#rt-subjects-list input:checked");
+  const subjects=[...checked].map(c=>c.value);
+  S.teachers.push({id:"t"+Date.now(),name,email,pw,rank,spec,status:"pending",branches,subjects,date:new Date().toISOString().slice(0,10)});
+  closeM("modal-teacher-register");
+  notify("تم إرسال طلبك — انتظر موافقة الأستاذ المدير 👨‍🏫");
+}
+
+// Update subjects list when branch checkboxes change
+[0,1,2].forEach(i=>{
+  setTimeout(()=>{
+    const cb=document.getElementById("rt-b"+i);
+    if(cb) cb.addEventListener("change",updateTeacherSubjects);
+  },500);
+});
+function updateTeacherSubjects(){
+  const branches=[0,1,2].filter(i=>document.getElementById("rt-b"+i)?.checked);
+  const subs=getAllSubjects(branches);
+  const el=document.getElementById("rt-subjects-list");
+  if(!el) return;
+  if(subs.length===0){el.innerHTML='<p style="color:var(--txt3);font-size:.78rem">اختر شعبة أولاً</p>';return;}
+  el.innerHTML=subs.map(s=>`<label style="display:flex;align-items:center;gap:5px;color:var(--txt2);font-size:.78rem;cursor:pointer;background:var(--bg4);border-radius:6px;padding:4px 8px"><input type="checkbox" value="${s}" style="accent-color:var(--gold)"> ${s}</label>`).join("");
+}
+
+// ══════════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════════
+function openM(id){document.getElementById(id).classList.add("open")}
+function closeM(id){document.getElementById(id).classList.remove("open")}
+
+// ══════════════════════════════════════════════════════
+// COURSES
+// ══════════════════════════════════════════════════════
+function setBranch(i, btn){
+  S.branch=i;
+  document.querySelectorAll(".btab").forEach(b=>b.classList.remove("on"));
+  if(btn) btn.classList.add("on");
+  else document.querySelectorAll(".btab")[i]?.classList.add("on");
+  renderCourses();
+}
+function setSem(s, btn){
+  S.sem=s;
+  document.querySelectorAll(".stab").forEach(b=>b.classList.remove("on"));
+  if(btn) btn.classList.add("on");
+  renderCourses();
+}
+
+function canEditModule(modId){
+  if(!S.user) return false;
+  if(S.user.role==="admin") return true;
+  if(S.user.role==="teacher"){
+    const t=S.teachers.find(x=>x.id===S.user.id);
+    const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+    return t && mod && t.subjects.includes(mod.title);
+  }
+  return false;
+}
+
+function renderCourses(){
+  const el=document.getElementById("courses-content"); if(!el) return;
+  const mods=(CURRICULUM[S.branch]?.[S.sem])||[];
+  if(mods.length===0){el.innerHTML='<div class="empty"><div class="eic">📭</div><p>لا توجد مقاييس لهذه الشعبة والسداسي</p></div>';return;}
+  el.innerHTML=mods.map((mod,mi)=>{
+    const canEdit=canEditModule(mod.id);
+    const teacher=S.teachers.find(t=>t.status==="approved"&&t.subjects.includes(mod.title));
+    const itemsHtml=mod.items.map((it,ii)=>{
+      const key=`${mod.id}:${ii}`;
+      const stored=S.content[key]||{};
+      let typeLabel=""; let typeCls="ci-lec";
+      if(it.t==="lec"){typeLabel="مح";typeCls="ci-lec";}
+      else if(it.t==="td"){typeLabel="أم";typeCls="ci-td";}
+      else{typeLabel="مد";typeCls="ci-merged";}
+      const hasPdf=stored.pdfUrl?"<span style='font-size:.65rem;color:#fb923c'>📄</span>":"";
+      const hasQuiz=stored.quiz?"<span style='font-size:.65rem;color:#67e8f9'>🤖</span>":"";
+      let actions="";
+      if(canEdit){
+        actions=`<button class="btn bgh xs" onclick="openAddContent('${mod.id}',${ii},'${it.t}')">+ محتوى</button>`;
+        if(stored.content&&!stored.quiz) actions+=` <button class="btn xs" style="background:rgba(8,145,178,.15);color:#67e8f9;border:1px solid rgba(8,145,178,.25)" onclick="genQuiz('${mod.id}',${ii})">🤖</button>`;
+      }
+      const viewBtn=stored.pdfUrl||stored.content||stored.quiz
+        ?`<button class="btn bg xs" onclick="viewContent('${mod.id}',${ii})">دخول →</button>`:""
+      return `<div class="ci ${typeCls}">
+        <div class="ci-num">${typeLabel}${it.n}</div>
+        <div class="ci-txt">
+          <strong>${it.t==="lec"?"محاضرة":it.t==="td"?"عمل موجه":"مدمج"}</strong>
+          ${it.txt} ${hasPdf} ${hasQuiz}
+        </div>
+        <div class="ci-actions">${actions}${viewBtn}</div>
+      </div>`;
+    }).join("");
+    const assignedBadge=teacher?`<span class="badge-assigned">👨‍🏫 ${teacher.name}</span>`:"";
+    return `<div class="mod" id="mod-${mod.id}">
+      <div class="mod-header" onclick="toggleMod('${mod.id}')">
+        <div class="mod-icon">${mi+1}</div>
+        <div class="mod-info">
+          <h4>${mod.title}</h4>
+          <p>${mod.unit}</p>
+        </div>
+        <div class="mod-badge">
+          ${assignedBadge}
+          <span class="${it_badge(mod)}">${mod_type_label(mod)}</span>
+        </div>
+        <span class="mod-arrow" id="arr-${mod.id}">▼</span>
+      </div>
+      <div class="mod-body" id="body-${mod.id}">${itemsHtml}</div>
+    </div>`;
+  }).join("");
+}
+
+function it_badge(mod){
+  const types=new Set(mod.items.map(i=>i.t));
+  if(types.has("merged")) return "badge-merged";
+  if(types.has("td")) return "badge-td";
+  return "badge-lec";
+}
+function mod_type_label(mod){
+  const types=new Set(mod.items.map(i=>i.t));
+  if(types.has("merged")) return "مدمج";
+  const hasTd=types.has("td"), hasLec=types.has("lec");
+  if(hasTd&&hasLec) return "مح + أم";
+  if(hasTd) return "أعمال موجهة";
+  return "محاضرات";
+}
+
+function toggleMod(id){
+  const body=document.getElementById("body-"+id);
+  const arr=document.getElementById("arr-"+id);
+  if(body){body.classList.toggle("open");if(arr)arr.style.transform=body.classList.contains("open")?"rotate(180deg)":"";}
+}
+
+// ══════════════════════════════════════════════════════
+// ADD CONTENT
+// ══════════════════════════════════════════════════════
+function openAddContent(modId, itemIdx, type){
+  S.acContext={modId, itemIdx, type};
+  const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+  const item=mod?.items[itemIdx];
+  document.getElementById("add-content-title").textContent="إضافة محتوى — "+item?.txt?.slice(0,50);
+  document.getElementById("ac-title").value=item?.txt||"";
+  document.getElementById("ac-desc").value="";
+  document.getElementById("ac-content").value="";
+  document.getElementById("ac-pdf-label").innerHTML="<strong>اضغط لرفع PDF</strong><br><small>أو اسحب الملف</small>";
+  S.acPdfUrl=null;
+  openM("modal-add-content");
+}
+
+function handleAcPdf(input){
+  const f=input.files[0]; if(!f) return;
+  S.acPdfUrl=URL.createObjectURL(f);
+  S.acPdfFile=f;
+  document.getElementById("ac-pdf-label").innerHTML=`<strong style="color:var(--gold2)">${f.name}</strong><br><small>تم الاختيار — اضغط الزر الأسفل للاستخراج</small>`;
+}
+
+// ══════════════════════════════════════════════════════
+// EXTRACT TEXT FROM PDF AND GENERATE CONTENT
+// ══════════════════════════════════════════════════════
+async function extractAndGenerateFromPdf(){
+  if(!S.acPdfFile){notify("اختر ملف PDF أولاً","⚠️");return;}
+  notify("جاري استخراج النص من PDF...","⏳");
+  try{
+    const arrayBuffer=await S.acPdfFile.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+    let fullText="";
+    // Extract from first 10 pages max
+    const maxPages=Math.min(pdf.numPages,10);
+    for(let i=1;i<=maxPages;i++){
+      const page=await pdf.getPage(i);
+      const textContent=await page.getTextContent();
+      fullText+=textContent.items.map(item=>item.str).join(" ")+"\n";
+    }
+    // Fill the text content field
+    const contentField=document.getElementById("ac-content");
+    contentField.value=fullText.trim();
+    notify(`تم استخراج ${maxPages} صفحات ✅ — اضغط 'توليد الكل' لإنشاء الاختبارات`,"ℹ️");
+  }catch(e){
+    notify("خطأ في استخراج النص من PDF","⚠️");
+    console.log("PDF Error:",e);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// AUTO EXTRACT AND GENERATE ALL CONTENT
+// ══════════════════════════════════════════════════════
+async function extractAndAutoGenerate(){
+  if(!S.acPdfFile){notify("اختر ملف PDF أولاً","⚠️");return;}
+  if(!S.acContext){notify("افتح محاضرة أولاً","⚠️");return;}
+  
+  notify("جاري العملية — استخراج النص وتوليد الأسئلة...","⏳");
+  try{
+    // Step 1: Extract text from PDF
+    const arrayBuffer=await S.acPdfFile.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+    let fullText="";
+    const maxPages=Math.min(pdf.numPages,10);
+    for(let i=1;i<=maxPages;i++){
+      const page=await pdf.getPage(i);
+      const textContent=await page.getTextContent();
+      fullText+=textContent.items.map(item=>item.str).join(" ")+"\n";
+    }
+    
+    // Step 2: Set the extracted text
+    const contentField=document.getElementById("ac-content");
+    contentField.value=fullText.trim();
+    
+    // Step 3: Save content first
+    const {modId,itemIdx}=S.acContext;
+    const key=`${modId}:${itemIdx}`;
+    S.content[key]={
+      ...S.content[key],
+      pdfUrl:S.acPdfUrl||S.content[key]?.pdfUrl||null,
+      content:fullText.trim(),
+    };
+    
+    // Step 4: Generate all content
+    notify("تم الاستخراج ✅ — جاري التوليد...","⏳");
+    await genAllContent(modId, itemIdx);
+    
+    // Step 5: Close modal and refresh
+    closeM("modal-add-content");
+    notify("تم التوليد الكامل بنجاح! 🎉","✅");
+  }catch(e){
+    notify("خطأ في العملية: "+e.message,"⚠️");
+    console.error("extractAndAutoGenerate Error:",e);
+  }
+}
+
+function saveContent(){
+  if(!S.acContext) return;
+  const {modId,itemIdx}=S.acContext;
+  const key=`${modId}:${itemIdx}`;
+  S.content[key]={
+    ...S.content[key],
+    pdfUrl:S.acPdfUrl||S.content[key]?.pdfUrl||null,
+    content:document.getElementById("ac-content").value,
+  };
+  closeM("modal-add-content");
+  renderCourses();
+  notify("تم حفظ المحتوى ✅");
+}
+
+async function genQuiz(modId, itemIdx){
+  const key=`${modId}:${itemIdx}`;
+  const stored=S.content[key];
+  if(!stored?.content){notify("أضف محتوى نصياً أولاً لتوليد الأسئلة","⚠️");return;}
+  const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+  const item=mod?.items[itemIdx];
+  notify("جارٍ التوليد بالذكاء الاصطناعي...","⏳");
+  try{
+    const raw=await aiCall(
+      "أنت خبير في النحو والصرف والأدب واللسانيات العربية. أنشئ 4 أسئلة اختيار من متعدد من هذا المحتوى.\n"
+      +"الموضوع: "+item?.txt+"\n"
+      +"المحتوى: "+stored.content+"\n"
+      +"أجب فقط بـ JSON: {\"questions\":[{\"q\":\"السؤال\",\"options\":[\"أ\",\"ب\",\"ج\",\"د\"],\"correct\":0,\"explain\":\"الشرح\"}]}"
+    );
+    const p=JSON.parse(raw.replace(/```json|```/g,"").trim());
+    S.content[key]={...S.content[key],quiz:p.questions};
+    renderCourses();
+    notify("تم توليد الأسئلة 🤖");
+  }catch(e){notify("خطأ في التوليد: "+e.message,"⚠️");console.error("genQuiz Error:",e);}
+}
+
+// ══════════════════════════════════════════════════════
+// LEARNING CARDS (FICHES D'APPRENTISSAGE) — بطاقات التعلم
+// ══════════════════════════════════════════════════════
+async function genLearningCards(modId, itemIdx){
+  const key=`${modId}:${itemIdx}`;
+  const stored=S.content[key];
+  if(!stored?.content){notify("أضف محتوى نصياً أولاً لتوليد البطاقات","⚠️");return;}
+  const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+  const item=mod?.items[itemIdx];
+  notify("جاري توليد بطاقات التعلم...","⏳");
+  try{
+    const raw=await aiCall(
+      "أنت خبير في التعليم والتعلم. أنشئ 5 بطاقات تعليمية (فيش) من المحتوى التالي.\n"
+      +"كل فيش يجب أن يحتوي على:\n"
+      +"1. مفهوم أو مصطلح (على الوجه الأول)\n"
+      +"2. تعريف أو شرح (على الوجه الثاني)\n"
+      +"الموضوع: "+item?.txt+"\n"
+      +"المحتوى: "+stored.content+"\n"
+      +"أجب فقط بـ JSON: {\"cards\":[{\"front\":\"المفهوم أو الكلمة\",\"back\":\"التعريف أو الشرح\"}]}"
+    );
+    const p=JSON.parse(raw.replace(/```json|```/g,"").trim());
+    S.content[key]={...S.content[key],cards:p.cards};
+    renderCourses();
+    notify("تم توليد البطاقات التعليمية 📚");
+  }catch(e){notify("خطأ في التوليد: "+e.message,"⚠️");console.error("genLearningCards Error:",e);}
+}
+
+// ══════════════════════════════════════════════════════
+// GENERATE FROM EXISTING PDF URL
+// ══════════════════════════════════════════════════════
+async function genFromPdfUrl(modId, itemIdx, pdfUrl){
+  if(!pdfUrl){notify("لا يوجد ملف PDF","⚠️");return;}
+  const key=`${modId}:${itemIdx}`;
+  notify("جاري الاستخراج من PDF...","⏳");
+  try{
+    const response=await fetch(pdfUrl);
+    const arrayBuffer=await response.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+    let fullText="";
+    const maxPages=Math.min(pdf.numPages,10);
+    for(let i=1;i<=maxPages;i++){
+      const page=await pdf.getPage(i);
+      const textContent=await page.getTextContent();
+      fullText+=textContent.items.map(item=>item.str).join(" ")+"\n";
+    }
+    S.content[key]={...S.content[key],content:fullText.trim()};
+    notify("تم الاستخراج ✅ — جاري التوليد...","⏳");
+    // Generate all
+    await genAllContent(modId, itemIdx);
+  }catch(e){
+    notify("خطأ في استخراج النص من PDF","⚠️");
+    console.log("PDF Fetch Error:",e);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// ADVANCED QUIZ WITH MULTIPLE TYPES
+// ══════════════════════════════════════════════════════
+async function genAdvancedQuiz(modId, itemIdx){
+  const key=`${modId}:${itemIdx}`;
+  const stored=S.content[key];
+  if(!stored?.content){notify("أضف محتوى نصياً أولاً","⚠️");return;}
+  const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+  const item=mod?.items[itemIdx];
+  notify("جاري توليد اختبار متقدم...","⏳");
+  try{
+    const raw=await aiCall(
+      "أنت خبير في تقييم التعلم. أنشئ اختبار شامل يتضمن:\n"
+      +"- 3 أسئلة اختيار من متعدد (MCQ)\n"
+      +"- 2 سؤال صواب وخطأ\n"
+      +"الموضوع: "+item?.txt+"\n"
+      +"المحتوى: "+stored.content+"\n"
+      +"أجب فقط بـ JSON: {\"quiz\":[{\"type\":\"mcq\",\"q\":\"السؤال\",\"options\":[\"أ\",\"ب\",\"ج\",\"د\"],\"correct\":0,\"explain\":\"الشرح\"},{\"type\":\"tf\",\"q\":\"العبارة\",\"correct\":true,\"explain\":\"الشرح\"}]}"
+    );
+    const p=JSON.parse(raw.replace(/```json|```/g,"").trim());
+    S.content[key]={...S.content[key],advQuiz:p.quiz};
+    renderCourses();
+    notify("تم توليد الاختبار المتقدم ✅");
+  }catch(e){notify("خطأ في التوليد: "+e.message,"⚠️");console.error("genAdvancedQuiz Error:",e);}
+}
+
+// ══════════════════════════════════════════════════════
+// GENERATE ALL: CARDS + QUIZ
+// ══════════════════════════════════════════════════════
+async function genAllContent(modId, itemIdx){
+  await genLearningCards(modId, itemIdx);
+  await genQuiz(modId, itemIdx);
+  await genAdvancedQuiz(modId, itemIdx);
+  viewContent(modId, itemIdx);
+}
+
+// ══════════════════════════════════════════════════════
+// VIEW CONTENT
+// ══════════════════════════════════════════════════════
+function viewContent(modId, itemIdx){
+  const key=`${modId}:${itemIdx}`;
+  const stored=S.content[key]||{};
+  const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
+  const item=mod?.items[itemIdx];
+  const isAdmin=S.user?.role==="admin"; const isTeacher=S.user?.role==="teacher";
+  let html=`
+    <div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
+      <h2 style="font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2);flex:1">${item?.txt}</h2>
+    </div>`;
+  if(stored.pdfUrl){
+    let pdfActions=`<a href="${stored.pdfUrl}" target="_blank" class="btn bgh sm">تحميل ↓</a>`;
+    if((isAdmin||canEditModule(modId))&&!stored.content){
+      pdfActions+=` <button class="btn bt sm" onclick="genFromPdfUrl('${modId}',${itemIdx},'${stored.pdfUrl}')">⚡ استخراج وتوليد</button>`;
+    }
+    html+=`<div class="pdfbox"><div class="pdfbar"><span>📄 ${item?.txt?.slice(0,50)}</span>${pdfActions}</div><iframe class="pdff" src="${stored.pdfUrl}"></iframe></div>`;
+  }
+  if(stored.content){
+    html+=`<div class="card ct ct-g" style="margin-bottom:1.25rem"><div style="color:var(--txt);line-height:2.1;font-size:.9rem;white-space:pre-wrap">${stored.content}</div></div>`;
+  }
+  if(!stored.pdfUrl&&!stored.content){
+    html+=`<div class="empty"><div class="eic">📄</div><p>لم يُضف بعد أي محتوى لهذا العنصر</p></div>`;
+  }
+
+  // ─── LEARNING CARDS SECTION ───────────────────────────────
+  html+=`<div class="qbox" style="margin-bottom:1.25rem"><div class="qhdr"><h3>📚 بطاقات التعلم — Fiches d'apprentissage</h3></div>`;
+  if(isAdmin||canEditModule(modId)){
+    if(!stored.cards){
+      html+=`<div class="al alw">لم تُولَّد بطاقات بعد</div>
+             <button class="btn bt" onclick="genLearningCards('${modId}',${itemIdx})">📚 توليد البطاقات</button>`;
+    } else {
+      html+=`<div class="al alo">${stored.cards.length} بطاقة تعليمية ✅</div>
+             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem">`;
+      stored.cards.forEach((card,i)=>{
+        html+=`<div style="background:var(--bg3);border:2px solid rgba(201,150,42,.3);border-radius:10px;padding:1rem;min-height:120px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;text-align:center" 
+                onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 6px 20px rgba(201,150,42,.2)'"
+                onmouseout="this.style.borderColor='rgba(201,150,42,.3)';this.style.boxShadow='none'"
+                onclick="this.classList.toggle('flipped');this.style.minHeight=this.classList.contains('flipped')?'auto':'120px'">
+          <div style="color:var(--txt)">${!this.classList.contains('flipped')?'<strong style=\\"font-size:1.05rem\\">'+card.front+'</strong><br><small style=\\"color:var(--txt3)\\">اضغط للقلب ↻</small>':'<div style=\\"color:var(--gold2)\\">'+card.back+'</div>'}</div>
+        </div>`;
+      });
+      html+=`</div><button class="btn bgh sm" style="margin-top:1rem" onclick="genLearningCards('${modId}',${itemIdx})">🔄 إعادة توليد</button>`;
+    }
+  } else {
+    if(!stored.cards){
+      html+=`<div class="al alw">⏳ لم تُولَّد البطاقات بعد</div>`;
+    } else {
+      html+=`<div class="al alo">${stored.cards.length} بطاقة تعليمية متاحة 📚</div>
+             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem">`;
+      stored.cards.forEach((card,i)=>{
+        html+=`<div style="background:var(--bg3);border:2px solid rgba(34,211,238,.25);border-radius:10px;padding:1rem;min-height:120px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;text-align:center;perspective:1000px" 
+                class="card-flip" data-card="${i}"
+                onclick="flipCard(this)"
+                onmouseover="this.style.borderColor='rgba(34,211,238,.6)';this.style.boxShadow='0 6px 20px rgba(34,211,238,.15)'"
+                onmouseout="this.style.borderColor='rgba(34,211,238,.25)';this.style.boxShadow='none'">
+          <div style="color:var(--txt)" class="card-content"><strong style=\\"font-size:1.05rem\\">🔄 اضغط للقلب<br>${card.front}</strong></div>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+  }
+  html+=`</div>`;
+
+  // Quiz section
+  html+=`<div class="qbox"><div class="qhdr"><h3>الاختبار التقييمي</h3><span class="badge-lec">🤖 ذكاء اصطناعي</span></div>`;
+  if(isAdmin||canEditModule(modId)){
+    if(!stored.quiz){
+      html+=`<div class="al alw">لم تُولَّد أسئلة — أضف محتوى نصياً ثم اضغط توليد</div>
+             <button class="btn bt" onclick="genQuizAndRefresh('${modId}',${itemIdx})">🤖 توليد الأسئلة</button>`;
+    } else {
+      html+=`<div class="al alo">${stored.quiz.length} أسئلة جاهزة ✅</div>`;
+      stored.quiz.forEach((q,i)=>{html+=`<div style="padding:6px 0;border-bottom:1px solid var(--bdr);color:var(--txt2);font-size:.8rem">${i+1}. ${q.q}</div>`;});
+      html+=`<button class="btn bgh sm" style="margin-top:.85rem" onclick="genQuizAndRefresh('${modId}',${itemIdx})">🔄 إعادة توليد</button>`;
+    }
+  } else {
+    // Student quiz
+    const ans=stored.quizAnswers||{};
+    const submitted=stored.quizSubmitted||false;
+    if(!stored.quiz){
+      html+=`<div class="al alw">⏳ لم تُولَّد الأسئلة بعد — انتظر الأستاذ</div>`;
+    } else {
+      stored.quiz.forEach((q,qi)=>{
+        html+=`<div class="qcard"><p>${qi+1}. ${q.q}</p><div class="qopts">`;
+        q.options.forEach((o,oi)=>{
+          let cls="qo";
+          if(submitted){if(oi===q.correct)cls+=" ok";else if(ans[qi]===oi)cls+=" bad";}
+          else if(ans[qi]===oi) cls+=" sel";
+          html+=`<label class="${cls}"><input type="radio" name="q${qi}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
+        });
+        html+=`</div>`;
+        if(submitted&&q.explain) html+=`<div class="qexp">💡 ${q.explain}</div>`;
+        html+=`</div>`;
+      });
+      if(!submitted){
+        const allAns=Object.keys(ans).length===stored.quiz.length;
+        html+=`<button class="btn bg" ${allAns?"":"disabled"} onclick="submitQuiz('${key}','${modId}',${itemIdx})">${allAns?"تسليم الإجابات ✅":"أجب على جميع الأسئلة"}</button>`;
+      } else {
+        const score=stored.quiz.filter((q,i)=>ans[i]===q.correct).length;
+        const passed=score===stored.quiz.length;
+        html+=`<div class="sbox"><div class="sbig">${score}/${stored.quiz.length}</div>`;
+        if(passed) html+=`<p style="color:#4ade80;margin-top:.4rem">🎉 ممتاز!</p>`;
+        else html+=`<p style="color:#f87171;margin-top:.4rem">يجب الإجابة صحيحاً على جميع الأسئلة</p><button class="btn bo sm" style="margin-top:.75rem" onclick="retryQuiz('${key}','${modId}',${itemIdx})">إعادة المحاولة 🔄</button>`;
+        html+=`</div>`;
+      }
+    }
+  }
+  html+=`</div>`;
+
+  // ─── ADVANCED QUIZ SECTION ───────────────────────────────
+  html+=`<div class="qbox" style="margin-bottom:1.25rem"><div class="qhdr"><h3>⭐ الاختبار المتقدم</h3><span class="badge-merged">🎯 متقدم</span></div>`;
+  if(isAdmin||canEditModule(modId)){
+    if(!stored.advQuiz){
+      html+=`<div class="al alw">لم يُولَّد اختبار متقدم بعد</div>
+             <button class="btn bv" onclick="genAdvancedQuiz('${modId}',${itemIdx})">⭐ توليد الاختبار المتقدم</button>
+             <button class="btn bg sm" style="margin-right:.5rem" onclick="genAllContent('${modId}',${itemIdx})">🎯 توليد الكل (البطاقات + الاختبارات)</button>`;
+    } else {
+      html+=`<div class="al alo">${stored.advQuiz.length} أسئلة متقدمة جاهزة ✅</div>`;
+      stored.advQuiz.forEach((q,i)=>{html+=`<div style="padding:6px 0;border-bottom:1px solid var(--bdr);color:var(--txt2);font-size:.8rem">${i+1}. [${q.type==='mcq'?'متعدد':'صح/خطأ'}] ${q.q}</div>`;});
+      html+=`<button class="btn bgh sm" style="margin-top:.85rem" onclick="genAdvancedQuiz('${modId}',${itemIdx})">🔄 إعادة توليد</button>`;
+    }
+  } else {
+    if(!stored.advQuiz){
+      html+=`<div class="al alw">⏳ لم يُولَّد الاختبار المتقدم بعد</div>`;
+    } else {
+      const advAns=stored.advQuizAnswers||{};
+      const advSubmitted=stored.advQuizSubmitted||false;
+      stored.advQuiz.forEach((q,qi)=>{
+        if(q.type==="mcq"){
+          html+=`<div class="qcard"><p><strong style="color:var(--gold2)">س${qi+1}:</strong> ${q.q}</p><div class="qopts">`;
+          q.options.forEach((o,oi)=>{
+            let cls="qo";
+            if(advSubmitted){if(oi===q.correct)cls+=" ok";else if(advAns[qi]===oi)cls+=" bad";} else if(advAns[qi]===oi) cls+=" sel";
+            html+=`<label class="${cls}"><input type="radio" name="adv${qi}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
+          });
+          html+=`</div>`;
+        } else {
+          html+=`<div class="qcard"><p><strong style="color:var(--gold2)">س${qi+1}:</strong> ${q.q}</p><div class="qopts">`;
+          ['صحيح','خطأ'].forEach((opt,oi)=>{
+            let cls="qo";
+            if(advSubmitted){if((oi===0 ? true : false) === q.correct)cls+=" ok";else if(advAns[qi]===oi)cls+=" bad";} else if(advAns[qi]===oi) cls+=" sel";
+            html+=`<label class="${cls}"><input type="radio" name="adv${qi}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${opt}</label>`;
+          });
+          html+=`</div>`;
+        }
+        if(advSubmitted&&q.explain) html+=`<div class="qexp">💡 ${q.explain}</div>`;
+        html+=`</div>`;
+      });
+      if(!advSubmitted){
+        const allAdvAns=Object.keys(advAns).length===stored.advQuiz.length;
+        html+=`<button class="btn bv" ${allAdvAns?"":"disabled"} onclick="submitAdvQuiz('${key}','${modId}',${itemIdx})">${allAdvAns?"تسليم الاختبار المتقدم ⭐":"أجب على جميع الأسئلة"}</button>`;
+      } else {
+        let advScore=0;
+        stored.advQuiz.forEach((q,i)=>{
+          if(q.type==="mcq" && advAns[i]===q.correct) advScore++;
+          else if(q.type==="tf" && (advAns[i]===0 ? true : false) === q.correct) advScore++;
+        });
+        const advPassed=advScore===stored.advQuiz.length;
+        html+=`<div class="sbox"><div class="sbig" style="color:var(--violet)">${advScore}/${stored.advQuiz.length}</div>`;
+        if(advPassed) html+=`<p style="color:#a855f7;margin-top:.4rem">🏆 ممتاز جداً!</p>`;
+        else html+=`<p style="color:var(--gold2);margin-top:.4rem">يمكنك إعادة المحاولة</p><button class="btn bo sm" style="margin-top:.75rem" onclick="retryAdvQuiz('${key}','${modId}',${itemIdx})">إعادة المحاولة 🔄</button>`;
+        html+=`</div>`;
+      }
+    }
+  }
+  html+=`</div>`;
+
+  const pg=document.getElementById("courses-content");
+  if(pg){
+    pg.innerHTML=`<div style="max-width:860px;margin:0 auto">${html}</div>`;
+  }
+}
+
+function setQuizAns(key,qi,oi,modId,itemIdx){
+  S.content[key]=S.content[key]||{};
+  S.content[key].quizAnswers=S.content[key].quizAnswers||{};
+  S.content[key].quizAnswers[qi]=oi;
+  viewContent(modId,itemIdx);
+}
+function submitQuiz(key,modId,itemIdx){
+  const stored=S.content[key]||{};
+  S.content[key].quizSubmitted=true;
+  const score=(stored.quiz||[]).filter((q,i)=>(stored.quizAnswers||{})[i]===q.correct).length;
+  if(score===(stored.quiz||[]).length) notify("أحسنت! 🎉");
+  viewContent(modId,itemIdx);
+}
+function retryQuiz(key,modId,itemIdx){
+  S.content[key].quizAnswers={};
+  S.content[key].quizSubmitted=false;
+  viewContent(modId,itemIdx);
+}
+async function genQuizAndRefresh(modId,itemIdx){
+  await genQuiz(modId,itemIdx);
+  viewContent(modId,itemIdx);
+}
+
+// ══════════════════════════════════════════════════════
+// FLIP CARD ANIMATION
+// ══════════════════════════════════════════════════════
+function flipCard(el){
+  const content = el.querySelector('.card-content');
+  const cardIdx = el.dataset.card;
+  const keys = Object.keys(S.content).filter(k => k.includes(':'));
+  let currentCard = null;
+  for(let k of keys) if(S.content[k]?.cards) currentCard = S.content[k].cards[cardIdx];
+  
+  if(el.classList.contains('flipped')){
+    el.classList.remove('flipped');
+    content.innerHTML = '<strong style="font-size:1.05rem">🔄 اضغط للقلب<br>' + currentCard?.front + '</strong>';
+  } else {
+    el.classList.add('flipped');
+    content.innerHTML = '<div style="color:var(--gold2)">' + (currentCard?.back || 'محتوى') + '</div>';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// ADVANCED QUIZ HANDLERS
+// ══════════════════════════════════════════════════════
+function setAdvQuizAns(key,qi,answer,modId,itemIdx){
+  S.content[key]=S.content[key]||{};
+  S.content[key].advQuizAnswers=S.content[key].advQuizAnswers||{};
+  S.content[key].advQuizAnswers[qi]=parseInt(answer);
+  viewContent(modId,itemIdx);
+}
+
+function submitAdvQuiz(key,modId,itemIdx){
+  S.content[key].advQuizSubmitted=true;
+  const stored=S.content[key]||{};
+  let score=0;
+  (stored.advQuiz||[]).forEach((q,i)=>{
+    const ans=(stored.advQuizAnswers||{})[i];
+    if(q.type==="mcq" && ans===q.correct) score++;
+    else if(q.type==="tf" && (ans===0 ? true : false) === q.correct) score++;
+  });
+  if(score===(stored.advQuiz||[]).length) notify("أحسنت جداً! 🏆");
+  else notify(`لقد حصلت على ${score}/${stored.advQuiz.length}`,"📊");
+  viewContent(modId,itemIdx);
+}
+
+function retryAdvQuiz(key,modId,itemIdx){
+  S.content[key].advQuizAnswers={};
+  S.content[key].advQuizSubmitted=false;
+  viewContent(modId,itemIdx);
+}
+
+// ══════════════════════════════════════════════════════
+// STYLING FOR FLIPPED CARDS
+// ══════════════════════════════════════════════════════
+// Add this style to the <style> section:
+// .card-flip.flipped { transform: rotateY(180deg); }
+// .card-content { transition: all 0.3s; }
+
+
+// ══════════════════════════════════════════════════════
+// TEACHER COURSES
+// ══════════════════════════════════════════════════════
+function renderTeacherCourses(){
+  const t=S.teachers.find(x=>x.id===S.user?.id);
+  if(!t) return;
+  const sub=document.getElementById("teacher-courses-sub");
+  if(sub) sub.textContent=t.name+" — "+t.rank+" | المقاييس: "+t.subjects.join("، ");
+  const el=document.getElementById("teacher-courses-content");
+  const myMods=[];
+  t.branches.forEach(b=>{[3,4].forEach(s=>{(CURRICULUM[b]?.[s]||[]).forEach(m=>{if(t.subjects.includes(m.title)) myMods.push({...m,branch:b,sem:s});});});});
+  if(myMods.length===0){el.innerHTML='<div class="empty"><div class="eic">📭</div><p>لم يتم تحديد مقاييس لك بعد</p></div>';return;}
+  el.innerHTML=myMods.map((mod,mi)=>`
+    <div class="card ct ct-v" style="margin-bottom:1rem">
+      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:.85rem;flex-wrap:wrap">
+        <div class="mod-icon">${mi+1}</div>
+        <div style="flex:1">
+          <h3 style="font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold2)">${mod.title}</h3>
+          <p style="color:var(--txt3);font-size:.73rem">${["الدراسات اللغوية","الدراسات الأدبية","الدراسات النقدية"][mod.branch]} — السداسي ${mod.sem===3?"الثالث":"الرابع"} — ${mod.unit}</p>
+        </div>
+        <span class="badge-merged">${mod.items.length} عنصر</span>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        ${mod.items.slice(0,4).map((it,ii)=>`<button class="btn bgh xs" onclick="S.branch=${mod.branch};S.sem=${mod.sem};goto('courses');setTimeout(()=>{toggleMod('${mod.id}');openAddContent('${mod.id}',${ii},'${it.t}')},300)">${it.t==="lec"?"مح":"أم"}${it.n}: ${it.txt.slice(0,25)}...</button>`).join("")}
+        ${mod.items.length>4?`<span style="color:var(--txt3);font-size:.75rem;align-self:center">+${mod.items.length-4} أخرى...</span>`:""}
+      </div>
+      <div style="margin-top:.75rem">
+        <button class="btn bg sm" onclick="S.branch=${mod.branch};S.sem=${mod.sem};goto('courses')">الذهاب للمقياس في المقررات →</button>
+      </div>
+    </div>`).join("");
+}
+
+// ══════════════════════════════════════════════════════
+// DISCUSSION
+// ══════════════════════════════════════════════════════
+function renderDisc(){
+  const list=document.getElementById("disc-list"); if(!list) return;
+  list.innerHTML=S.disc.map(p=>`
+    <div class="dp${p.role==="admin"?" prf":""}">
+      <div class="dh">
+        <div class="dav ${p.role==="admin"?"p":p.role==="teacher"?"t":"s"}">${p.init}</div>
+        <div><div class="dauth">${p.author}</div><div class="drole">${p.role==="admin"?"المدير":p.role==="teacher"?"أستاذ":"طالب"}</div></div>
+        <div class="dtime">${p.time}</div>
+      </div>
+      <div class="dtxt">${p.text}</div>
+      <div class="dacts">
+        <button class="dact" onclick="likeDisc('${p.id}')">👍 ${p.likes}</button>
+        <button class="dact" onclick="toggleRepDisc('${p.id}')">↩️ رد</button>
+      </div>
+      ${(p.replies||[]).map(r=>`<div class="ri"><div class="dh" style="margin-bottom:3px"><div class="dav ${r.role==="admin"?"p":r.role==="teacher"?"t":"s"}" style="width:28px;height:28px;font-size:.72rem">${r.init}</div><div class="dauth" style="font-size:.79rem">${r.author}</div><div class="dtime">${r.time}</div></div><div class="dtxt" style="font-size:.83rem">${r.text}</div></div>`).join("")}
+      <div id="rep-${p.id}" style="display:none;margin-top:.65rem;display:none">
+        <div style="display:flex;gap:7px">
+          <input class="fi" id="rep-txt-${p.id}" style="flex:1;padding:7px 11px;font-size:.82rem" placeholder="ردّك...">
+          <button class="btn bg sm" onclick="sendRepDisc('${p.id}')">إرسال</button>
+        </div>
+      </div>
+    </div>`).join("") || '<div class="empty"><div class="eic">💬</div><p>لا توجد مشاركات بعد</p></div>';
+}
+function likeDisc(id){const p=S.disc.find(x=>x.id===id);if(p)p.likes++;renderDisc();}
+function toggleRepDisc(id){const el=document.getElementById("rep-"+id);if(el)el.style.display=el.style.display==="none"||!el.style.display?"flex":"none";}
+function sendRepDisc(id){
+  const txt=document.getElementById("rep-txt-"+id)?.value.trim();if(!txt)return;
+  const u=S.user;
+  const p=S.disc.find(x=>x.id===id);
+  if(p) p.replies.push({id:Date.now(),author:u?.name||"مجهول",init:(u?.name||"؟")[0],role:u?.role||"student",text:txt,time:"الآن"});
+  renderDisc(); notify("تم إرسال الرد ↩️");
+}
+function postDisc(){
+  const txt=document.getElementById("disc-txt")?.value.trim();if(!txt)return;
+  const u=S.user;
+  S.disc.push({id:"d"+Date.now(),author:u?.name||"مجهول",init:(u?.name||"؟")[0],role:u?.role||"student",cid:"all",text:txt,time:"الآن",likes:0,replies:[]});
+  document.getElementById("disc-txt").value="";
+  renderDisc(); notify("تم نشر مداخلتك 💬");
+}
+
+// ══════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════
+function renderDashStats(){
+  const el=document.getElementById("dash-stats");if(!el)return;
+  const pending_s=S.students.filter(x=>x.status==="pending").length;
+  const pending_t=S.teachers.filter(x=>x.status==="pending").length;
+  const approved_s=S.students.filter(x=>x.status==="approved").length;
+  const approved_t=S.teachers.filter(x=>x.status==="approved").length;
+  el.innerHTML=[
+    {n:pending_s+pending_t,l:"طلبات معلقة",c:"#fbbf24"},
+    {n:approved_s,l:"طلاب مقبولون",c:"#4ade80"},
+    {n:approved_t,l:"أساتذة مقبولون",c:"#c084fc"},
+    {n:Object.keys(S.content).filter(k=>S.content[k].pdfUrl||S.content[k].content).length,l:"محتوى منشور",c:"var(--gold2)"},
+  ].map(s=>`<div class="card" style="text-align:center"><div style="font-size:2.1rem;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="color:var(--txt2);font-size:.73rem;margin-top:4px">${s.l}</div></div>`).join("");
+}
+
+let _dashTab="students";
+function dashTab(id,btn){
+  _dashTab=id;
+  document.querySelectorAll("#page-dashboard .stab").forEach(b=>b.classList.remove("on"));
+  if(btn) btn.classList.add("on");
+  renderDashContent();
+}
+
+function renderDashContent(){
+  const el=document.getElementById("dash-content");if(!el)return;
+  if(_dashTab==="students") renderDashStudents(el);
+  else if(_dashTab==="teachers") renderDashTeachers(el);
+  else renderDashCourses(el);
+}
+
+function renderDashStudents(el){
+  el.innerHTML=`<div class="tw"><table>
+    <thead><tr><th>الاسم</th><th>البريد</th><th>الشعبة</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
+    <tbody>${S.students.map(s=>`<tr>
+      <td style="color:var(--txt);font-weight:600">${s.name}</td>
+      <td>${s.email}</td>
+      <td><span style="font-size:.72rem;color:var(--gold3)">${["اللغوية","الأدبية","النقدية"][s.branch]||"—"}</span></td>
+      <td>${s.date}</td>
+      <td><span class="st ${s.status==="pending"?"stp":s.status==="approved"?"sta":"str"}">${s.status==="pending"?"معلق":s.status==="approved"?"مقبول":"مرفوض"}</span></td>
+      <td>${s.status==="pending"
+        ?`<div style="display:flex;gap:4px"><button class="btn bgr xs" onclick="approveUser('student','${s.id}')">قبول ✓</button><button class="btn br xs" onclick="rejectUser('student','${s.id}')">رفض ✗</button></div>`
+        :`<span style="color:var(--txt3);font-size:.72rem">تمّت</span>`
+      }</td>
+    </tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
+  </table></div>`;
+}
+
+function renderDashTeachers(el){
+  el.innerHTML=`<div class="tw"><table>
+    <thead><tr><th>الاسم</th><th>البريد</th><th>الرتبة</th><th>المقاييس</th><th>الحالة</th><th>إجراء</th></tr></thead>
+    <tbody>${S.teachers.map(t=>`<tr>
+      <td style="color:var(--txt);font-weight:600">${t.name}</td>
+      <td style="font-size:.75rem">${t.email}</td>
+      <td style="font-size:.74rem;color:var(--txt3)">${t.rank}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:3px">${t.subjects.slice(0,3).map(s=>`<span class="tc-sub">${s.slice(0,15)}...</span>`).join("")}${t.subjects.length>3?`<span style="font-size:.65rem;color:var(--txt3)">+${t.subjects.length-3}</span>`:""}</div></td>
+      <td><span class="st ${t.status==="pending"?"stp":t.status==="approved"?"sta":"str"}">${t.status==="pending"?"معلق":t.status==="approved"?"مقبول":"مرفوض"}</span></td>
+      <td>${t.status==="pending"
+        ?`<div style="display:flex;gap:4px"><button class="btn bgr xs" onclick="approveUser('teacher','${t.id}')">قبول ✓</button><button class="btn br xs" onclick="rejectUser('teacher','${t.id}')">رفض ✗</button></div>`
+        :`<span style="color:var(--txt3);font-size:.72rem">تمّت</span>`
+      }</td>
+    </tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
+  </table></div>`;
+}
+
+function renderDashCourses(el){
+  const branchNames=["الدراسات اللغوية","الدراسات الأدبية","الدراسات النقدية"];
+  let h="";
+  [0,1,2].forEach(b=>{
+    h+=`<h3 style="font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold2);margin:1.25rem 0 .75rem">${branchNames[b]}</h3>`;
+    [3,4].forEach(s=>{
+      h+=`<p style="color:var(--txt3);font-size:.78rem;margin-bottom:.5rem">السداسي ${s===3?"الثالث":"الرابع"}</p>`;
+      (CURRICULUM[b]?.[s]||[]).forEach(mod=>{
+        const filled=mod.items.filter((_,i)=>S.content[`${mod.id}:${i}`]?.pdfUrl||S.content[`${mod.id}:${i}`]?.content).length;
+        const t=S.teachers.find(x=>x.status==="approved"&&x.subjects.includes(mod.title));
+        h+=`<div style="display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;background:var(--bg3);border-radius:8px;margin-bottom:.4rem;border:1px solid var(--bdr)">
+          <span style="font-size:.88rem;color:var(--txt);flex:1">${mod.title}</span>
+          <span style="font-size:.72rem;color:var(--txt3)">${filled}/${mod.items.length} محتوى</span>
+          ${t?`<span style="font-size:.68rem;color:#fb923c">👨‍🏫 ${t.name.split(" ").slice(0,2).join(" ")}</span>`:`<span style="font-size:.68rem;color:var(--txt3)">غير معين</span>`}
+        </div>`;
+      });
+    });
+  });
+  el.innerHTML=h;
+}
+
+function approveUser(type, id){
+  const arr=type==="student"?S.students:S.teachers;
+  const u=arr.find(x=>x.id===id); if(!u) return;
+  u.status="approved";
+  renderDashStats(); renderDashContent();
+  notify("تم قبول "+u.name+" وإرسال البريد ✉️");
+}
+function rejectUser(type, id){
+  const arr=type==="student"?S.students:S.teachers;
+  const u=arr.find(x=>x.id===id); if(!u) return;
+  u.status="rejected";
+  renderDashStats(); renderDashContent();
+  notify("تم رفض "+u.name+" وإشعاره 📨");
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+buildNav();
+</script>
+</body>
+</html>
