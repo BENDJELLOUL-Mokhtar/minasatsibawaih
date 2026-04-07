@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>دخول المشرف</h2>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">كلمة المرور</label>
+      <input name="password" type="password" class="form-control" required>
+    </div>
+    <button class="btn btn-primary" type="submit">دخول</button>
+  </form>
+  <p class="text-muted mt-2">(افتراضي: ADMIN_PASSWORD في متغيرات البيئة)</p>
+{% endblock %}

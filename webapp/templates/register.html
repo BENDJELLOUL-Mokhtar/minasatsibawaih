@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>نموذج تسجيل طالب/أستاذ</h2>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">الاسم الكامل</label>
+      <input name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">البريد الإلكتروني</label>
+      <input name="email" type="email" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">الدور</label>
+      <select name="role" class="form-select" required>
+        <option value="student">طالب</option>
+        <option value="teacher">أستاذ</option>
+      </select>
+    </div>
+    <button class="btn btn-success" type="submit">أرسل طلب التسجيل</button>
+  </form>
+{% endblock %}

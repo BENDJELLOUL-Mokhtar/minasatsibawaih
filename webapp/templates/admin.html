@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>لوحة المشرف</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>الاسم</th>
+        <th>البريد</th>
+        <th>الدور</th>
+        <th>الحالة</th>
+        <th>تاريخ</th>
+        <th>إجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ 'طالب' if u.role=='student' else 'أستاذ' }}</td>
+        <td>{{ u.status }}</td>
+        <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+          {% if u.status=='pending' %}
+            <form method="post" action="{{ url_for('approve', user_id=u.id) }}" style="display:inline">
+              <button class="btn btn-sm btn-success">قبول</button>
+            </form>
+            <form method="post" action="{{ url_for('reject', user_id=u.id) }}" style="display:inline;margin-left:6px">
+              <button class="btn btn-sm btn-danger">رفض</button>
+            </form>
+          {% else %}
+            <span class="text-muted">لا توجد إجراءات</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
