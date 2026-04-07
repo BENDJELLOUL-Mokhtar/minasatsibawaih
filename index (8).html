@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة سيبويه — قسم اللغة العربية | جامعة ابن خلدون تيارت</title>
+<title>منصة الكسائي — قسم اللغة العربية | جامعة ابن خلدون تيارت</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -270,7 +271,7 @@ select.fi{cursor:pointer}
     <div class="logo" onclick="goto('home')">
       <div class="logo-m">س</div>
       <div>
-        <div class="logo-t">منصة سيبويه الرقمية</div>
+        <div class="logo-t">منصة الكسائي الرقمية</div>
         <div class="logo-s">قسم اللغة العربية — جامعة ابن خلدون تيارت</div>
       </div>
     </div>
@@ -284,7 +285,7 @@ select.fi{cursor:pointer}
 <div id="page-home" class="page active">
   <section class="hero">
     <div class="hero-chip">🏛️ جامعة ابن خلدون — تيارت، الجزائر</div>
-    <h1>منصة <b>سيبويه</b> الرقمية</h1>
+    <h1>منصة <b>الكسائي</b> الرقمية</h1>
     <div class="hero-sub">قسم اللغة والأدب العربي — السنة الثانية ل.م.د</div>
     <p class="hero-desc">بيئة تعليمية رقمية متكاملة تضم مقررات الدراسات اللغوية والأدبية والنقدية، مع نظام تقييم بالذكاء الاصطناعي</p>
     <div class="hero-row" id="hero-btns">
@@ -311,6 +312,12 @@ select.fi{cursor:pointer}
       </div>
     </div>
   </div>
+    <section class="sec" id="home-map">
+      <h2 class="sec-title">خريطة تيارت</h2>
+      <p class="sec-sub">موقع ولاية تيارت على الخريطة — استكشاف المواقع والمعالم المحلية.</p>
+      <div class="hr"></div>
+      <div id="tiaret-map" style="height:360px;border-radius:12px;overflow:hidden;border:1px solid var(--bdr)"></div>
+    </section>
   <section class="sec">
     <h2 class="sec-title">الشعب الدراسية</h2>
     <div class="hr"></div>
@@ -376,6 +383,7 @@ select.fi{cursor:pointer}
     <div style="display:flex;gap:4px;background:var(--bg3);border-radius:9px;padding:3px;margin-bottom:1.25rem;flex-wrap:wrap">
       <button class="stab on" onclick="dashTab('students',this)">الطلاب</button>
       <button class="stab" onclick="dashTab('teachers',this)">الأساتذة</button>
+      <button class="stab" onclick="dashTab('ud',this)">أسئلة UD</button>
       <button class="stab" onclick="dashTab('courses',this)">المقررات</button>
     </div>
     <div id="dash-content"></div>
@@ -393,6 +401,117 @@ select.fi{cursor:pointer}
 </div>
 
 <!-- ══ MODALS ══ -->
+  <!-- ══ PAGES: ADDITIONAL LMS SERVICES (PLACEHOLDERS) ══ -->
+  <div id="page-notifications" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الإشعارات</h2>
+      <p class="sec-sub">تلقي الإشعارات المتعلقة بالمقررات والواجبات والاختبارات.</p>
+      <div class="hr"></div>
+      <div id="notifications-content">
+        <div class="card">لا توجد إشعارات حالياً. سجّل الدخول لعرض الإشعارات الأخيرة.</div>
+        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول لعرض الإشعارات</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-messages" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الرسائل</h2>
+      <p class="sec-sub">صندوق الرسائل الخاص بك للتواصل مع الأساتذة وزملاء الدراسة.</p>
+      <div class="hr"></div>
+      <div id="messages-content">
+        <div class="card">سجّل الدخول للاطلاع على صندوق الرسائل الخاص بك.</div>
+        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-calendar" class="page">
+    <div class="sec">
+      <h2 class="sec-title">التقويم</h2>
+      <p class="sec-sub">عرض الجداول الزمنية للمحاضرات، مواعيد التسليم والاختبارات.</p>
+      <div class="hr"></div>
+      <div id="calendar-content">
+        <div class="card">هذا تقويم افتراضي. سيعرض الأحداث بعد ربط المقررات بالمواعيد.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-assignments" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الواجبات</h2>
+      <p class="sec-sub">قائمة الواجبات والمهام المسندة للطلاب مع مواعيد التسليم.</p>
+      <div class="hr"></div>
+      <div id="assignments-content">
+        <div class="card">لا توجد واجبات مخصصة حالياً. سجّل الدخول لعرض واجباتك.</div>
+        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-grades" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الدرجات</h2>
+      <p class="sec-sub">عرض نتائج الاختبارات والتقييمات الشخصية.</p>
+      <div class="hr"></div>
+      <div id="grades-content">
+        <div class="card">سجّل الدخول لعرض درجاتك وتفاصيل التقييم.</div>
+        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-reports" class="page">
+    <div class="sec">
+      <h2 class="sec-title">التقارير</h2>
+      <p class="sec-sub">تقارير الأداء، الحضور، وإحصاءات المقررات.</p>
+      <div class="hr"></div>
+      <div id="reports-content">
+        <div class="card">لوحة تقارير بسيطة — متاحة للمديرين والأساتذة.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-help" class="page">
+    <div class="sec">
+      <h2 class="sec-title">مساعدة</h2>
+      <p class="sec-sub">مساعدة المستخدم والأسئلة الشائعة واختصارات الاستخدام.</p>
+      <div class="hr"></div>
+      <div id="help-content">
+        <div class="card">
+          <h3 style="color:var(--gold2);font-family:'Amiri',serif">الأسئلة الشائعة</h3>
+          <ul style="color:var(--txt2);margin-top:.6rem;line-height:1.9">
+            <li>كيف أنشئ محتوى لمقرر؟ — اذهب إلى المقررات واضغط + محتوى.</li>
+            <li>كيف أطلب تسجيل أستاذ؟ — استخدم زر "تسجيل أستاذ" في الشريط العلوي.</li>
+            <li>تواصل معنا عبر: it-support@univ-tiaret.dz</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-profile" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الملف الشخصي</h2>
+      <p class="sec-sub">عرض وتحرير معلومات الحساب الشخصية.</p>
+      <div class="hr"></div>
+      <div id="profile-content">
+        <div class="card">سجّل الدخول لعرض وتعديل ملفك الشخصي.</div>
+        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-settings" class="page">
+    <div class="sec">
+      <h2 class="sec-title">الإعدادات</h2>
+      <p class="sec-sub">إعدادات الحساب، الإشعارات، اللغة والخصوصية.</p>
+      <div class="hr"></div>
+      <div id="settings-content">
+        <div class="card">صفحة إعدادات أساسية — تُكمّل لاحقاً بخيارات المستخدم.</div>
+      </div>
+    </div>
+  </div>
 
 <!-- LOGIN -->
 <div class="ov" id="modal-login" onclick="if(event.target===this)closeM('modal-login')">
@@ -496,7 +615,7 @@ select.fi{cursor:pointer}
 
 <!-- FOOTER -->
 <footer class="foot">
-  <div class="ftit">منصة سيبويه الرقمية — قسم اللغة والأدب العربي</div>
+  <div class="ftit">منصة الكسائي الرقمية — قسم اللغة والأدب العربي</div>
   <div>أ.د. بن جلول مختار — أستاذ اللسانيات العربية</div>
   <div>جامعة ابن خلدون، تيارت، الجزائر</div>
   <div style="opacity:.4;margin-top:2px">مخبر الدراسات النحوية واللغوية بين التراث والحداثة في الجزائر</div>
@@ -507,6 +626,7 @@ select.fi{cursor:pointer}
 <!-- PDF.js Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════
@@ -1583,6 +1703,42 @@ function buildNav(){
     h+=`<button class="nb out" onclick="doLogout()">خروج</button>`;
   }
   document.getElementById("nav").innerHTML=h;
+  // إضافة زر استيراد أسئلة UD في شريط التنقل العلوي (مرئي دائماً)
+  const navEl = document.getElementById("nav");
+  if(navEl && !document.getElementById('nav-import-ud-btn')){
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-import-ud-btn" class="nb" onclick="importUdQuestions()" title="استيراد أسئلة UD">استيراد UD</button>');
+    // view button for UD questions
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-view-ud-btn" class="nb" onclick="showUdList()" title="عرض أسئلة UD">عرض UD</button>');
+  }
+  // إضافة خدمات شائعة في منصات التعليم
+  if(navEl && !document.getElementById('nav-notifs-btn')){
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-notifs-btn" class="nb" onclick="goto(\'notifications\')" title="الإشعارات">🔔 إشعارات</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-messages-btn" class="nb" onclick="goto(\'messages\')" title="الرسائل">✉️ رسائل</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-calendar-btn" class="nb" onclick="goto(\'calendar\')" title="التقويم">📅 تقويم</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-assign-btn" class="nb" onclick="goto(\'assignments\')" title="الواجبات">📝 واجبات</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-grades-btn" class="nb" onclick="goto(\'grades\')" title="الدرجات">📊 الدرجات</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-reports-btn" class="nb" onclick="goto(\'reports\')" title="التقارير">📈 تقارير</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-help-btn" class="nb" onclick="goto(\'help\')" title="مساعدة">❓ مساعدة</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-profile-btn" class="nb" onclick="goto(\'profile\')" title="الملف الشخصي">👤 الملف</button>');
+    navEl.insertAdjacentHTML('beforeend', '<button id="nav-settings-btn" class="nb" onclick="goto(\'settings\')" title="الإعدادات">⚙️ إعدادات</button>');
+  }
+  // Avatar (update dynamically each build)
+  if(navEl){
+    const existingAvatar = document.getElementById('nav-avatar-btn');
+    if(u){
+      const title = (u.name||u.email) || '';
+      const pic = u.profilePic || '';
+      if(!existingAvatar){
+        navEl.insertAdjacentHTML('beforeend', '<button id="nav-avatar-btn" class="nb" onclick="goto(\'profile\')" title="'+title+'"><img id="nav-avatar-img" src="'+pic+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr)"></button>');
+      } else {
+        const img = document.getElementById('nav-avatar-img');
+        if(img){ if(pic){ img.style.display='inline-block'; img.src = pic; } else { img.style.display='none'; } }
+        existingAvatar.title = title;
+      }
+    } else {
+      if(existingAvatar) existingAvatar.remove();
+    }
+  }
   const hb=document.getElementById("hero-btns");
   if(hb) hb.innerHTML=u
     ?`<button class="btn bg" onclick="goto('courses')">📚 المقررات</button><button class="btn bo" onclick="goto('disc')">💬 النقاش</button>`
@@ -1601,6 +1757,7 @@ function goto(id){
   if(id==="disc") renderDisc();
   if(id==="dashboard"){ renderDashStats(); renderDashContent(); }
   if(id==="my-courses") renderTeacherCourses();
+  if(id==="profile") renderProfile();
   window.scrollTo(0,0);
 }
 
@@ -1627,7 +1784,7 @@ function doLogin(){
   if(!s){err.textContent="البريد أو كلمة السر غير صحيحة";err.style.display="block";return;}
   if(s.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
   if(s.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
-  S.user={role:"student",name:s.name,email:s.email,branch:s.branch};
+  S.user={role:"student",name:s.name,email:s.email,branch:s.branch,id:s.id};
   closeM("modal-login"); buildNav(); goto("courses"); notify("مرحباً "+s.name+"! 🎓");
 }
 
@@ -2003,6 +2160,57 @@ async function genAllContent(modId, itemIdx){
   viewContent(modId, itemIdx);
 }
 
+// Helper: get per-student submission or fallback to legacy fields
+function getUserSubmission(stored, studentId){
+  if(!stored) return {quizAnswers:{},quizSubmitted:false,advQuizAnswers:{},advQuizSubmitted:false,score:0,advScore:0};
+  const submissions = stored.submissions || {};
+  const s = (studentId && submissions && submissions[studentId]) || null;
+  return {
+    quizAnswers: (s && s.quizAnswers) || stored.quizAnswers || {},
+    quizSubmitted: (s && s.quizSubmitted) || stored.quizSubmitted || false,
+    advQuizAnswers: (s && s.advQuizAnswers) || stored.advQuizAnswers || {},
+    advQuizSubmitted: (s && s.advQuizSubmitted) || stored.advQuizSubmitted || false,
+    score: (s && (typeof s.score === 'number' ? s.score : undefined)) ?? stored.score ?? 0,
+    advScore: (s && (typeof s.advScore === 'number' ? s.advScore : undefined)) ?? stored.advScore ?? 0
+  };
+}
+
+// Helper: compute aggregated stats for a content key
+function getContentStats(key){
+  const stored = S.content[key]||{};
+  const subs = stored.submissions||{};
+  let count = 0, totalScore=0, totalQuestions=0;
+  if(stored.quiz) totalQuestions += stored.quiz.length;
+  if(stored.advQuiz) totalQuestions += stored.advQuiz.length;
+  Object.keys(subs).forEach(sid=>{
+    const u = subs[sid];
+    if(u){
+      totalScore += (u.score||0) + (u.advScore||0);
+      if(typeof u.score === 'number' || typeof u.advScore === 'number') count++;
+    }
+  });
+  const avg = count? Math.round((totalScore/count)*100)/100 : 0;
+  return {count,avg,totalQuestions};
+}
+
+// Compute progress for a student across all content (percentage and raw counts)
+function computeStudentProgress(studentId){
+  let totalQuestions=0, totalCorrect=0, attempted=0;
+  Object.keys(S.content||{}).forEach(key=>{
+    const stored=S.content[key]||{};
+    if(stored.quiz) totalQuestions += stored.quiz.length;
+    if(stored.advQuiz) totalQuestions += stored.advQuiz.length;
+    const subs = stored.submissions||{};
+    const u = subs[studentId];
+    if(u){
+      if(typeof u.score === 'number'){ totalCorrect += u.score; attempted++; }
+      if(typeof u.advScore === 'number'){ totalCorrect += u.advScore; attempted++; }
+    }
+  });
+  const percent = totalQuestions? Math.round((totalCorrect/totalQuestions)*100) : 0;
+  return {percent,correct:totalCorrect,totalQuestions,attempted};
+}
+
 // ══════════════════════════════════════════════════════
 // VIEW CONTENT
 // ══════════════════════════════════════════════════════
@@ -2012,6 +2220,8 @@ function viewContent(modId, itemIdx){
   const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
   const item=mod?.items[itemIdx];
   const isAdmin=S.user?.role==="admin"; const isTeacher=S.user?.role==="teacher";
+  const currentUserId = S.user?.id || S.user?.email || S.user?.name;
+  const userSub = getUserSubmission(stored, currentUserId);
   let html=`
     <div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
       <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
@@ -2033,6 +2243,7 @@ function viewContent(modId, itemIdx){
 
   // ─── LEARNING CARDS SECTION ───────────────────────────────
   html+=`<div class="qbox" style="margin-bottom:1.25rem"><div class="qhdr"><h3>📚 بطاقات التعلم — Fiches d'apprentissage</h3></div>`;
+  // --- LEARNING CARDS ---
   if(isAdmin||canEditModule(modId)){
     if(!stored.cards){
       html+=`<div class="al alw">لم تُولَّد بطاقات بعد</div>
@@ -2043,13 +2254,14 @@ function viewContent(modId, itemIdx){
       stored.cards.forEach((card,i)=>{
         html+=`<div style="background:var(--bg3);border:2px solid rgba(201,150,42,.3);border-radius:10px;padding:1rem;min-height:120px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;text-align:center" 
                 onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 6px 20px rgba(201,150,42,.2)'"
-                onmouseout="this.style.borderColor='rgba(201,150,42,.3)';this.style.boxShadow='none'"
-                onclick="this.classList.toggle('flipped');this.style.minHeight=this.classList.contains('flipped')?'auto':'120px'">
-          <div style="color:var(--txt)">${!this.classList.contains('flipped')?'<strong style=\\"font-size:1.05rem\\">'+card.front+'</strong><br><small style=\\"color:var(--txt3)\\">اضغط للقلب ↻</small>':'<div style=\\"color:var(--gold2)\\">'+card.back+'</div>'}</div>
+                onmouseout="this.style.borderColor='rgba(201,150,42,.3)';this.style.boxShadow='none'">
+          <div style="color:var(--txt)"><strong style=\"font-size:1.05rem\">${card.front}</strong><br><small style=\"color:var(--txt3)\">اضغط للقلب ↻</small></div>
         </div>`;
       });
       html+=`</div><button class="btn bgh sm" style="margin-top:1rem" onclick="genLearningCards('${modId}',${itemIdx})">🔄 إعادة توليد</button>`;
     }
+    const stats = getContentStats(key);
+    if(stats.count>0) html+=`<div class="al ali" style="margin-top:.75rem">تمت الإجابة من <strong>${stats.count}</strong> طالب — متوسط النقاط: <strong>${stats.avg}</strong></div>`;
   } else {
     if(!stored.cards){
       html+=`<div class="al alw">⏳ لم تُولَّد البطاقات بعد</div>`;
@@ -2062,7 +2274,7 @@ function viewContent(modId, itemIdx){
                 onclick="flipCard(this)"
                 onmouseover="this.style.borderColor='rgba(34,211,238,.6)';this.style.boxShadow='0 6px 20px rgba(34,211,238,.15)'"
                 onmouseout="this.style.borderColor='rgba(34,211,238,.25)';this.style.boxShadow='none'">
-          <div style="color:var(--txt)" class="card-content"><strong style=\\"font-size:1.05rem\\">🔄 اضغط للقلب<br>${card.front}</strong></div>
+          <div style="color:var(--txt)" class="card-content"><strong style=\"font-size:1.05rem\">🔄 اضغط للقلب<br>${card.front}</strong></div>
         </div>`;
       });
       html+=`</div>`;
@@ -2082,9 +2294,9 @@ function viewContent(modId, itemIdx){
       html+=`<button class="btn bgh sm" style="margin-top:.85rem" onclick="genQuizAndRefresh('${modId}',${itemIdx})">🔄 إعادة توليد</button>`;
     }
   } else {
-    // Student quiz
-    const ans=stored.quizAnswers||{};
-    const submitted=stored.quizSubmitted||false;
+    // Student quiz (use per-student submissions)
+    const ans = (userSub && userSub.quizAnswers) || {};
+    const submitted = (userSub && userSub.quizSubmitted) || false;
     if(!stored.quiz){
       html+=`<div class="al alw">⏳ لم تُولَّد الأسئلة بعد — انتظر الأستاذ</div>`;
     } else {
@@ -2094,7 +2306,8 @@ function viewContent(modId, itemIdx){
           let cls="qo";
           if(submitted){if(oi===q.correct)cls+=" ok";else if(ans[qi]===oi)cls+=" bad";}
           else if(ans[qi]===oi) cls+=" sel";
-          html+=`<label class="${cls}"><input type="radio" name="q${qi}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
+          const nameAttr = `q_${key.replace(/:/g,'_')}_${qi}`;
+          html+=`<label class="${cls}"><input type="radio" name="${nameAttr}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
         });
         html+=`</div>`;
         if(submitted&&q.explain) html+=`<div class="qexp">💡 ${q.explain}</div>`;
@@ -2131,15 +2344,16 @@ function viewContent(modId, itemIdx){
     if(!stored.advQuiz){
       html+=`<div class="al alw">⏳ لم يُولَّد الاختبار المتقدم بعد</div>`;
     } else {
-      const advAns=stored.advQuizAnswers||{};
-      const advSubmitted=stored.advQuizSubmitted||false;
+      const advAns = (userSub && userSub.advQuizAnswers) || {};
+      const advSubmitted = (userSub && userSub.advQuizSubmitted) || false;
       stored.advQuiz.forEach((q,qi)=>{
         if(q.type==="mcq"){
           html+=`<div class="qcard"><p><strong style="color:var(--gold2)">س${qi+1}:</strong> ${q.q}</p><div class="qopts">`;
           q.options.forEach((o,oi)=>{
             let cls="qo";
             if(advSubmitted){if(oi===q.correct)cls+=" ok";else if(advAns[qi]===oi)cls+=" bad";} else if(advAns[qi]===oi) cls+=" sel";
-            html+=`<label class="${cls}"><input type="radio" name="adv${qi}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
+            const advName = `adv_${key.replace(/:/g,'_')}_${qi}`;
+            html+=`<label class="${cls}"><input type="radio" name="${advName}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${o}</label>`;
           });
           html+=`</div>`;
         } else {
@@ -2147,7 +2361,8 @@ function viewContent(modId, itemIdx){
           ['صحيح','خطأ'].forEach((opt,oi)=>{
             let cls="qo";
             if(advSubmitted){if((oi===0 ? true : false) === q.correct)cls+=" ok";else if(advAns[qi]===oi)cls+=" bad";} else if(advAns[qi]===oi) cls+=" sel";
-            html+=`<label class="${cls}"><input type="radio" name="adv${qi}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${opt}</label>`;
+            const advNameTF = `adv_${key.replace(/:/g,'_')}_${qi}`;
+            html+=`<label class="${cls}"><input type="radio" name="${advNameTF}" value="${oi}" ${advAns[qi]===oi?"checked":""} onchange="setAdvQuizAns('${key}',${qi},${oi},'${modId}',${itemIdx})">&nbsp;${opt}</label>`;
           });
           html+=`</div>`;
         }
@@ -2180,21 +2395,37 @@ function viewContent(modId, itemIdx){
 }
 
 function setQuizAns(key,qi,oi,modId,itemIdx){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
   S.content[key]=S.content[key]||{};
-  S.content[key].quizAnswers=S.content[key].quizAnswers||{};
-  S.content[key].quizAnswers[qi]=oi;
+  S.content[key].submissions=S.content[key].submissions||{};
+  S.content[key].submissions[sid]=S.content[key].submissions[sid]||{};
+  S.content[key].submissions[sid].quizAnswers=S.content[key].submissions[sid].quizAnswers||{};
+  S.content[key].submissions[sid].quizAnswers[qi]=oi;
   viewContent(modId,itemIdx);
 }
 function submitQuiz(key,modId,itemIdx){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
   const stored=S.content[key]||{};
-  S.content[key].quizSubmitted=true;
-  const score=(stored.quiz||[]).filter((q,i)=>(stored.quizAnswers||{})[i]===q.correct).length;
-  if(score===(stored.quiz||[]).length) notify("أحسنت! 🎉");
+  const quiz = stored.quiz||[];
+  S.content[key]=S.content[key]||{};
+  S.content[key].submissions=S.content[key].submissions||{};
+  const userSub = S.content[key].submissions[sid]||{};
+  const ans = userSub.quizAnswers || {};
+  const score = quiz.filter((q,i)=>ans[i]===q.correct).length;
+  S.content[key].submissions[sid] = {...userSub, quizSubmitted:true, score, timestamp:new Date().toISOString()};
+  if(score===quiz.length) notify("أحسنت! 🎉"); else notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
   viewContent(modId,itemIdx);
 }
 function retryQuiz(key,modId,itemIdx){
-  S.content[key].quizAnswers={};
-  S.content[key].quizSubmitted=false;
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
+  if(S.content[key] && S.content[key].submissions && S.content[key].submissions[sid]){
+    delete S.content[key].submissions[sid].quizAnswers;
+    S.content[key].submissions[sid].quizSubmitted=false;
+    delete S.content[key].submissions[sid].score;
+  }
   viewContent(modId,itemIdx);
 }
 async function genQuizAndRefresh(modId,itemIdx){
@@ -2225,29 +2456,45 @@ function flipCard(el){
 // ADVANCED QUIZ HANDLERS
 // ══════════════════════════════════════════════════════
 function setAdvQuizAns(key,qi,answer,modId,itemIdx){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
   S.content[key]=S.content[key]||{};
-  S.content[key].advQuizAnswers=S.content[key].advQuizAnswers||{};
-  S.content[key].advQuizAnswers[qi]=parseInt(answer);
+  S.content[key].submissions=S.content[key].submissions||{};
+  S.content[key].submissions[sid]=S.content[key].submissions[sid]||{};
+  S.content[key].submissions[sid].advQuizAnswers=S.content[key].submissions[sid].advQuizAnswers||{};
+  S.content[key].submissions[sid].advQuizAnswers[qi]=parseInt(answer);
   viewContent(modId,itemIdx);
 }
 
 function submitAdvQuiz(key,modId,itemIdx){
-  S.content[key].advQuizSubmitted=true;
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
   const stored=S.content[key]||{};
+  const adv = stored.advQuiz||[];
+  S.content[key]=S.content[key]||{};
+  S.content[key].submissions=S.content[key].submissions||{};
+  const userSub = S.content[key].submissions[sid]||{};
+  const ans = userSub.advQuizAnswers || {};
   let score=0;
-  (stored.advQuiz||[]).forEach((q,i)=>{
-    const ans=(stored.advQuizAnswers||{})[i];
-    if(q.type==="mcq" && ans===q.correct) score++;
-    else if(q.type==="tf" && (ans===0 ? true : false) === q.correct) score++;
+  adv.forEach((q,i)=>{
+    const a = ans[i];
+    if(q.type==="mcq" && a===q.correct) score++;
+    else if(q.type==="tf" && (a===0 ? true : false) === q.correct) score++;
   });
-  if(score===(stored.advQuiz||[]).length) notify("أحسنت جداً! 🏆");
-  else notify(`لقد حصلت على ${score}/${stored.advQuiz.length}`,"📊");
+  S.content[key].submissions[sid] = {...userSub, advQuizSubmitted:true, advScore:score, advTimestamp:new Date().toISOString()};
+  if(score===adv.length) notify("أحسنت جداً! 🏆");
+  else notify(`لقد حصلت على ${score}/${adv.length}`,'📊');
   viewContent(modId,itemIdx);
 }
 
 function retryAdvQuiz(key,modId,itemIdx){
-  S.content[key].advQuizAnswers={};
-  S.content[key].advQuizSubmitted=false;
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
+  if(S.content[key] && S.content[key].submissions && S.content[key].submissions[sid]){
+    delete S.content[key].submissions[sid].advQuizAnswers;
+    S.content[key].submissions[sid].advQuizSubmitted=false;
+    delete S.content[key].submissions[sid].advScore;
+  }
   viewContent(modId,itemIdx);
 }
 
@@ -2289,6 +2536,71 @@ function renderTeacherCourses(){
         <button class="btn bg sm" onclick="S.branch=${mod.branch};S.sem=${mod.sem};goto('courses')">الذهاب للمقياس في المقررات →</button>
       </div>
     </div>`).join("");
+}
+
+// ══════════════════════════════════════════════════════
+// PROFILE: عرض وتحرير الملف الشخصي مع صورة
+// ══════════════════════════════════════════════════════
+function renderProfile(){
+  const el = document.getElementById('profile-content'); if(!el) return;
+  if(!S.user){
+    el.innerHTML = `<div class="card">سجّل الدخول لعرض وتعديل ملفك الشخصي.</div><div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>`;
+    return;
+  }
+  const pic = S.user.profilePic || '';
+  const initials = (S.user.name||S.user.email||'مستخدم').split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+  const imgHtml = pic ? `<img id="profile-pic-img" src="${pic}" style="width:110px;height:110px;border-radius:12px;object-fit:cover;border:3px solid var(--gold2)">` : `<div id="profile-pic-placeholder" style="width:110px;height:110px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:1.25rem;border:3px dashed var(--bdr)">${initials}</div>`;
+
+  el.innerHTML = `
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <div style="flex-shrink:0">${imgHtml}
+        <div style="margin-top:8px">
+          <input type="file" id="profile-pic-file" accept="image/*" style="display:none" onchange="uploadProfilePic(this.files)">
+          <button class="btn bgh sm" onclick="document.getElementById('profile-pic-file').click()">تغيير الصورة</button>
+          <button class="btn br sm" style="margin-left:6px" onclick="removeProfilePic()">حذف الصورة</button>
+        </div>
+      </div>
+      <div style="flex:1">
+        <h3 style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--gold2)">${S.user.name||S.user.email}</h3>
+        <div style="color:var(--txt3);margin-bottom:8px">${S.user.email||''}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn bg" onclick="openEditProfile()">تعديل الملف</button>
+          <button class="btn bgh" onclick="doLogout()">خروج</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px" id="profile-edit-area"></div>
+  `;
+}
+
+function uploadProfilePic(files){
+  if(!files || files.length===0) return; const f = files[0];
+  if(f.size > 4*1024*1024){ notify('حجم الصورة كبير جداً (أقصى 4MB)','⚠️'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const data = e.target.result;
+    if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+    S.user.profilePic = data;
+    saveAppState(); buildNav(); renderProfile(); notify('تم تحديث الصورة الشخصية','✅');
+  };
+  reader.readAsDataURL(f);
+}
+
+function removeProfilePic(){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  if(!confirm('هل تريد إزالة الصورة الشخصية؟')) return;
+  delete S.user.profilePic; saveAppState(); buildNav(); renderProfile(); notify('تمت إزالة الصورة الشخصية','✅');
+}
+
+function openEditProfile(){
+  const area = document.getElementById('profile-edit-area'); if(!area) return;
+  area.innerHTML = `<div class="card"><div style="display:flex;flex-direction:column;gap:.6rem"><label class="fl">الاسم الكامل</label><input class="fi" id="edit-name" value="${S.user.name||''}"><label class="fl">البريد الإلكتروني</label><input class="fi" id="edit-email" value="${S.user.email||''}"><div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.5rem"><button class="btn bgh" onclick="renderProfile()">إلغاء</button><button class="btn bg" onclick="saveProfileEdits()">حفظ</button></div></div></div>`;
+}
+
+function saveProfileEdits(){
+  const n=document.getElementById('edit-name')?.value.trim(); const e=document.getElementById('edit-email')?.value.trim();
+  if(!n||!e){ notify('الاسم والبريد مطلوبان','⚠️'); return; }
+  S.user.name=n; S.user.email=e; saveAppState(); buildNav(); renderProfile(); notify('تم حفظ التغييرات','✅');
 }
 
 // ══════════════════════════════════════════════════════
@@ -2363,23 +2675,27 @@ function renderDashContent(){
   const el=document.getElementById("dash-content");if(!el)return;
   if(_dashTab==="students") renderDashStudents(el);
   else if(_dashTab==="teachers") renderDashTeachers(el);
+  else if(_dashTab==="ud") renderDashUdAnalytics(el);
   else renderDashCourses(el);
 }
 
 function renderDashStudents(el){
   el.innerHTML=`<div class="tw"><table>
-    <thead><tr><th>الاسم</th><th>البريد</th><th>الشعبة</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
-    <tbody>${S.students.map(s=>`<tr>
+    <thead><tr><th>الاسم</th><th>البريد</th><th>الشعبة</th><th>التاريخ</th><th>الحالة</th><th>التقدم</th><th>إجراء</th></tr></thead>
+    <tbody>${S.students.map(s=>{
+      const p = computeStudentProgress(s.id);
+      return `<tr>
       <td style="color:var(--txt);font-weight:600">${s.name}</td>
       <td>${s.email}</td>
       <td><span style="font-size:.72rem;color:var(--gold3)">${["اللغوية","الأدبية","النقدية"][s.branch]||"—"}</span></td>
       <td>${s.date}</td>
       <td><span class="st ${s.status==="pending"?"stp":s.status==="approved"?"sta":"str"}">${s.status==="pending"?"معلق":s.status==="approved"?"مقبول":"مرفوض"}</span></td>
+      <td style="min-width:160px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-weight:700">${p.percent}%</div><div style="font-size:.72rem;color:var(--txt3)">${p.correct}/${p.totalQuestions||0} أسئلة — ${p.attempted} محاولة</div></div></td>
       <td>${s.status==="pending"
         ?`<div style="display:flex;gap:4px"><button class="btn bgr xs" onclick="approveUser('student','${s.id}')">قبول ✓</button><button class="btn br xs" onclick="rejectUser('student','${s.id}')">رفض ✗</button></div>`
         :`<span style="color:var(--txt3);font-size:.72rem">تمّت</span>`
       }</td>
-    </tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
+    </tr>`}).join("")||`<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
   </table></div>`;
 }
 
@@ -2439,7 +2755,356 @@ function rejectUser(type, id){
 // ══════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// SAMPLE UD — قاعدة بيانات عيّنة مدمجة للاختبار دون تنزيل
+// ══════════════════════════════════════════════════════
+const SAMPLE_UD = [
+  { id:'s1', text:'جاءَ الطّالبُ مسرعًا.', tokens:[
+    {form:'جاءَ', lemma:'جاء', upos:'VERB', feats:{}, head:0, deprel:'root'},
+    {form:'الطّالبُ', lemma:'طالب', upos:'NOUN', feats:{Case:'Nom'}, head:1, deprel:'nsubj'},
+    {form:'مسرعًا', lemma:'مسرع', upos:'ADV', feats:{}, head:1, deprel:'advmod'}
+  ]},
+  { id:'s2', text:'قرأتِ المعلمةُ الكتابَ.', tokens:[
+    {form:'قرأتِ', lemma:'قرأ', upos:'VERB', feats:{}, head:0, deprel:'root'},
+    {form:'المعلمةُ', lemma:'معلمة', upos:'NOUN', feats:{Case:'Nom'}, head:1, deprel:'nsubj'},
+    {form:'الكتابَ', lemma:'كتاب', upos:'NOUN', feats:{Case:'Acc'}, head:1, deprel:'obj'}
+  ]},
+  { id:'s3', text:'السماءُ صافيةٌ اليومَ.', tokens:[
+    {form:'السماءُ', lemma:'سماء', upos:'NOUN', feats:{Case:'Nom'}, head:2, deprel:'nsubj'},
+    {form:'صافيةٌ', lemma:'صافي', upos:'ADJ', feats:{}, head:2, deprel:'root'},
+    {form:'اليومَ', lemma:'يوم', upos:'NOUN', feats:{Case:'Acc'}, head:2, deprel:'obl'}
+  ]},
+  { id:'s4', text:'الطلابُ يدرسون بجدٍّ.', tokens:[
+    {form:'الطلابُ', lemma:'طالب', upos:'NOUN', feats:{Case:'Nom'}, head:2, deprel:'nsubj'},
+    {form:'يدرسون', lemma:'درس', upos:'VERB', feats:{Mood:'Ind'}, head:0, deprel:'root'},
+    {form:'بجدٍّ', lemma:'بجد', upos:'ADV', feats:{}, head:2, deprel:'advmod'}
+  ]},
+  { id:'s5', text:'هذا كتابٌ جديدٌ.', tokens:[
+    {form:'هذا', lemma:'هذا', upos:'PRON', feats:{PronType:'Dem'}, head:2, deprel:'det'},
+    {form:'كتابٌ', lemma:'كتاب', upos:'NOUN', feats:{Case:'Nom'}, head:0, deprel:'root'},
+    {form:'جديدٌ', lemma:'جديد', upos:'ADJ', feats:{}, head:2, deprel:'amod'}
+  ]}
+];
+
+function importSampleUD(){
+  S.sampleKeys = [];
+  const posPool = ['NOUN','VERB','ADJ','ADV','PRON','DET','ADP','NUM','PROPN'];
+  SAMPLE_UD.forEach((s,i)=>{
+    const key = `SAMPLE:${i}`;
+    S.sampleKeys.push(key);
+    S.content[key] = S.content[key] || { content: s.text, quiz: [], pdfUrl: null };
+    const tokens = s.tokens.filter(t=>t.upos && t.upos!=='PUNCT');
+    for(let j=0;j<Math.min(2,tokens.length);j++){
+      const tok = tokens[j];
+      let choices = [tok.upos];
+      const others = posPool.filter(p=>p!==tok.upos);
+      shuffle(others);
+      while(choices.length<4 && others.length) choices.push(others.pop());
+      shuffle(choices);
+      const correctIdx = choices.indexOf(tok.upos);
+      S.content[key].quiz.push({q:`ما فئة الكلام للكلمة «${tok.form}» في الجملة: «${s.text}»؟`,options:choices,correct:correctIdx,explain:`UPOS=${tok.upos}`});
+    }
+  });
+  notify('تم استيراد قاعدة العيّنة محلياً. استخدم viewSample(index) للعرض','✅');
+}
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
+
+function viewSample(index){
+  const key = `SAMPLE:${index}`;
+  const stored = S.content[key] || {};
+  let html = `
+    <div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
+      <h2 style="font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2);flex:1">${stored.content || 'نص العينة'}</h2>
+    </div>`;
+  if(stored.content) html += `<div class="card" style="margin-bottom:1rem"><div style="white-space:pre-wrap;color:var(--txt)">${stored.content}</div></div>`;
+  html += `<div class="qbox"><div class="qhdr"><h3>الاختبار (عيّنة)</h3></div>`;
+  if(!stored.quiz || stored.quiz.length===0){
+    html += `<div class="al alw">لا توجد أسئلة لهذه العيّنة.</div>`;
+  } else {
+    const ans = stored.sampleAnswers || {};
+    const submitted = stored.sampleSubmitted || false;
+    stored.quiz.forEach((q,qi)=>{
+      html += `<div class="qcard"><p>${qi+1}. ${q.q}</p><div class="qopts">`;
+      q.options.forEach((o,oi)=>{
+        let cls = "qo";
+        if(submitted){ if(oi===q.correct) cls += " ok"; else if(ans[qi]===oi) cls += " bad"; }
+        else if(ans[qi]===oi) cls += " sel";
+        const nameAttr = `sample_${index}_${qi}`;
+        html += `<label class="${cls}"><input type="radio" name="${nameAttr}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setSampleAns('${key}',${qi},${oi})">&nbsp;${o}</label>`;
+      });
+      html += `</div></div>`;
+    });
+    if(!submitted){
+      const allAns = Object.keys(stored.sampleAnswers||{}).length === stored.quiz.length;
+      html += `<button class="btn bg" ${allAns? '':'disabled'} onclick="submitSampleQuiz('${key}')">${allAns? 'تسليم' : 'أجب على جميع الأسئلة'}</button>`;
+    } else {
+      const score = stored.sampleScore || 0;
+      html += `<div class="sbox"><div class="sbig">${score}/${stored.quiz.length}</div></div>`;
+    }
+  }
+  html += `</div>`;
+  document.getElementById('courses-content').innerHTML = `<div style="max-width:860px;margin:0 auto">${html}</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// UD VIEWER: list + per-item viewer for imported UD questions
+// ══════════════════════════════════════════════════════
+function showUdList(){
+  const keys = (S.udImportKeys && S.udImportKeys.length>0) ? S.udImportKeys : Object.keys(S.content).filter(k=>k.startsWith('UD_IMPORT:'));
+  if(!keys || keys.length===0){ notify('لا توجد أسئلة UD مستوردة بعد','⚠️'); return; }
+  let html = `<div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
+      <h2 style="font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2);flex:1">قائمة أسئلة UD المستوردة</h2>
+    </div>`;
+  html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">`;
+  keys.forEach((k,i)=>{
+    const stored = S.content[k] || {};
+    const q = (stored.quiz && stored.quiz[0]) || {q: stored.content || '—', options:[]};
+    const snippet = (stored.content || q.q || '').slice(0,220).replace(/\n/g,' ');
+    html += `<div class="card"><div style="display:flex;gap:8px;align-items:center;margin-bottom:.5rem"><div style="font-weight:800;color:var(--gold2)">UD${i+1}</div><div style="color:var(--txt3);font-size:.82rem">${(stored.quiz||[]).length} سؤال</div></div><div style="color:var(--txt);margin-bottom:.8rem">${snippet}...</div><div style="display:flex;gap:6px;justify-content:flex-end"><button class="btn bg xs" onclick="viewUd(${i})">دخول →</button></div></div>`;
+  });
+  html += `</div>`;
+  document.getElementById('courses-content').innerHTML = `<div style="max-width:1100px;margin:0 auto">${html}</div>`;
+}
+
+function viewUd(index){
+  const key = `UD_IMPORT:${index}`;
+  const stored = S.content[key] || {};
+  const currentUserId = S.user?.id || S.user?.email || S.user?.name;
+  const userSub = getUserSubmission(stored, currentUserId);
+  let html = `<div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+    <button class="btn bgh sm" onclick="showUdList()">← العودة</button>
+    <h2 style="font-family:'Amiri',serif;font-size:1.15rem;color:var(--gold2);flex:1">سؤال UD رقم ${index+1}</h2>
+  </div>`;
+  if(stored.content) html += `<div class="card" style="margin-bottom:1rem"><div style="white-space:pre-wrap;color:var(--txt)">${stored.content}</div></div>`;
+  html += `<div class="qbox"><div class="qhdr"><h3>الاختبار</h3></div>`;
+  if(!stored.quiz || stored.quiz.length===0){ html += `<div class="al alw">لا توجد أسئلة لهذه العيّنة.</div>`; }
+  else{
+    const ans = userSub.quizAnswers || {};
+    const submitted = userSub.quizSubmitted || false;
+    stored.quiz.forEach((q,qi)=>{
+      html += `<div class="qcard"><p>${qi+1}. ${q.q}</p><div class="qopts">`;
+      q.options.forEach((o,oi)=>{
+        let cls = "qo";
+        if(submitted){ if(oi===q.correct) cls += " ok"; else if(ans[qi]===oi) cls += " bad"; }
+        else if(ans[qi]===oi) cls += " sel";
+        const nameAttr = `ud_${index}_${qi}`;
+        html += `<label class="${cls}"><input type="radio" name="${nameAttr}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setUdQuizAns('${key}',${qi},${oi},${index})">&nbsp;${o}</label>`;
+      });
+      html += `</div>`;
+      if(submitted && q.explain) html += `<div class="qexp">💡 ${q.explain}</div>`;
+      html += `</div>`;
+    });
+    if(!submitted){ const allAns = Object.keys(ans).length === stored.quiz.length; html += `<button class="btn bg" ${allAns? '':'disabled'} onclick="submitUdQuiz('${key}',${index})">${allAns? 'تسليم' : 'أجب على جميع الأسئلة'}</button>`; }
+    else{ const score = stored.quiz.filter((q,i)=>ans[i]===q.correct).length; html += `<div class="sbox"><div class="sbig">${score}/${stored.quiz.length}</div></div>`; }
+  }
+  html += `</div>`;
+  document.getElementById('courses-content').innerHTML = `<div style="max-width:860px;margin:0 auto">${html}</div>`;
+}
+
+function setUdQuizAns(key, qi, oi, index){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
+  S.content[key]=S.content[key]||{};
+  S.content[key].submissions=S.content[key].submissions||{};
+  S.content[key].submissions[sid]=S.content[key].submissions[sid]||{};
+  S.content[key].submissions[sid].quizAnswers=S.content[key].submissions[sid].quizAnswers||{};
+  S.content[key].submissions[sid].quizAnswers[qi]=oi;
+  viewUd(index);
+}
+
+function submitUdQuiz(key, index){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
+  const stored = S.content[key] || {};
+  const quiz = stored.quiz || [];
+  S.content[key]=S.content[key]||{};
+  S.content[key].submissions=S.content[key].submissions||{};
+  const userSub = S.content[key].submissions[sid]||{};
+  const ans = userSub.quizAnswers || {};
+  const score = quiz.filter((q,i)=>ans[i]===q.correct).length;
+  S.content[key].submissions[sid] = {...userSub, quizSubmitted:true, score, timestamp:new Date().toISOString()};
+  if(score===quiz.length) notify('أحسنت! 🎉'); else notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
+  viewUd(index);
+}
+
+function retryUdQuiz(key, index){
+  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
+  const sid = S.user.id || S.user.email || S.user.name;
+  if(S.content[key] && S.content[key].submissions && S.content[key].submissions[sid]){
+    delete S.content[key].submissions[sid].quizAnswers;
+    S.content[key].submissions[sid].quizSubmitted=false;
+    delete S.content[key].submissions[sid].score;
+  }
+  viewUd(index);
+}
+
+function setSampleAns(key,qi,oi){
+  S.content[key] = S.content[key] || {};
+  S.content[key].sampleAnswers = S.content[key].sampleAnswers || {};
+  S.content[key].sampleAnswers[qi] = oi;
+  const idx = parseInt(key.split(':')[1]);
+  viewSample(idx);
+}
+
+function submitSampleQuiz(key){
+  const stored = S.content[key] || {};
+  const quiz = stored.quiz || [];
+  const ans = stored.sampleAnswers || {};
+  const score = quiz.filter((q,i)=>ans[i]===q.correct).length;
+  S.content[key].sampleSubmitted = true;
+  S.content[key].sampleScore = score;
+  notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
+  const idx = parseInt(key.split(':')[1]);
+  viewSample(idx);
+}
+// ══════════════════════════════════════════════════════
+// UD JSON Loader — attempts to import data/ud_questions.json into S.content
+// Each question becomes a content item under module ID 'UD_IMPORT'
+// ══════════════════════════════════════════════════════
+async function importUdQuestions(){
+  try{
+    const resp = await fetch('data/ud_questions.json');
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const j = await resp.json();
+    const qs = j.questions || (Array.isArray(j)? j : []);
+    if(!qs || qs.length===0){ notify('ملف الأسئلة فارغ أو غير صالح','⚠️'); return; }
+    S.udImportKeys = S.udImportKeys || [];
+    const moduleId = 'UD_IMPORT';
+    qs.forEach((q,i)=>{
+      const key = `${moduleId}:${i}`;
+      S.udImportKeys.push(key);
+      S.content[key] = S.content[key] || { content: q.q || q.question || '', quiz: [], pdfUrl: null };
+      S.content[key].quiz.push({ q: q.q || q.question || '', options: q.options || q.opts || [], correct: q.correct || 0, explain: q.explain || '' });
+    });
+    notify(`تم استيراد ${qs.length} سؤالًا من ud_questions.json`,'✅');
+  }catch(e){
+    console.warn('importUdQuestions failed',e);
+    notify('فشل استيراد data/ud_questions.json — افتح الموقع عبر خادم محلي أو استخدم زر الاستيراد','⚠️');
+  }
+}
+// Persistence: save/load to localStorage
+function saveAppState(){
+  try{
+    localStorage.setItem('minasat_S_v1', JSON.stringify(S));
+  }catch(e){ console.warn('saveAppState failed',e); }
+}
+function loadAppState(){
+  try{
+    const v = localStorage.getItem('minasat_S_v1');
+    if(v){ const parsed = JSON.parse(v); if(parsed){ S = parsed; notify('تم استعادة الحالة من localStorage','✅'); }
+    }
+  }catch(e){ console.warn('loadAppState failed',e); }
+}
+function autoSaveSetup(){
+  if(window._minasat_autosave) return;
+  window._minasat_autosave = setInterval(saveAppState, 10000);
+  window.addEventListener('beforeunload', saveAppState);
+}
+
+function resetAppState(){
+  if(!confirm('هل أنت متأكد أنك تريد تهيئة الحالة المحلية؟ سيتم مسح بيانات الحفظ المحلية وإعادة تحميل الصفحة.')) return;
+  try{
+    localStorage.removeItem('minasat_S_v1');
+    notify('تم تهيئة الحالة — إعادة تحميل الصفحة...','✅');
+    setTimeout(()=>location.reload(),700);
+  }catch(e){
+    console.warn('resetAppState failed',e);
+    notify('فشل التهيئة','⚠️');
+  }
+}
+
+function assignUdToModule(moduleId){
+  if(!moduleId){ notify('أدخل رمز المقرر المراد ربط الأسئلة به','⚠️'); return; }
+  if(!S.udImportKeys || S.udImportKeys.length===0){ notify('لا توجد أسئلة مستوردة','⚠️'); return; }
+  const moved = [];
+  S.udImportKeys.forEach((k,i)=>{
+    const q = S.content[k]; if(!q) return;
+    const target = `${moduleId}:${i}`;
+    S.content[target] = q;
+    moved.push(target);
+    delete S.content[k];
+  });
+  S.udImportKeys = moved;
+  renderCourses();
+  notify('تم ربط أسئلة UD بالمقرر '+moduleId,'✅');
+  saveAppState();
+}
+
+function exportUdCsv(){
+  const keys = (S.udImportKeys && S.udImportKeys.length>0) ? S.udImportKeys : Object.keys(S.content).filter(k=>k.startsWith('UD_IMPORT:'));
+  if(!keys || keys.length===0){ notify('لا توجد أسئلة UD للتصدير','⚠️'); return; }
+  let csv = 'question,option1,option2,option3,option4,correct,explain,module\n';
+  keys.forEach(k=>{
+    const stored = S.content[k];
+    const quiz = stored.quiz || [];
+    quiz.forEach(q=>{
+      const opts = q.options || [];
+      const row = [q.q||'', opts[0]||'', opts[1]||'', opts[2]||'', opts[3]||'', q.correct||0, q.explain||'', k];
+      const esc = s => '"'+String(s).replace(/"/g,'""')+'"';
+      csv += row.map(esc).join(',') + '\n';
+    });
+  });
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'ud_questions_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  notify('تم إنشاء ملف CSV للتنزيل','✅');
+}
+
+function renderDashUdAnalytics(el){
+  const keys = (S.udImportKeys && S.udImportKeys.length>0) ? S.udImportKeys : Object.keys(S.content).filter(k=>k.startsWith('UD_IMPORT:'));
+  const total = keys.reduce((sum,k)=> sum + ((S.content[k] && S.content[k].quiz && S.content[k].quiz.length)||0), 0);
+  const uposCounts = {};
+  const byModule = {};
+  keys.forEach(k=>{
+    const quiz = (S.content[k] && S.content[k].quiz) || [];
+    quiz.forEach(q=>{
+      const exp = q.explain || '';
+      let up = null;
+      if(exp.includes('UPOS=')) up = exp.split('UPOS=')[1].split(/\s|\W/)[0];
+      else if(exp.includes('Case=')) up = 'Case:'+ (exp.split('Case=')[1].split(/\s|\W/)[0]);
+      if(up) uposCounts[up] = (uposCounts[up]||0)+1;
+    });
+    const mod = k.split(':')[0]; byModule[mod] = (byModule[mod]||0) + ((S.content[k] && S.content[k].quiz && S.content[k].quiz.length) || 0);
+  });
+  let h = `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">`;
+  h += `<div class="card" style="flex:1;text-align:center"><div style="font-size:1.8rem;font-weight:900">${total}</div><div style="color:var(--txt3)">أسئلة مستوردة</div></div>`;
+  h += `<div class="card" style="flex:1;text-align:center"><div style="font-size:1.8rem;font-weight:900">${Object.keys(uposCounts).length}</div><div style="color:var(--txt3)">أنواع UPOS الممثلة</div></div>`;
+  h += `</div>`;
+  h += `<div class="card"><h3 style="margin-bottom:.6rem">توزيع حسب UPOS</h3><div style="display:flex;gap:8px;flex-wrap:wrap">` + Object.keys(uposCounts).map(k=>`<div style="padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.03);font-weight:700">${k}: ${uposCounts[k]}</div>`).join('') + `</div></div>`;
+  h += `<div class="card" style="margin-top:10px"><h3>تصدير/إدارة</h3><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><button class="btn bg sm" onclick="exportUdCsv()">تصدير CSV</button><input id="assign-ud-module" class="fi xs" placeholder="مثال: L033" style="width:160px;margin-left:8px"><button class="btn bt sm" onclick="assignUdToModule(document.getElementById('assign-ud-module').value)">ربط بالمقرر</button><button class="btn bgh sm" onclick="saveAppState()">حفظ محلي</button><button class="btn bv sm" onclick="pushStateToServer()">حفظ إلى الخادم</button><button class="btn br sm" onclick="resetAppState()">تهيئة</button></div></div>`;
+  el.innerHTML = h;
+}
+
+async function pushStateToServer(){
+  try{
+    const resp = await fetch('http://127.0.0.1:5000/api/save_state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({state:S})});
+    if(!resp.ok){ const t = await resp.text(); console.warn(t); notify('فشل الحفظ إلى الخادم','⚠️'); return; }
+    const d = await resp.json(); notify('تم الحفظ إلى الخادم','✅');
+  }catch(e){ console.error(e); notify('خطأ في الاتصال بالخادم','⚠️'); }
+}
+
+// Load saved state, import if needed, initialize UI and autosave
+loadAppState();
+if(!S.udImportKeys || S.udImportKeys.length===0) importUdQuestions();
 buildNav();
+autoSaveSetup();
+// Initialize Tiaret map on the homepage
+function initTiaretMap(){
+  const el = document.getElementById('tiaret-map'); if(!el) return;
+  try{
+    const lat = 35.3720, lng = 1.3169;
+    const map = L.map('tiaret-map', {zoomControl:true}).setView([lat,lng], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([lat,lng]).addTo(map).bindPopup('<strong>تيارت</strong><br>ولاية تيارت').openPopup();
+  }catch(e){ console.warn('initTiaretMap failed',e); }
+}
+initTiaretMap();
 </script>
 </body>
 </html>

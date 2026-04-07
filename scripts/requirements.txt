@@ -1,0 +1,4 @@
+requests
+conllu
+tqdm
+flask
