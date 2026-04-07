@@ -53,3 +53,18 @@ flask --app webapp.app send-test-email recipient@example.com
 ملاحظات:
 - إن لم تُضبط متغيرات SMTP، يعمل النظام في وضع التطوير ويطبع محتوى الرسائل في الـstdout بدلاً من إرسالها فعليًا.
 - لتشغيل لوحة المشرف: ادخل إلى `/admin` ثم سجّل الدخول باستخدام `ADMIN_PASSWORD`.
+
+الشهادات (PDF):
+
+- يعتمد توليد شهادات PDF على مكتبة `reportlab`. ثبتها مع الاعتماديات (`pip install -r requirements.txt`).
+- لتجسيد نص عربي صحيح قد تحتاج إلى خط TTF يدعم العربية. ضع مسار الملف في متغير البيئة `CERT_FONT_PATH` قبل تشغيل التطبيق، مثال (PowerShell):
+```powershell
+$env:CERT_FONT_PATH = 'C:\path\to\YourArabicFont.ttf'
+``` 
+- لتوليد شهادة لنسخة اختبار محفوظة عبر CLI:
+```powershell
+flask --app webapp.app gen-cert <ATTEMPT_ID>
+# مع ارسال بالبريد:
+flask --app webapp.app gen-cert <ATTEMPT_ID> --send
+```
+- عبر واجهة الإدارة: افتح `/admin` → `دفتر الدرجات` ثم استخدم زر "توليد وإرسال" أو زر "تحميل" لتحميل ملف الشهادة.

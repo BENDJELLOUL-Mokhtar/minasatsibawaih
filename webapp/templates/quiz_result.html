@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>نتائج الاختبار</h2>
+  <p class="lead">النتيجة: <strong>{{ score }}</strong> من <strong>{{ total }}</strong> — {{ percent }}%</p>
+  {% if email %}
+    <p>تم إرسال النتيجة إلى: <strong>{{ email }}</strong> — حالة الإرسال: {{ 'نجح' if email_sent else 'فشل' }}</p>
+  {% endif %}
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>السؤال</th>
+        <th>إجابتك</th>
+        <th>الإجابة الصحيحة</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in results %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td style="max-width:40rem">{{ r.text }}</td>
+        <td>{{ r.options[r.selected] if r.selected is not none and r.selected < (r.options|length) else 'لا إجابة' }}</td>
+        <td>{{ r.options[r.correct] if r.correct is not none and r.correct < (r.options|length) else '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a class="btn btn-outline-primary" href="{{ url_for('quiz') }}">إعادة الاختبار</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>رفع ملف PDF لتوليد الأسئلة</h2>
+  <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">اختر ملف PDF</label>
+      <input type="file" name="pdf" accept="application/pdf" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">عدد الأسئلة المطلوب توليدها</label>
+      <input type="number" name="n" value="10" min="1" max="200" class="form-control">
+    </div>
+    <button class="btn btn-primary">رفع وتوليد</button>
+  </form>
+{% endblock %}
