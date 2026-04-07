@@ -134,6 +134,18 @@ def init_db():
     db.create_all()
     print('Database initialized.')
 
+import click
+
+@app.cli.command('send-test-email')
+@click.argument('to')
+def send_test_email(to):
+    """Send a test email to the given address using configured SMTP."""
+    ok = send_email(to, 'اختبار البريد', 'هذه رسالة اختبار من نظام التسجيل.')
+    if ok:
+        print('Test email sent to', to)
+    else:
+        print('Failed to send test email to', to)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
