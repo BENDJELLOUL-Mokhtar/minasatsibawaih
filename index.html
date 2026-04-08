@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -455,8 +459,28 @@ select.fi{cursor:pointer}
       <p class="sec-sub">عرض نتائج الاختبارات والتقييمات الشخصية.</p>
       <div class="hr"></div>
       <div id="grades-content">
-        <div class="card">سجّل الدخول لعرض درجاتك وتفاصيل التقييم.</div>
-        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
+        <div class="card" id="nahwApp">
+          <h3 style="color:var(--gold2);font-family:'Amiri',serif;margin-bottom:.6rem">قسم الاختبارات النحوية</h3>
+          <p style="color:var(--txt2);font-size:.84rem;line-height:1.8;margin-bottom:1rem">اختبار تفاعلي من قاعدة البيانات المحلية مع تتبّع التقدّم حسب المستوى.</p>
+          <div class="fg" style="max-width:320px">
+            <label class="fl" for="levelSelect">المستوى</label>
+            <select id="levelSelect" class="fi" onchange="startNahwSession()">
+              <option value="beginner">مبتدئ</option>
+              <option value="intermediate">متوسط</option>
+              <option value="advanced">متقدم</option>
+            </select>
+          </div>
+          <div class="qbox" style="margin-top:.75rem">
+            <div id="progress" style="color:var(--txt3);font-size:.78rem;margin-bottom:.65rem"></div>
+            <div id="questionText" style="color:var(--txt);font-size:.95rem;line-height:1.9;margin-bottom:.85rem">جاري تحميل الأسئلة...</div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <input id="answer" class="fi" style="max-width:460px;flex:1" placeholder="اكتب إجابتك هنا">
+              <button id="checkBtn" class="btn bg" onclick="checkNahwAnswer()">تحقّق</button>
+              <button id="nextBtn" class="btn bo" style="display:none" onclick="nextNahwQuestion()">السؤال التالي</button>
+            </div>
+            <div id="feedback" style="margin-top:.85rem;font-size:.86rem;line-height:1.8"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -493,7 +517,7 @@ select.fi{cursor:pointer}
   <div id="page-profile" class="page">
     <div class="sec">
       <h2 class="sec-title">الملف الشخصي</h2>
-      <p class="sec-sub">عرض وتحرير معلومات الحساب الشخصية.</p>
+      <p class="sec-sub">عرض وتحرير معلومات الحساب مع ملف ذكي يساعد على التقييم والتوجيه الشخصي.</p>
       <div class="hr"></div>
       <div id="profile-content">
         <div class="card">سجّل الدخول لعرض وتعديل ملفك الشخصي.</div>
@@ -1571,6 +1595,7 @@ function getAllSubjects(branches) {
 // STATE
 // ══════════════════════════════════════════════════════
 const ADMIN = { email:"bendjalloul@univ-tiaret.dz", pw:"Admin2025" };
+const BRANCH_LABELS = ["الدراسات اللغوية","الدراسات الأدبية","الدراسات النقدية"];
 
 let S = {
   user: null,
@@ -1597,6 +1622,671 @@ let S = {
     {id:"d2",author:"أ.د. بن جلول مختار",init:"م",role:"admin",cid:"all",text:"الحال وصف يبيّن هيئة صاحبه وقت الحدث كـ«جاء مسرعاً»، والتمييز يرفع الإبهام كـ«عشرين كتاباً».",time:"منذ يومين",likes:11,replies:[]},
   ],
 };
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
+function uniqList(items){
+  return [...new Set((items||[]).filter(Boolean))];
+}
+
+function getBranchLabel(branch){
+  return BRANCH_LABELS[branch] || "غير محددة";
+}
+
+function getRoleLabel(role){
+  if(role === "admin") return "مدير المنصة";
+  if(role === "teacher") return "أستاذ";
+  if(role === "student") return "طالب";
+  return "مستخدم";
+}
+
+function createEmptySocialAccounts(){
+  return {
+    facebook: "",
+    instagram: "",
+    x: "",
+    tiktok: "",
+    youtube: "",
+    telegram: "",
+    whatsapp: "",
+    linkedin: "",
+  };
+}
+
+function getSocialPlatformLabel(platform){
+  return {
+    facebook: "Facebook",
+    instagram: "Instagram",
+    x: "X",
+    tiktok: "TikTok",
+    youtube: "YouTube",
+    telegram: "Telegram",
+    whatsapp: "WhatsApp",
+    linkedin: "LinkedIn",
+  }[platform] || platform;
+}
+
+function normalizeSocialAccounts(raw){
+  const merged = {...createEmptySocialAccounts(), ...(raw||{})};
+  Object.keys(merged).forEach(key=>{
+    merged[key] = String(merged[key] ?? "").trim();
+  });
+  return merged;
+}
+
+function buildSocialAccountUrl(platform, value){
+  const original = String(value || "").trim();
+  if(!original) return "";
+  if(/^https?:\/\//i.test(original)) return original;
+  const handle = original.replace(/^@/, "").trim();
+  const phone = original.replace(/[^\d+]/g, "").replace(/^\+/, "");
+  if(platform === "facebook") return `https://facebook.com/${handle}`;
+  if(platform === "instagram") return `https://instagram.com/${handle}`;
+  if(platform === "x") return `https://x.com/${handle}`;
+  if(platform === "tiktok") return `https://www.tiktok.com/@${handle}`;
+  if(platform === "youtube") return handle.startsWith("@") ? `https://youtube.com/${handle}` : `https://youtube.com/@${handle}`;
+  if(platform === "telegram") return `https://t.me/${handle}`;
+  if(platform === "whatsapp") return phone ? `https://wa.me/${phone}` : "";
+  if(platform === "linkedin") return `https://linkedin.com/in/${handle}`;
+  return "";
+}
+
+function getLinkedSocialAccounts(context){
+  const accounts = normalizeSocialAccounts(context?.socialAccounts);
+  return Object.entries(accounts)
+    .filter(([, value])=>Boolean(value))
+    .map(([platform, value])=>({
+      platform,
+      label: getSocialPlatformLabel(platform),
+      value,
+      url: buildSocialAccountUrl(platform, value),
+    }));
+}
+
+function getSocialConnectionSummary(context){
+  const ctx = normalizeStudentContext(context);
+  const consent = !!ctx.socialConsent;
+  const linked = consent ? getLinkedSocialAccounts(ctx) : [];
+  return {
+    consent,
+    count: linked.length,
+    linked,
+  };
+}
+
+function createEmptyStudentContext(){
+  return {
+    socialIntegration: "",
+    culturalExposure: "",
+    economicLevel: "",
+    familySupport: "",
+    familyStructure: "",
+    housingType: "",
+    studySpace: "",
+    birthOrder: "",
+    brothersCount: "",
+    sistersCount: "",
+    homeLanguage: "",
+    devicesAccess: "",
+    internetAccess: "",
+    workCommitment: "",
+    socialConsent: false,
+    socialAccounts: createEmptySocialAccounts(),
+    teacherNotes: "",
+    teacherUpdatedAt: "",
+    teacherUpdatedBy: "",
+    notes: "",
+    formSubmittedAt: "",
+    formSyncedAt: "",
+    formSyncSource: "",
+  };
+}
+
+function normalizeIntegerLike(value){
+  if(value === "" || value === null || value === undefined) return "";
+  const n = parseInt(value,10);
+  return Number.isFinite(n) && n >= 0 ? n : "";
+}
+
+function normalizeStudentContext(raw){
+  const base = createEmptyStudentContext();
+  const merged = {...base, ...(raw||{})};
+  merged.birthOrder = normalizeIntegerLike(merged.birthOrder);
+  merged.brothersCount = normalizeIntegerLike(merged.brothersCount);
+  merged.sistersCount = normalizeIntegerLike(merged.sistersCount);
+  merged.socialConsent = !!merged.socialConsent;
+  merged.socialAccounts = normalizeSocialAccounts(merged.socialAccounts);
+  Object.keys(base).forEach(key=>{
+    if(["birthOrder","brothersCount","sistersCount","socialConsent","socialAccounts"].includes(key)) return;
+    merged[key] = String(merged[key] ?? "").trim();
+  });
+  return merged;
+}
+
+function normalizeStudentRecord(student){
+  return {
+    ...student,
+    smartProfile: normalizeStudentContext(student?.smartProfile),
+    profilePic: student?.profilePic || "",
+  };
+}
+
+function buildSessionUserFromRecord(role, record){
+  const sessionUser = {...record, role};
+  delete sessionUser.pw;
+  if(role === "student") sessionUser.smartProfile = normalizeStudentContext(record.smartProfile);
+  return sessionUser;
+}
+
+function getCurrentLinkedRecord(){
+  if(!S.user) return null;
+  if(S.user.role === "student") return (S.students||[]).find(x=>x.id===S.user.id || x.email===S.user.email) || null;
+  if(S.user.role === "teacher") return (S.teachers||[]).find(x=>x.id===S.user.id || x.email===S.user.email) || null;
+  return null;
+}
+
+function getCurrentStudentRecord(){
+  if(!S.user || S.user.role !== "student") return null;
+  return (S.students||[]).find(x=>x.id===S.user.id || x.email===S.user.email) || null;
+}
+
+function applyCurrentUserPatch(patch){
+  if(!S.user) return;
+  const linked = getCurrentLinkedRecord();
+  if(linked) Object.assign(linked, patch);
+  Object.assign(S.user, patch);
+}
+
+function syncCurrentStudentFromRecord(){
+  if(!S.user || S.user.role !== "student") return;
+  const student = getCurrentStudentRecord();
+  if(!student){
+    S.user.smartProfile = normalizeStudentContext(S.user.smartProfile);
+    return;
+  }
+  student.smartProfile = normalizeStudentContext({...student.smartProfile, ...(S.user.smartProfile||{})});
+  if(S.user.profilePic && !student.profilePic) student.profilePic = S.user.profilePic;
+  S.user = buildSessionUserFromRecord("student", student);
+}
+
+function getWebappApiBases(){
+  const sameOrigin = /^https?:/i.test(window.location.origin || '') ? window.location.origin : '';
+  return uniqList([
+    sameOrigin,
+    window.MINASAT_WEBAPP_API || '',
+    localStorage.getItem('MINASAT_WEBAPP_API') || '',
+    'http://127.0.0.1:5050',
+    'http://127.0.0.1:5000',
+  ].map(value=>String(value || '').trim().replace(/\/+$/,''))).filter(Boolean);
+}
+
+function normalizeImportedSmartProfileChoice(field, value){
+  const raw = String(value ?? '').trim();
+  if(!raw) return '';
+  const directMaps = {
+    socialIntegration: {'مرتفع':'جيد','متوسط':'متوسط','منخفض':'يحتاج دعماً'},
+    culturalExposure: {'واسع':'مرتفع','متوسط':'متوسط','محدود':'محدود'},
+    economicLevel: {'يحتاج دعماً':'بحاجة إلى دعم','متوسط':'متوسط','مستقر':'مستقر'},
+    familySupport: {'قوي':'مرتفعة','متوسط':'متوسطة','ضعيف':'محدودة'},
+    familyStructure: {'أسرة ممتدة':'مع أسرة ممتدة','أسرة نووية':'مع الوالدين'},
+    housingType: {'إقامة جامعية':'سكن جامعي','سكن مشترك':'أخرى'},
+    studySpace: {'متوفر':'غرفة مستقلة','متوفر جزئياً':'زاوية هادئة','غير متوفر':'لا توجد مساحة ثابتة'},
+    devicesAccess: {'جيد':'جهاز شخصي','محدود':'جهاز مشترك','ضعيف':'وصول محدود'},
+    internetAccess: {'جيدة':'مستقر','متوسطة':'متوسط','ضعيفة':'ضعيف','غير ثابتة':'ضعيف'},
+  };
+  if(directMaps[field] && directMaps[field][raw]) return directMaps[field][raw];
+  if(field === 'familyStructure'){
+    if(raw.includes('ممت')) return 'مع أسرة ممتدة';
+    if(raw.includes('أحد')) return 'مع أحد الوالدين';
+    if(raw.includes('والد') || raw.includes('نووية')) return 'مع الوالدين';
+    if(raw.includes('مستقل')) return 'مستقل';
+  }
+  if(field === 'housingType'){
+    if(raw.includes('جامع')) return 'سكن جامعي';
+    if(raw.includes('شقة')) return 'شقة';
+    if(raw.includes('منزل') || raw.includes('عائل')) return 'منزل عائلي';
+    if(raw.includes('قريب')) return 'مع أقارب';
+    if(raw.includes('مشترك')) return 'أخرى';
+  }
+  if(field === 'studySpace'){
+    if(raw.includes('غير') || raw.includes('لا توجد')) return 'لا توجد مساحة ثابتة';
+    if(raw.includes('جزئ') || raw.includes('مشترك')) return 'مساحة مشتركة';
+    if(raw.includes('هاد') || raw.includes('زاوية')) return 'زاوية هادئة';
+    if(raw.includes('غرفة') || raw.includes('متوفر')) return 'غرفة مستقلة';
+  }
+  if(field === 'devicesAccess'){
+    if(raw.includes('هاتف')) return 'هاتف فقط';
+    if(raw.includes('شخص')) return 'جهاز شخصي';
+    if(raw.includes('مشترك')) return 'جهاز مشترك';
+    if(raw.includes('ضعيف') || raw.includes('محدود')) return 'وصول محدود';
+  }
+  if(field === 'internetAccess'){
+    if(raw.includes('جيد') || raw.includes('مستقر')) return 'مستقر';
+    if(raw.includes('متوس')) return 'متوسط';
+    if(raw.includes('ضعيف') || raw.includes('غير ثابت')) return 'ضعيف';
+  }
+  return raw;
+}
+
+function normalizeImportedWorkCommitment(value){
+  const raw = String(value ?? '').trim();
+  if(!raw) return '';
+  if(raw.includes('لا يوجد') || raw === 'لا') return 'لا يوجد';
+  if(raw.includes('جزئي') || raw.includes('عمل')) return 'جزئي';
+  if(raw.includes('رعاية') || raw.includes('مسؤول') || raw.includes('مرتفع')) return 'مرتفع';
+  return raw;
+}
+
+function normalizeImportedStudentContext(raw, meta={}){
+  const imported = normalizeStudentContext(raw);
+  return normalizeStudentContext({
+    ...imported,
+    socialIntegration: normalizeImportedSmartProfileChoice('socialIntegration', imported.socialIntegration),
+    culturalExposure: normalizeImportedSmartProfileChoice('culturalExposure', imported.culturalExposure),
+    economicLevel: normalizeImportedSmartProfileChoice('economicLevel', imported.economicLevel),
+    familySupport: normalizeImportedSmartProfileChoice('familySupport', imported.familySupport),
+    familyStructure: normalizeImportedSmartProfileChoice('familyStructure', imported.familyStructure),
+    housingType: normalizeImportedSmartProfileChoice('housingType', imported.housingType),
+    studySpace: normalizeImportedSmartProfileChoice('studySpace', imported.studySpace),
+    devicesAccess: normalizeImportedSmartProfileChoice('devicesAccess', imported.devicesAccess),
+    internetAccess: normalizeImportedSmartProfileChoice('internetAccess', imported.internetAccess),
+    workCommitment: normalizeImportedWorkCommitment(imported.workCommitment),
+    formSubmittedAt: String(meta.submittedAt || imported.submittedAt || '').trim(),
+    formSyncedAt: new Date().toISOString(),
+    formSyncSource: String(meta.source || 'استمارة التسجيل').trim(),
+  });
+}
+
+async function fetchStudentProfileFromWebapp(email){
+  const cleanedEmail = String(email || '').trim();
+  if(!cleanedEmail) return {ok:false, type:'missing-email'};
+  const suffix = `/api/student-profile?email=${encodeURIComponent(cleanedEmail)}`;
+  let lastError = null;
+  for(const base of getWebappApiBases()){
+    try{
+      const response = await fetch(`${base}${suffix}`);
+      if(response.status === 404) continue;
+      const payload = await response.json().catch(()=>null);
+      if(!response.ok) return {ok:false, type:(payload && payload.reason) || 'server-error', base, payload, status:response.status};
+      if(payload && payload.found) return {ok:true, base, payload};
+      return {ok:false, type:(payload && payload.reason) || 'not-found', base, payload};
+    }catch(error){
+      lastError = error;
+    }
+  }
+  return {ok:false, type:'unreachable', error:lastError};
+}
+
+function rerenderAfterSmartProfileSync(){
+  renderDashStats();
+  if(S.page === 'profile') renderProfile();
+  if(S.page === 'dashboard') renderDashContent();
+  if(S.page === 'my-courses' && S.user?.role === 'teacher') renderTeacherCourses();
+}
+
+async function syncStudentSmartProfileFromWebapp(studentId){
+  const student = (S.students||[]).find(x=>x.id===studentId);
+  if(!student){ notify('تعذّر العثور على سجل الطالب المحلي','⚠️'); return; }
+  const result = await fetchStudentProfileFromWebapp(student.email);
+  if(!result.ok){
+    if(result.type === 'not_submitted') notify('الطالب لم يرسل استمارة الملف الذكي بعد','⚠️');
+    else if(result.type === 'not_approved') notify('طلب الطالب لم يُعتمد بعد في تطبيق التسجيل','⚠️');
+    else if(result.type === 'not_found') notify('لا توجد بيانات مستوردة لهذا البريد في تطبيق التسجيل','⚠️');
+    else notify('تعذّر الاتصال بتطبيق التسجيل الذكي','⚠️');
+    return;
+  }
+  const remoteStudent = result.payload.student || {};
+  const current = normalizeStudentContext(student.smartProfile);
+  const imported = normalizeImportedStudentContext(remoteStudent.smartProfile || {}, {
+    submittedAt: remoteStudent.profileFormSubmittedAt,
+    source: result.base,
+  });
+  student.smartProfile = normalizeStudentContext({
+    ...current,
+    ...imported,
+    teacherNotes: current.teacherNotes,
+    teacherUpdatedAt: current.teacherUpdatedAt,
+    teacherUpdatedBy: current.teacherUpdatedBy,
+  });
+  if(S.user?.role === 'student' && (S.user.id === student.id || S.user.email === student.email)){
+    S.user = buildSessionUserFromRecord('student', normalizeStudentRecord(student));
+  }
+  saveAppState();
+  rerenderAfterSmartProfileSync();
+  notify(`تم استيراد بيانات الاستمارة للطالب ${student.name}`,'✅');
+}
+
+async function syncCurrentStudentProfileFromWebapp(){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord();
+  if(!student){ notify('لا يوجد سجل محلي مرتبط بهذا الحساب','⚠️'); return; }
+  await syncStudentSmartProfileFromWebapp(student.id);
+}
+
+function getSmartProfileCompletion(context){
+  const ctx = normalizeStudentContext(context);
+  const tracked = [
+    "socialIntegration","culturalExposure","economicLevel","familySupport","familyStructure","housingType",
+    "studySpace","birthOrder","brothersCount","sistersCount","homeLanguage","devicesAccess","internetAccess","workCommitment"
+  ];
+  const filled = tracked.filter(key=>ctx[key] !== "" && ctx[key] !== null && ctx[key] !== undefined).length;
+  return {filled,total:tracked.length,percent:Math.round((filled/tracked.length)*100)};
+}
+
+function formatProfileValue(value){
+  return value === "" || value === null || value === undefined ? "غير محدد" : String(value);
+}
+
+function formatIsoDateTime(value){
+  const raw = String(value || '').trim();
+  if(!raw) return 'غير محدد';
+  return raw.replace('T',' ').replace('Z','').slice(0,16);
+}
+
+function formatBirthOrder(value){
+  if(value === "" || value === null || value === undefined) return "غير محدد";
+  return `المرتبة ${value}`;
+}
+
+function getSupportLevelColor(level){
+  if(level === "مرتفع") return {bg:"rgba(220,38,38,.12)", fg:"#fca5a5", bd:"rgba(220,38,38,.28)"};
+  if(level === "متوسط") return {bg:"rgba(234,88,12,.12)", fg:"#fdba74", bd:"rgba(234,88,12,.28)"};
+  return {bg:"rgba(22,163,74,.12)", fg:"#86efac", bd:"rgba(22,163,74,.28)"};
+}
+
+function buildStudentPersona(student, assessment){
+  const ctx = normalizeStudentContext(student?.smartProfile);
+  const progress = computeStudentProgress(student?.id);
+  const completion = getSmartProfileCompletion(ctx);
+  const latestScore = assessment?.score;
+  const latestMax = assessment?.maxScore;
+  const brothers = ctx.brothersCount === "" ? 0 : ctx.brothersCount;
+  const sisters = ctx.sistersCount === "" ? 0 : ctx.sistersCount;
+  const siblingsTotal = brothers + sisters;
+  let supportScore = 0;
+  const strengths = [];
+  const risks = [];
+  const actions = [];
+
+  if(ctx.economicLevel === "بحاجة إلى دعم"){
+    supportScore += 2;
+    risks.push("الوضع الاقتصادي قد يفرض ضغطاً على الاستمرارية والوقت المتاح للدراسة");
+  } else if(ctx.economicLevel === "متوسط") supportScore += 1;
+  else if(ctx.economicLevel === "مستقر") strengths.push("استقرار اقتصادي نسبي يساعد على الانتظام");
+
+  if(ctx.internetAccess === "ضعيف"){
+    supportScore += 2;
+    risks.push("الوصول الرقمي غير مستقر ويحتاج بديلاً خفيفاً");
+  } else if(ctx.internetAccess === "مستقر") strengths.push("اتصال رقمي مستقر");
+
+  if(["هاتف فقط","وصول محدود","جهاز مشترك"].includes(ctx.devicesAccess)){
+    supportScore += 1;
+    risks.push("الأدوات التقنية المتاحة محدودة");
+  } else if(ctx.devicesAccess === "جهاز شخصي") strengths.push("يمتلك أدوات مناسبة للتعلم الذاتي");
+
+  if(["مساحة مشتركة","لا توجد مساحة ثابتة"].includes(ctx.studySpace)){
+    supportScore += 2;
+    risks.push("بيئة الدراسة المنزلية قابلة للتشتت");
+  } else if(["غرفة مستقلة","زاوية هادئة"].includes(ctx.studySpace)) strengths.push("لديه مساحة تساعد على التركيز");
+
+  if(ctx.familySupport === "محدودة"){
+    supportScore += 2;
+    risks.push("المتابعة الأسرية محدودة وتحتاج آليات دعم بديلة");
+  } else if(ctx.familySupport === "مرتفعة") strengths.push("يستفيد من دعم أسري واضح");
+
+  if(ctx.socialIntegration === "يحتاج دعماً"){
+    supportScore += 1;
+    risks.push("يفضل خطاباً مطمئناً وتدرجاً في التحدي");
+  } else if(ctx.socialIntegration === "جيد") strengths.push("يميل إلى التفاعل الإيجابي مع التعلم");
+
+  if(ctx.culturalExposure === "محدود"){
+    supportScore += 1;
+    risks.push("يحتاج ربط الدرس بأمثلة حياتية قبل المصطلح الأكاديمي");
+  } else if(ctx.culturalExposure === "مرتفع") strengths.push("رصيده الثقافي يساعد على الفهم المقارن");
+
+  if(ctx.workCommitment === "مرتفع"){
+    supportScore += 2;
+    risks.push("التزامات جانبية مرتفعة قد تقلص زمن المراجعة");
+  } else if(ctx.workCommitment === "جزئي") supportScore += 1;
+
+  if(siblingsTotal >= 4){
+    supportScore += 1;
+    risks.push("كثرة الإخوة قد تؤثر في الهدوء والزمن الفردي للمذاكرة");
+  }
+
+  if(progress.attempted >= 2 && progress.percent < 55){
+    supportScore += 1;
+    risks.push("الأداء الحالي يشير إلى حاجة لتثبيت الأساسيات خطوة بخطوة");
+  } else if(progress.percent >= 70 && progress.attempted > 0) strengths.push("المسار الأكاديمي الحالي واعد");
+
+  const socialLinks = getSocialConnectionSummary(ctx);
+  if(socialLinks.consent && socialLinks.count > 0) actions.push("يمكن استثمار القنوات الرقمية التي شاركها الطالب طوعاً في التذكير والمتابعة اللطيفة عند الحاجة");
+
+  if(ctx.homeLanguage) strengths.push(`يمكن الاستفادة من لغة البيت (${ctx.homeLanguage}) عند تقريب المفاهيم`);
+  if(completion.percent < 45) actions.push("أكمل عناصر الملف الذكي لتحسين دقة التوجيه الآلي");
+
+  const supportLevel = supportScore >= 6 ? "مرتفع" : supportScore >= 3 ? "متوسط" : "خفيف";
+  const tone = (ctx.socialIntegration === "يحتاج دعماً" || supportLevel === "مرتفع")
+    ? "خطاب داعم ومتدرج مع تجنب الأحكام الحادة وكثرة التعليمات دفعة واحدة"
+    : (progress.percent >= 70
+      ? "خطاب تحفيزي مباشر مع رفع التحدي تدريجياً"
+      : "خطاب تفسيري مرن يربط القاعدة بأمثلة يومية ثم ينتقل إلى الصياغة الأكاديمية");
+
+  actions.push(tone);
+  if(["مساحة مشتركة","لا توجد مساحة ثابتة"].includes(ctx.studySpace)) actions.push("قسّم المذاكرة إلى وحدات قصيرة من 10 إلى 15 دقيقة");
+  if(ctx.culturalExposure === "محدود") actions.push("ابدأ بالأمثلة القريبة من حياة الطالب قبل الأمثلة النظرية");
+  if(ctx.internetAccess === "ضعيف" || ["هاتف فقط","وصول محدود"].includes(ctx.devicesAccess)) actions.push("قدّم مهاماً خفيفة قابلة للإنجاز عبر الهاتف مع ملفات صغيرة");
+  if(latestMax){
+    const ratio = latestMax ? latestScore/latestMax : 0;
+    if(ratio < 0.5) actions.push("أعد بناء المفاهيم الأساسية ثم أعد الاختبار على دفعات قصيرة");
+    else if(ratio < 0.8) actions.push("ثبّت مواطن الخطأ بتمارين تطبيقية قصيرة قبل الانتقال لمستوى أعلى");
+    else actions.push("يمكن رفع مستوى التحدي مع تعزيز الثقة بالإنجاز");
+  }
+
+  return {
+    supportLevel,
+    tone,
+    strengths: uniqList(strengths).slice(0,4),
+    risks: uniqList(risks).slice(0,4),
+    actions: uniqList(actions).slice(0,4),
+    progress,
+    completion,
+  };
+}
+
+function buildStudentAIContext(student, assessment){
+  const ctx = normalizeStudentContext(student?.smartProfile);
+  const persona = buildStudentPersona(student, assessment);
+  const socialSummary = getSocialConnectionSummary(ctx);
+  const lines = [
+    `اسم الطالب: ${student?.name || "غير محدد"}`,
+    `الدور: طالب`,
+    `الشعبة: ${getBranchLabel(student?.branch)}`,
+    `التقدم الأكاديمي الحالي: ${persona.progress.percent}%`,
+    `الوضع الاجتماعي: ${formatProfileValue(ctx.socialIntegration)}`,
+    `الوضع الثقافي: ${formatProfileValue(ctx.culturalExposure)}`,
+    `الوضع الاقتصادي: ${formatProfileValue(ctx.economicLevel)}`,
+    `الدعم الأسري: ${formatProfileValue(ctx.familySupport)}`,
+    `بنية الأسرة: ${formatProfileValue(ctx.familyStructure)}`,
+    `نوع السكن: ${formatProfileValue(ctx.housingType)}`,
+    `بيئة الدراسة في المنزل: ${formatProfileValue(ctx.studySpace)}`,
+    `رتبته بين الأولاد: ${formatBirthOrder(ctx.birthOrder)}`,
+    `عدد الإخوة الذكور: ${formatProfileValue(ctx.brothersCount)}`,
+    `عدد الأخوات: ${formatProfileValue(ctx.sistersCount)}`,
+    `لغة التواصل في البيت: ${formatProfileValue(ctx.homeLanguage)}`,
+    `الأجهزة المتاحة: ${formatProfileValue(ctx.devicesAccess)}`,
+    `جودة الإنترنت: ${formatProfileValue(ctx.internetAccess)}`,
+    `الالتزامات خارج الدراسة: ${formatProfileValue(ctx.workCommitment)}`,
+    `ملاحظات إضافية: ${formatProfileValue(ctx.notes)}`,
+    `ملاحظات تربوية من الأستاذ: ${formatProfileValue(ctx.teacherNotes)}`,
+    `أسلوب التعامل المقترح: ${persona.tone}`,
+    `مواطن القوة: ${persona.strengths.join("؛ ") || "لا توجد معطيات كافية"}`,
+    `مواطن الانتباه: ${persona.risks.join("؛ ") || "لا توجد معطيات كافية"}`,
+    `أولويات الدعم: ${persona.actions.join("؛ ") || "لا توجد معطيات كافية"}`,
+    `تعليمات للذكاء الاصطناعي: قيّم الطالب بعدل، راعِ ظروفه، وقدّم توجيهاً عملياً متدرجاً غير وصمي، وركّز على ما يساعده على التحسن.`
+  ];
+  if(socialSummary.consent && socialSummary.count > 0){
+    lines.splice(18, 0, `ربط حسابات التواصل: مفعل بموافقة الطالب`, `الحسابات المرتبطة: ${socialSummary.linked.map(item=>`${item.label}: ${item.value}`).join("؛ ")}`);
+  } else {
+    lines.splice(18, 0, `ربط حسابات التواصل: غير مفعل أو غير مصرح به`);
+  }
+  return lines.join("\n");
+}
+
+function buildAssessmentGuidance(student, score, maxScore, label){
+  const ctx = normalizeStudentContext(student?.smartProfile);
+  const persona = buildStudentPersona(student, {score, maxScore, label});
+  const ratio = maxScore ? score/maxScore : 0;
+  let summary = "";
+  if(ratio >= 0.85) summary = `${label} يبيّن تمكناً جيداً. الأنسب الآن هو تعزيز الثقة مع الانتقال التدريجي إلى تطبيقات أعمق.`;
+  else if(ratio >= 0.6) summary = `${label} يوضح أن الفهم موجود لكنه يحتاج تثبيتاً وتكراراً موجهاً في مواطن الخطأ الأكثر ظهوراً.`;
+  else summary = `${label} يكشف حاجة واضحة إلى إعادة بناء الأساسيات بمقاطع قصيرة ومنظمة قبل زيادة مستوى التحدي.`;
+  if(persona.supportLevel === "مرتفع") summary += " يُفضَّل الحفاظ على وتيرة مرنة وتعزيزات قصيرة ومتكررة.";
+  const actions = uniqList([
+    persona.actions[0],
+    ratio < 0.5 ? "ابدأ بمراجعة سؤالين فقط مع الشرح ثم زد العدد تدريجياً" : "دوّن الأخطاء المتكررة وحوّلها إلى بطاقة مراجعة قصيرة",
+    ctx.familySupport === "محدودة" ? "اجعل الخطة الأسبوعية واضحة وقصيرة حتى يمكن متابعتها ذاتياً" : "استثمر الدعم الأسري في تثبيت روتين مراجعة قصير",
+    ctx.culturalExposure === "محدود" ? "اربط المفهوم بأمثلة من الحياة اليومية قبل الصياغة العلمية" : "انتقل إلى أمثلة مقارنة وتطبيقات أوسع",
+    ctx.studySpace === "لا توجد مساحة ثابتة" ? "اختر أوقاتاً ثابتة قصيرة عندما يكون المكان أهدأ" : "ثبّت جلسة مراجعة يومية في نفس الوقت تقريباً",
+  ]).slice(0,4);
+  return {summary, actions, persona};
+}
+
+function renderAssessmentGuidanceCard(student, score, maxScore, label){
+  if(!student) return "";
+  const guidance = buildAssessmentGuidance(student, score, maxScore, label);
+  const levelColors = getSupportLevelColor(guidance.persona.supportLevel);
+  return `<div class="card ct ct-t" style="margin-top:1rem;text-align:right">
+    <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.65rem">
+      <h4 style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--teal2)">توجيه ذكي بعد ${escapeHtml(label)}</h4>
+      <span style="padding:3px 10px;border-radius:999px;background:${levelColors.bg};color:${levelColors.fg};border:1px solid ${levelColors.bd};font-size:.72rem;font-weight:700">احتياج دعمي ${guidance.persona.supportLevel}</span>
+    </div>
+    <p style="color:var(--txt2);line-height:1.9;margin-bottom:.75rem">${escapeHtml(guidance.summary)}</p>
+    <div style="color:var(--gold3);font-size:.77rem;margin-bottom:.45rem">أسلوب التعامل الأنسب: ${escapeHtml(guidance.persona.tone)}</div>
+    <ul style="margin:0;padding-right:1.1rem;color:var(--txt2);line-height:1.9;font-size:.83rem">${guidance.actions.map(item=>`<li>${escapeHtml(item)}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function buildAssessmentFallbackFeedback(student, score, maxScore, label){
+  const guidance = buildAssessmentGuidance(student, score, maxScore, label);
+  return [
+    guidance.summary,
+    `أسلوب الخطاب الأنسب: ${guidance.persona.tone}.`,
+    `الأولوية الأولى الآن: ${guidance.actions[0] || "تنظيم المراجعة تدريجياً"}.`,
+    `التوصية العملية التالية: ${guidance.actions[1] || "تثبيت مواطن الخطأ بخطوات قصيرة"}.`
+  ].join("\n");
+}
+
+async function generateAssessmentAiFeedback(student, score, maxScore, label){
+  const apiKey = window.ANTHROPIC_API_KEY || localStorage.getItem('ANTHROPIC_API_KEY');
+  const fallback = buildAssessmentFallbackFeedback(student, score, maxScore, label);
+  if(!apiKey) return {text:fallback, source:"محلي"};
+  const prompt = [
+    "أنت مرشد تربوي خبير في التعليم الجامعي العربي.",
+    "اعط تغذية راجعة شخصية قصيرة جدا، مهنية، غير وصمية، ومبنية على سياق الطالب ونتيجته.",
+    "اكتب بالعربية فقط.",
+    "البنية المطلوبة:",
+    "1. فقرة قصيرة من سطرين كحد أقصى.",
+    "2. ثلاث توصيات عملية مرقمة 1 2 3.",
+    `نوع التقييم: ${label}`,
+    `النتيجة: ${score}/${maxScore}`,
+    buildStudentAIContext(student, {score, maxScore, label})
+  ].join("\n");
+  try{
+    const raw = await aiCall(prompt, 500);
+    const text = String(raw || "").replace(/```(?:text|markdown)?/g, "").trim();
+    return {text: text || fallback, source: "ذكاء اصطناعي"};
+  }catch(e){
+    console.warn("generateAssessmentAiFeedback failed", e);
+    return {text:fallback, source:"محلي"};
+  }
+}
+
+function renderAssessmentAiFeedbackCard(feedbackEntry, student, score, maxScore, label, key, kind, modId, itemIdx){
+  if(!student) return "";
+  const buttonHtml = `<button class="btn bgh xs" onclick="requestAssessmentFeedback('${key}','${kind}',${score},${maxScore},'${label}','${modId}',${itemIdx})">${feedbackEntry?.status === 'ready' ? 'إعادة التحليل' : 'توليد تحليل شخصي'}</button>`;
+  if(feedbackEntry?.status === 'loading'){
+    return `<div class="card ct ct-v" style="margin-top:1rem"><div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap"><h4 style="font-family:'Amiri',serif;font-size:1.05rem;color:#c084fc">تحليل شخصي بالذكاء الاصطناعي</h4>${buttonHtml}</div><div style="margin-top:.85rem;color:var(--txt2);display:flex;align-items:center;gap:.55rem"><span class="spin"></span><span>جارٍ إعداد تغذية راجعة تناسب سياق الطالب ونتيجته...</span></div></div>`;
+  }
+  if(feedbackEntry?.status === 'ready' && feedbackEntry.text){
+    return `<div class="card ct ct-v" style="margin-top:1rem"><div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap"><div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap"><h4 style="font-family:'Amiri',serif;font-size:1.05rem;color:#c084fc">تحليل شخصي بالذكاء الاصطناعي</h4><span style="padding:3px 10px;border-radius:999px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.22);color:#c084fc;font-size:.72rem">المصدر: ${escapeHtml(feedbackEntry.source || 'محلي')}</span></div>${buttonHtml}</div><div style="margin-top:.85rem;white-space:pre-wrap;color:var(--txt2);line-height:1.9;font-size:.84rem">${escapeHtml(feedbackEntry.text)}</div></div>`;
+  }
+  return `<div class="card ct ct-v" style="margin-top:1rem"><div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap"><h4 style="font-family:'Amiri',serif;font-size:1.05rem;color:#c084fc">تحليل شخصي بالذكاء الاصطناعي</h4>${buttonHtml}</div><div style="margin-top:.75rem;color:var(--txt3);font-size:.82rem">يمكن للمنصة توليد تغذية راجعة أدق اعتماداً على نتيجة الطالب وملفه الذكي.</div></div>`;
+}
+
+async function requestAssessmentFeedback(key, kind, score, maxScore, label, modId, itemIdx){
+  if(!S.user || S.user.role !== 'student') return;
+  const sid = S.user.id || S.user.email || S.user.name;
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  if(!student) return;
+  S.content[key] = S.content[key] || {};
+  S.content[key].submissions = S.content[key].submissions || {};
+  const currentSub = S.content[key].submissions[sid] || {};
+  currentSub.aiFeedbacks = currentSub.aiFeedbacks || {};
+  currentSub.aiFeedbacks[kind] = {status:'loading', source:'pending', requestedAt:new Date().toISOString()};
+  S.content[key].submissions[sid] = currentSub;
+  saveAppState();
+  if(S.page === 'courses') viewContent(modId, itemIdx);
+  const result = await generateAssessmentAiFeedback(student, score, maxScore, label);
+  const latestSub = ((S.content[key] || {}).submissions || {})[sid] || {};
+  latestSub.aiFeedbacks = latestSub.aiFeedbacks || {};
+  latestSub.aiFeedbacks[kind] = {
+    status:'ready',
+    source: result.source,
+    text: result.text,
+    generatedAt:new Date().toISOString(),
+  };
+  S.content[key].submissions[sid] = latestSub;
+  saveAppState();
+  if(S.page === 'courses') viewContent(modId, itemIdx);
+  notify(result.source === 'ذكاء اصطناعي' ? 'تم توليد تحليل شخصي بالذكاء الاصطناعي' : 'تم إنشاء تحليل شخصي محلي', '🤖');
+}
+
+async function copyStudentAiContext(){
+  const student = getCurrentStudentRecord() || (S.user?.role === "student" ? {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)} : null);
+  if(!student){ notify("هذه الميزة مخصصة لملفات الطلاب","⚠️"); return; }
+  try{
+    await navigator.clipboard.writeText(buildStudentAIContext(student));
+    notify("تم نسخ سياق الذكاء الاصطناعي","✅");
+  }catch(e){
+    console.warn("copyStudentAiContext failed",e);
+    notify("تعذّر النسخ التلقائي من هذا المتصفح","⚠️");
+  }
+}
+
+function hydrateAppState(){
+  S.students = Array.isArray(S.students) ? S.students.map(normalizeStudentRecord) : [];
+  S.teachers = Array.isArray(S.teachers) ? S.teachers : [];
+  S.content = S.content || {};
+  if(S.user?.role === "student"){
+    const student = getCurrentStudentRecord();
+    if(student){
+      student.name = S.user.name || student.name;
+      student.email = S.user.email || student.email;
+      student.branch = typeof S.user.branch === "number" ? S.user.branch : student.branch;
+      student.profilePic = student.profilePic || S.user.profilePic || "";
+      student.smartProfile = normalizeStudentContext({...student.smartProfile, ...(S.user.smartProfile||{})});
+      S.user = buildSessionUserFromRecord("student", student);
+    } else {
+      S.user.smartProfile = normalizeStudentContext(S.user.smartProfile);
+    }
+  } else if(S.user?.role === "teacher"){
+    const teacher = getCurrentLinkedRecord();
+    if(teacher){
+      teacher.name = S.user.name || teacher.name;
+      teacher.email = S.user.email || teacher.email;
+      teacher.profilePic = teacher.profilePic || S.user.profilePic || "";
+      S.user = buildSessionUserFromRecord("teacher", teacher);
+    }
+  }
+}
 
 // ══════════════════════════════════════════════════════
 // AI
@@ -1777,14 +2467,14 @@ function doLogin(){
   if(t){
     if(t.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
     if(t.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
-    S.user={role:"teacher",name:t.name,email:t.email,id:t.id};
+    S.user=buildSessionUserFromRecord("teacher",t);
     closeM("modal-login"); buildNav(); goto("my-courses"); notify("مرحباً "+t.name+"! 👨‍🏫"); return;
   }
   const s=S.students.find(x=>x.email===email&&x.pw===pw);
   if(!s){err.textContent="البريد أو كلمة السر غير صحيحة";err.style.display="block";return;}
   if(s.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
   if(s.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
-  S.user={role:"student",name:s.name,email:s.email,branch:s.branch,id:s.id};
+  S.user=buildSessionUserFromRecord("student",s);
   closeM("modal-login"); buildNav(); goto("courses"); notify("مرحباً "+s.name+"! 🎓");
 }
 
@@ -1796,7 +2486,18 @@ function doRegStudent(){
   const branch=document.getElementById("rs-branch").value;
   const pw=document.getElementById("rs-pw").value;
   if(!name||!email||!pw||branch===""){notify("يرجى ملء جميع الحقول","⚠️");return;}
-  S.students.push({id:"s"+Date.now(),name,email,pw,branch:parseInt(branch),status:"pending",date:new Date().toISOString().slice(0,10)});
+  S.students.push({
+    id:"s"+Date.now(),
+    name,
+    email,
+    pw,
+    branch:parseInt(branch),
+    status:"pending",
+    date:new Date().toISOString().slice(0,10),
+    profilePic:"",
+    smartProfile:createEmptyStudentContext(),
+  });
+  saveAppState();
   closeM("modal-register");
   notify("تم إرسال طلبك — انتظر موافقة الأستاذ 📤");
 }
@@ -2171,7 +2872,8 @@ function getUserSubmission(stored, studentId){
     advQuizAnswers: (s && s.advQuizAnswers) || stored.advQuizAnswers || {},
     advQuizSubmitted: (s && s.advQuizSubmitted) || stored.advQuizSubmitted || false,
     score: (s && (typeof s.score === 'number' ? s.score : undefined)) ?? stored.score ?? 0,
-    advScore: (s && (typeof s.advScore === 'number' ? s.advScore : undefined)) ?? stored.advScore ?? 0
+    advScore: (s && (typeof s.advScore === 'number' ? s.advScore : undefined)) ?? stored.advScore ?? 0,
+    aiFeedbacks: (s && s.aiFeedbacks) || stored.aiFeedbacks || {}
   };
 }
 
@@ -2221,6 +2923,9 @@ function viewContent(modId, itemIdx){
   const item=mod?.items[itemIdx];
   const isAdmin=S.user?.role==="admin"; const isTeacher=S.user?.role==="teacher";
   const currentUserId = S.user?.id || S.user?.email || S.user?.name;
+  const currentStudent = S.user?.role === "student"
+    ? (getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)})
+    : null;
   const userSub = getUserSubmission(stored, currentUserId);
   let html=`
     <div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
@@ -2319,10 +3024,13 @@ function viewContent(modId, itemIdx){
       } else {
         const score=stored.quiz.filter((q,i)=>ans[i]===q.correct).length;
         const passed=score===stored.quiz.length;
+        const quizFeedbackEntry = (userSub.aiFeedbacks || {}).quiz;
         html+=`<div class="sbox"><div class="sbig">${score}/${stored.quiz.length}</div>`;
         if(passed) html+=`<p style="color:#4ade80;margin-top:.4rem">🎉 ممتاز!</p>`;
         else html+=`<p style="color:#f87171;margin-top:.4rem">يجب الإجابة صحيحاً على جميع الأسئلة</p><button class="btn bo sm" style="margin-top:.75rem" onclick="retryQuiz('${key}','${modId}',${itemIdx})">إعادة المحاولة 🔄</button>`;
         html+=`</div>`;
+        html+=renderAssessmentGuidanceCard(currentStudent, score, stored.quiz.length, 'الاختبار التقييمي');
+        html+=renderAssessmentAiFeedbackCard(quizFeedbackEntry, currentStudent, score, stored.quiz.length, 'الاختبار التقييمي', key, 'quiz', modId, itemIdx);
       }
     }
   }
@@ -2379,10 +3087,13 @@ function viewContent(modId, itemIdx){
           else if(q.type==="tf" && (advAns[i]===0 ? true : false) === q.correct) advScore++;
         });
         const advPassed=advScore===stored.advQuiz.length;
+        const advFeedbackEntry = (userSub.aiFeedbacks || {}).advQuiz;
         html+=`<div class="sbox"><div class="sbig" style="color:var(--violet)">${advScore}/${stored.advQuiz.length}</div>`;
         if(advPassed) html+=`<p style="color:#a855f7;margin-top:.4rem">🏆 ممتاز جداً!</p>`;
         else html+=`<p style="color:var(--gold2);margin-top:.4rem">يمكنك إعادة المحاولة</p><button class="btn bo sm" style="margin-top:.75rem" onclick="retryAdvQuiz('${key}','${modId}',${itemIdx})">إعادة المحاولة 🔄</button>`;
         html+=`</div>`;
+        html+=renderAssessmentGuidanceCard(currentStudent, advScore, stored.advQuiz.length, 'الاختبار المتقدم');
+        html+=renderAssessmentAiFeedbackCard(advFeedbackEntry, currentStudent, advScore, stored.advQuiz.length, 'الاختبار المتقدم', key, 'advQuiz', modId, itemIdx);
       }
     }
   }
@@ -2415,8 +3126,10 @@ function submitQuiz(key,modId,itemIdx){
   const ans = userSub.quizAnswers || {};
   const score = quiz.filter((q,i)=>ans[i]===q.correct).length;
   S.content[key].submissions[sid] = {...userSub, quizSubmitted:true, score, timestamp:new Date().toISOString()};
+  saveAppState();
   if(score===quiz.length) notify("أحسنت! 🎉"); else notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
   viewContent(modId,itemIdx);
+  requestAssessmentFeedback(key, 'quiz', score, quiz.length, 'الاختبار التقييمي', modId, itemIdx);
 }
 function retryQuiz(key,modId,itemIdx){
   if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
@@ -2425,7 +3138,9 @@ function retryQuiz(key,modId,itemIdx){
     delete S.content[key].submissions[sid].quizAnswers;
     S.content[key].submissions[sid].quizSubmitted=false;
     delete S.content[key].submissions[sid].score;
+    if(S.content[key].submissions[sid].aiFeedbacks) delete S.content[key].submissions[sid].aiFeedbacks.quiz;
   }
+  saveAppState();
   viewContent(modId,itemIdx);
 }
 async function genQuizAndRefresh(modId,itemIdx){
@@ -2482,9 +3197,11 @@ function submitAdvQuiz(key,modId,itemIdx){
     else if(q.type==="tf" && (a===0 ? true : false) === q.correct) score++;
   });
   S.content[key].submissions[sid] = {...userSub, advQuizSubmitted:true, advScore:score, advTimestamp:new Date().toISOString()};
+  saveAppState();
   if(score===adv.length) notify("أحسنت جداً! 🏆");
   else notify(`لقد حصلت على ${score}/${adv.length}`,'📊');
   viewContent(modId,itemIdx);
+  requestAssessmentFeedback(key, 'advQuiz', score, adv.length, 'الاختبار المتقدم', modId, itemIdx);
 }
 
 function retryAdvQuiz(key,modId,itemIdx){
@@ -2494,7 +3211,9 @@ function retryAdvQuiz(key,modId,itemIdx){
     delete S.content[key].submissions[sid].advQuizAnswers;
     S.content[key].submissions[sid].advQuizSubmitted=false;
     delete S.content[key].submissions[sid].advScore;
+    if(S.content[key].submissions[sid].aiFeedbacks) delete S.content[key].submissions[sid].aiFeedbacks.advQuiz;
   }
+  saveAppState();
   viewContent(modId,itemIdx);
 }
 
@@ -2509,16 +3228,168 @@ function retryAdvQuiz(key,modId,itemIdx){
 // ══════════════════════════════════════════════════════
 // TEACHER COURSES
 // ══════════════════════════════════════════════════════
+let _teacherStudentEditId = null;
+
+function getTeacherManagedStudents(teacher){
+  if(!teacher) return [];
+  return (S.students||[])
+    .filter(student=>student.status === "approved" && teacher.branches.includes(student.branch))
+    .map(normalizeStudentRecord);
+}
+
+async function copySpecificStudentAiContext(studentId){
+  const student = (S.students||[]).find(x=>x.id===studentId);
+  if(!student){ notify('تعذّر العثور على الطالب','⚠️'); return; }
+  try{
+    await navigator.clipboard.writeText(buildStudentAIContext(normalizeStudentRecord(student)));
+    notify('تم نسخ سياق الطالب للذكاء الاصطناعي','✅');
+  }catch(e){
+    console.warn('copySpecificStudentAiContext failed', e);
+    notify('تعذّر النسخ التلقائي من هذا المتصفح','⚠️');
+  }
+}
+
+function openTeacherStudentProfileEditor(studentId){
+  _teacherStudentEditId = studentId;
+  renderTeacherCourses();
+  window.scrollTo(0,0);
+}
+
+function closeTeacherStudentProfileEditor(){
+  _teacherStudentEditId = null;
+  renderTeacherCourses();
+}
+
+function saveTeacherStudentProfile(studentId){
+  if(S.user?.role !== 'teacher'){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
+  const student = (S.students||[]).find(x=>x.id===studentId);
+  if(!student){ notify('تعذّر العثور على الطالب','⚠️'); return; }
+  const current = normalizeStudentContext(student.smartProfile);
+  const updated = normalizeStudentContext({
+    ...current,
+    socialIntegration: document.getElementById(`ts-social-integration-${studentId}`)?.value || current.socialIntegration,
+    culturalExposure: document.getElementById(`ts-cultural-exposure-${studentId}`)?.value || current.culturalExposure,
+    economicLevel: document.getElementById(`ts-economic-level-${studentId}`)?.value || current.economicLevel,
+    familySupport: document.getElementById(`ts-family-support-${studentId}`)?.value || current.familySupport,
+    familyStructure: document.getElementById(`ts-family-structure-${studentId}`)?.value || current.familyStructure,
+    housingType: document.getElementById(`ts-housing-type-${studentId}`)?.value || current.housingType,
+    studySpace: document.getElementById(`ts-study-space-${studentId}`)?.value || current.studySpace,
+    birthOrder: document.getElementById(`ts-birth-order-${studentId}`)?.value || current.birthOrder,
+    brothersCount: document.getElementById(`ts-brothers-count-${studentId}`)?.value || current.brothersCount,
+    sistersCount: document.getElementById(`ts-sisters-count-${studentId}`)?.value || current.sistersCount,
+    homeLanguage: document.getElementById(`ts-home-language-${studentId}`)?.value.trim() || current.homeLanguage,
+    devicesAccess: document.getElementById(`ts-devices-access-${studentId}`)?.value || current.devicesAccess,
+    internetAccess: document.getElementById(`ts-internet-access-${studentId}`)?.value || current.internetAccess,
+    workCommitment: document.getElementById(`ts-work-commitment-${studentId}`)?.value || current.workCommitment,
+    teacherNotes: document.getElementById(`ts-teacher-notes-${studentId}`)?.value.trim() || current.teacherNotes,
+    teacherUpdatedAt: new Date().toISOString(),
+    teacherUpdatedBy: S.user.name || S.user.email || 'الأستاذ',
+  });
+  student.smartProfile = updated;
+  saveAppState();
+  renderTeacherCourses();
+  notify(`تم حفظ الملف الثقافي والاجتماعي للطالب ${student.name}`,'✅');
+}
+
+function renderTeacherStudentEditor(student){
+  const normalized = normalizeStudentRecord(student);
+  const ctx = normalizeStudentContext(normalized.smartProfile);
+  const completion = getSmartProfileCompletion(ctx);
+  const persona = buildStudentPersona(normalized);
+  const supportColors = getSupportLevelColor(persona.supportLevel);
+  const social = getSocialConnectionSummary(ctx);
+  const selected = (value, option) => value === option ? 'selected' : '';
+  const updatedMeta = ctx.teacherUpdatedAt
+    ? `${ctx.teacherUpdatedBy || 'الأستاذ'} — ${ctx.teacherUpdatedAt.replace('T',' ').slice(0,16)}`
+    : 'لم تُسجل متابعة أستاذ بعد';
+  return `<div class="card ct ct-v" style="margin-top:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.85rem">
+      <div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.15rem;color:#c084fc">ملف المتابعة التربوية للطالب ${escapeHtml(normalized.name)}</h3>
+        <div style="font-size:.76rem;color:var(--txt3);line-height:1.8">${escapeHtml(getBranchLabel(normalized.branch))} • آخر تحديث: ${escapeHtml(updatedMeta)}</div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn bt sm" onclick="syncStudentSmartProfileFromWebapp('${normalized.id}')">استيراد الاستمارة</button>
+        <button class="btn bgh sm" onclick="copySpecificStudentAiContext('${normalized.id}')">نسخ سياق AI</button>
+        <button class="btn bgh sm" onclick="closeTeacherStudentProfileEditor()">إغلاق</button>
+      </div>
+    </div>
+    <div class="al ali" style="margin-bottom:.85rem">يمكن للأستاذ هنا إدخال المعطيات الثقافية والاجتماعية والأسرية التي تساعد على فهم الطالب أكاديمياً وتربوياً. ربط حسابات التواصل يبقى بيد الطالب وموافقته فقط.</div>
+    ${(ctx.formSubmittedAt || ctx.formSyncedAt) ? `<div class="card" style="margin-bottom:1rem;background:rgba(8,145,178,.08);border-color:rgba(8,145,178,.22)"><div style="font-size:.75rem;color:#7dd3fc;line-height:1.9">مصدر الاستيراد: ${escapeHtml(ctx.formSyncSource || 'استمارة التسجيل')}<br>تاريخ إرسال الطالب: ${escapeHtml(formatIsoDateTime(ctx.formSubmittedAt))}<br>آخر مزامنة محلية: ${escapeHtml(formatIsoDateTime(ctx.formSyncedAt))}</div></div>` : ''}
+    <div class="g3" style="margin-bottom:1rem">
+      <div class="card" style="text-align:center"><div style="font-size:1.7rem;font-weight:900;color:var(--gold2)">${completion.percent}%</div><div style="font-size:.74rem;color:var(--txt3)">اكتمال الملف الذكي</div></div>
+      <div class="card" style="text-align:center"><div style="display:inline-flex;padding:5px 12px;border-radius:999px;background:${supportColors.bg};color:${supportColors.fg};border:1px solid ${supportColors.bd};font-weight:800">${persona.supportLevel}</div><div style="font-size:.74rem;color:var(--txt3);margin-top:.5rem">مستوى الدعم الحالي</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:1.7rem;font-weight:900;color:#a78bfa">${social.count}</div><div style="font-size:.74rem;color:var(--txt3)">${social.consent ? 'حسابات مرتبطة بموافقة الطالب' : 'لا توجد موافقة على الربط'}</div></div>
+    </div>
+    ${ctx.notes ? `<div class="card" style="margin-bottom:1rem;background:rgba(255,255,255,.03)"><div style="font-size:.74rem;color:var(--txt3);margin-bottom:.35rem">ما كتبه الطالب عن نفسه</div><div style="color:var(--txt2);line-height:1.85">${escapeHtml(ctx.notes)}</div></div>` : ''}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem">
+      <div class="fg"><label class="fl">الاندماج الاجتماعي</label><select class="fi" id="ts-social-integration-${normalized.id}"><option value="">غير محدد</option><option value="يحتاج دعماً" ${selected(ctx.socialIntegration,'يحتاج دعماً')}>يحتاج دعماً</option><option value="متوسط" ${selected(ctx.socialIntegration,'متوسط')}>متوسط</option><option value="جيد" ${selected(ctx.socialIntegration,'جيد')}>جيد</option></select></div>
+      <div class="fg"><label class="fl">الرصيد الثقافي</label><select class="fi" id="ts-cultural-exposure-${normalized.id}"><option value="">غير محدد</option><option value="محدود" ${selected(ctx.culturalExposure,'محدود')}>محدود</option><option value="متوسط" ${selected(ctx.culturalExposure,'متوسط')}>متوسط</option><option value="مرتفع" ${selected(ctx.culturalExposure,'مرتفع')}>مرتفع</option></select></div>
+      <div class="fg"><label class="fl">الوضع الاقتصادي</label><select class="fi" id="ts-economic-level-${normalized.id}"><option value="">غير محدد</option><option value="بحاجة إلى دعم" ${selected(ctx.economicLevel,'بحاجة إلى دعم')}>بحاجة إلى دعم</option><option value="متوسط" ${selected(ctx.economicLevel,'متوسط')}>متوسط</option><option value="مستقر" ${selected(ctx.economicLevel,'مستقر')}>مستقر</option></select></div>
+      <div class="fg"><label class="fl">الدعم الأسري</label><select class="fi" id="ts-family-support-${normalized.id}"><option value="">غير محدد</option><option value="محدودة" ${selected(ctx.familySupport,'محدودة')}>محدودة</option><option value="متوسطة" ${selected(ctx.familySupport,'متوسطة')}>متوسطة</option><option value="مرتفعة" ${selected(ctx.familySupport,'مرتفعة')}>مرتفعة</option></select></div>
+      <div class="fg"><label class="fl">بنية الأسرة</label><select class="fi" id="ts-family-structure-${normalized.id}"><option value="">غير محدد</option><option value="مع الوالدين" ${selected(ctx.familyStructure,'مع الوالدين')}>مع الوالدين</option><option value="مع أحد الوالدين" ${selected(ctx.familyStructure,'مع أحد الوالدين')}>مع أحد الوالدين</option><option value="مع أسرة ممتدة" ${selected(ctx.familyStructure,'مع أسرة ممتدة')}>مع أسرة ممتدة</option><option value="مستقل" ${selected(ctx.familyStructure,'مستقل')}>مستقل</option></select></div>
+      <div class="fg"><label class="fl">نوع السكن</label><select class="fi" id="ts-housing-type-${normalized.id}"><option value="">غير محدد</option><option value="منزل عائلي" ${selected(ctx.housingType,'منزل عائلي')}>منزل عائلي</option><option value="شقة" ${selected(ctx.housingType,'شقة')}>شقة</option><option value="سكن جامعي" ${selected(ctx.housingType,'سكن جامعي')}>سكن جامعي</option><option value="مع أقارب" ${selected(ctx.housingType,'مع أقارب')}>مع أقارب</option><option value="أخرى" ${selected(ctx.housingType,'أخرى')}>أخرى</option></select></div>
+      <div class="fg"><label class="fl">بيئة الدراسة</label><select class="fi" id="ts-study-space-${normalized.id}"><option value="">غير محدد</option><option value="غرفة مستقلة" ${selected(ctx.studySpace,'غرفة مستقلة')}>غرفة مستقلة</option><option value="زاوية هادئة" ${selected(ctx.studySpace,'زاوية هادئة')}>زاوية هادئة</option><option value="مساحة مشتركة" ${selected(ctx.studySpace,'مساحة مشتركة')}>مساحة مشتركة</option><option value="لا توجد مساحة ثابتة" ${selected(ctx.studySpace,'لا توجد مساحة ثابتة')}>لا توجد مساحة ثابتة</option></select></div>
+      <div class="fg"><label class="fl">ترتيبه بين الأولاد</label><input class="fi" id="ts-birth-order-${normalized.id}" type="number" min="1" value="${ctx.birthOrder === '' ? '' : ctx.birthOrder}"></div>
+      <div class="fg"><label class="fl">عدد الإخوة الذكور</label><input class="fi" id="ts-brothers-count-${normalized.id}" type="number" min="0" value="${ctx.brothersCount === '' ? '' : ctx.brothersCount}"></div>
+      <div class="fg"><label class="fl">عدد الأخوات</label><input class="fi" id="ts-sisters-count-${normalized.id}" type="number" min="0" value="${ctx.sistersCount === '' ? '' : ctx.sistersCount}"></div>
+      <div class="fg"><label class="fl">لغة البيت</label><input class="fi" id="ts-home-language-${normalized.id}" placeholder="مثال: العربية الدارجة" value="${escapeHtml(ctx.homeLanguage)}"></div>
+      <div class="fg"><label class="fl">الأجهزة المتاحة</label><select class="fi" id="ts-devices-access-${normalized.id}"><option value="">غير محدد</option><option value="جهاز شخصي" ${selected(ctx.devicesAccess,'جهاز شخصي')}>جهاز شخصي</option><option value="جهاز مشترك" ${selected(ctx.devicesAccess,'جهاز مشترك')}>جهاز مشترك</option><option value="هاتف فقط" ${selected(ctx.devicesAccess,'هاتف فقط')}>هاتف فقط</option><option value="وصول محدود" ${selected(ctx.devicesAccess,'وصول محدود')}>وصول محدود</option></select></div>
+      <div class="fg"><label class="fl">جودة الإنترنت</label><select class="fi" id="ts-internet-access-${normalized.id}"><option value="">غير محدد</option><option value="مستقر" ${selected(ctx.internetAccess,'مستقر')}>مستقر</option><option value="متوسط" ${selected(ctx.internetAccess,'متوسط')}>متوسط</option><option value="ضعيف" ${selected(ctx.internetAccess,'ضعيف')}>ضعيف</option></select></div>
+      <div class="fg"><label class="fl">الالتزامات خارج الدراسة</label><select class="fi" id="ts-work-commitment-${normalized.id}"><option value="">غير محدد</option><option value="لا يوجد" ${selected(ctx.workCommitment,'لا يوجد')}>لا يوجد</option><option value="جزئي" ${selected(ctx.workCommitment,'جزئي')}>جزئي</option><option value="مرتفع" ${selected(ctx.workCommitment,'مرتفع')}>مرتفع</option></select></div>
+    </div>
+    <div class="fg" style="margin-top:.85rem"><label class="fl">ملاحظات الأستاذ التربوية</label><textarea class="fi" id="ts-teacher-notes-${normalized.id}" rows="4" placeholder="ملاحظات تساعد على التوجيه والمتابعة">${escapeHtml(ctx.teacherNotes)}</textarea></div>
+    <div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.6rem"><button class="btn bgh" onclick="closeTeacherStudentProfileEditor()">إلغاء</button><button class="btn bg" onclick="saveTeacherStudentProfile('${normalized.id}')">حفظ متابعة الطالب</button></div>
+  </div>`;
+}
+
 function renderTeacherCourses(){
   const t=S.teachers.find(x=>x.id===S.user?.id);
   if(!t) return;
   const sub=document.getElementById("teacher-courses-sub");
-  if(sub) sub.textContent=t.name+" — "+t.rank+" | المقاييس: "+t.subjects.join("، ");
+  const managedStudents = getTeacherManagedStudents(t);
+  if(sub) sub.textContent=t.name+" — "+t.rank+" | المقاييس: "+t.subjects.join("، ")+` | الطلبة المتابعون: ${managedStudents.length}`;
   const el=document.getElementById("teacher-courses-content");
   const myMods=[];
   t.branches.forEach(b=>{[3,4].forEach(s=>{(CURRICULUM[b]?.[s]||[]).forEach(m=>{if(t.subjects.includes(m.title)) myMods.push({...m,branch:b,sem:s});});});});
-  if(myMods.length===0){el.innerHTML='<div class="empty"><div class="eic">📭</div><p>لم يتم تحديد مقاييس لك بعد</p></div>';return;}
-  el.innerHTML=myMods.map((mod,mi)=>`
+  const selectedStudent = managedStudents.find(student=>student.id===_teacherStudentEditId) || null;
+  const studentsSection = `<div class="card ct ct-t" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;flex-wrap:wrap;margin-bottom:.85rem">
+      <div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.18rem;color:var(--teal2)">متابعة الطلبة: الملف الثقافي والاجتماعي</h3>
+        <p style="color:var(--txt3);font-size:.78rem;line-height:1.8">يمكن للأستاذ هنا تعبئة البيانات الثقافية والاجتماعية والأسرية للطالب لتحسين التوجيه والتقييم.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <span class="badge-merged">${managedStudents.length} طالباً</span>
+        <span class="badge-assigned">${t.branches.map(getBranchLabel).join(' • ')}</span>
+      </div>
+    </div>
+    ${managedStudents.length
+      ? `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.85rem">${managedStudents.map(student=>{
+          const indicators = getStudentDashboardIndicators(student);
+          const supportColors = getSupportLevelColor(indicators.persona.supportLevel);
+          const isOpen = student.id === _teacherStudentEditId;
+          return `<div class="card" style="border:${isOpen ? '1px solid rgba(34,211,238,.4)' : '1px solid var(--bdr)'};background:${isOpen ? 'rgba(34,211,238,.05)' : 'var(--bg3)'}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem">
+              <div style="color:var(--txt);font-weight:700">${escapeHtml(student.name)}</div>
+              <span style="font-size:.72rem;color:var(--gold3)">${escapeHtml(getBranchLabel(student.branch))}</span>
+            </div>
+            <div style="display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:.55rem">
+              <span style="padding:3px 9px;border-radius:999px;background:${supportColors.bg};color:${supportColors.fg};border:1px solid ${supportColors.bd};font-size:.7rem">دعم ${indicators.persona.supportLevel}</span>
+              <span style="padding:3px 9px;border-radius:999px;background:rgba(201,150,42,.1);color:var(--gold2);border:1px solid rgba(201,150,42,.22);font-size:.7rem">ملف ${indicators.completion.percent}%</span>
+            </div>
+            <div style="color:var(--txt3);font-size:.75rem;line-height:1.8;margin-bottom:.65rem">${student.email}<br>التقدم الحالي: ${indicators.persona.progress.percent}%</div>
+            <div style="display:flex;gap:.45rem;flex-wrap:wrap">
+              <button class="btn ${isOpen ? 'bg' : 'bgh'} xs" onclick="openTeacherStudentProfileEditor('${student.id}')">${isOpen ? 'جاري التحرير' : 'تعبئة الملف'}</button>
+              <button class="btn bgh xs" onclick="copySpecificStudentAiContext('${student.id}')">نسخ AI</button>
+            </div>
+          </div>`;
+        }).join('')}</div>`
+      : `<div class="empty"><div class="eic">🎓</div><p>لا يوجد طلبة مقبولون في الشعب المرتبطة بك حالياً.</p></div>`}
+    ${selectedStudent ? renderTeacherStudentEditor(selectedStudent) : `<div class="card" style="margin-top:1rem;background:rgba(255,255,255,.02)"><div style="color:var(--txt3);font-size:.82rem;line-height:1.9">اختر طالباً من الأعلى لفتح نموذج إدخال الجانب الثقافي والاجتماعي والأسري الخاص به.</div></div>`}
+  </div>`;
+  const modulesSection = myMods.length
+    ? myMods.map((mod,mi)=>`
     <div class="card ct ct-v" style="margin-bottom:1rem">
       <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:.85rem;flex-wrap:wrap">
         <div class="mod-icon">${mi+1}</div>
@@ -2535,7 +3406,9 @@ function renderTeacherCourses(){
       <div style="margin-top:.75rem">
         <button class="btn bg sm" onclick="S.branch=${mod.branch};S.sem=${mod.sem};goto('courses')">الذهاب للمقياس في المقررات →</button>
       </div>
-    </div>`).join("");
+    </div>`).join("")
+    : '<div class="empty"><div class="eic">📭</div><p>لم يتم تحديد مقاييس لك بعد</p></div>';
+  el.innerHTML=studentsSection+modulesSection;
 }
 
 // ══════════════════════════════════════════════════════
@@ -2547,9 +3420,115 @@ function renderProfile(){
     el.innerHTML = `<div class="card">سجّل الدخول لعرض وتعديل ملفك الشخصي.</div><div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>`;
     return;
   }
-  const pic = S.user.profilePic || '';
-  const initials = (S.user.name||S.user.email||'مستخدم').split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+  if(S.user.role === 'student') syncCurrentStudentFromRecord();
+  const activeUser = S.user;
+  const student = activeUser.role === 'student'
+    ? (getCurrentStudentRecord() || {...activeUser, smartProfile: normalizeStudentContext(activeUser.smartProfile)})
+    : null;
+  const ctx = student ? normalizeStudentContext(student.smartProfile) : null;
+  const persona = student ? buildStudentPersona(student) : null;
+  const completion = student ? getSmartProfileCompletion(ctx) : null;
+  const progress = student ? persona.progress : null;
+  const supportColors = persona ? getSupportLevelColor(persona.supportLevel) : null;
+  const pic = activeUser.profilePic || '';
+  const syncInfoHtml = student ? `<div class="al ${ctx.formSyncedAt ? 'alo' : 'ali'}" style="margin-top:1rem">${ctx.formSyncedAt
+    ? `تمت مزامنة بيانات استمارة القبول محلياً في ${escapeHtml(formatIsoDateTime(ctx.formSyncedAt))}${ctx.formSubmittedAt ? ` • تاريخ إرسال الطالب: ${escapeHtml(formatIsoDateTime(ctx.formSubmittedAt))}` : ''}`
+    : 'يمكنك استيراد بيانات استمارة القبول من تطبيق التسجيل الذكي إذا كان الطالب قد أرسلها.'}</div>` : '';
+  const initials = (activeUser.name||activeUser.email||'مستخدم').split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
   const imgHtml = pic ? `<img id="profile-pic-img" src="${pic}" style="width:110px;height:110px;border-radius:12px;object-fit:cover;border:3px solid var(--gold2)">` : `<div id="profile-pic-placeholder" style="width:110px;height:110px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:1.25rem;border:3px dashed var(--bdr)">${initials}</div>`;
+  const metaBits = [
+    getRoleLabel(activeUser.role),
+    activeUser.role === 'student' ? getBranchLabel(student?.branch ?? activeUser.branch) : '',
+    activeUser.role === 'teacher' ? (activeUser.rank || '') : ''
+  ].filter(Boolean);
+  const snapshotItems = student ? [
+    {label:'الوضع الاجتماعي', value:formatProfileValue(ctx.socialIntegration)},
+    {label:'الوضع الثقافي', value:formatProfileValue(ctx.culturalExposure)},
+    {label:'الوضع الاقتصادي', value:formatProfileValue(ctx.economicLevel)},
+    {label:'الدعم الأسري', value:formatProfileValue(ctx.familySupport)},
+    {label:'نوع السكن', value:formatProfileValue(ctx.housingType)},
+    {label:'بيئة الدراسة', value:formatProfileValue(ctx.studySpace)},
+    {label:'الترتيب بين الأولاد', value:formatBirthOrder(ctx.birthOrder)},
+    {label:'عدد الإخوة الذكور', value:formatProfileValue(ctx.brothersCount)},
+    {label:'عدد الأخوات', value:formatProfileValue(ctx.sistersCount)},
+    {label:'لغة البيت', value:formatProfileValue(ctx.homeLanguage)},
+    {label:'الأجهزة', value:formatProfileValue(ctx.devicesAccess)},
+    {label:'الإنترنت', value:formatProfileValue(ctx.internetAccess)},
+  ] : [];
+  const socialSummary = student ? getSocialConnectionSummary(ctx) : null;
+  const quickStatsHtml = student ? `
+    <div class="g3" style="margin-top:1rem">
+      <div class="card ct ct-g" style="text-align:center">
+        <div style="color:var(--gold2);font-size:.8rem;margin-bottom:.35rem">جاهزية الملف الذكي</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--gold2);line-height:1">${completion.percent}%</div>
+        <div style="font-size:.75rem;color:var(--txt3);margin-top:.35rem">${completion.filled} من ${completion.total} عناصر مكتملة</div>
+      </div>
+      <div class="card ct ct-t" style="text-align:center">
+        <div style="color:var(--teal2);font-size:.8rem;margin-bottom:.35rem">التقدم الأكاديمي</div>
+        <div style="font-size:2rem;font-weight:900;color:var(--teal2);line-height:1">${progress.percent}%</div>
+        <div style="font-size:.75rem;color:var(--txt3);margin-top:.35rem">${progress.correct}/${progress.totalQuestions||0} سؤالاً صحيحاً</div>
+      </div>
+      <div class="card ct ct-v" style="text-align:center">
+        <div style="color:#c084fc;font-size:.8rem;margin-bottom:.35rem">مستوى الدعم المطلوب</div>
+        <div style="display:inline-flex;padding:6px 14px;border-radius:999px;background:${supportColors.bg};color:${supportColors.fg};border:1px solid ${supportColors.bd};font-weight:800">${persona.supportLevel}</div>
+        <div style="font-size:.75rem;color:var(--txt3);margin-top:.5rem">يعتمد على ظروف الطالب ونتائجه الحالية</div>
+      </div>
+    </div>` : '';
+  const studentPanels = student ? `
+    ${quickStatsHtml}
+    <div class="g2" style="margin-top:1rem">
+      <div class="card ct ct-g">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.8rem">
+          <h3 style="font-family:'Amiri',serif;font-size:1.08rem;color:var(--gold2)">الملف الاجتماعي والثقافي</h3>
+          <span style="font-size:.72rem;color:var(--txt3)">بيانات اختيارية لتحسين التوجيه</span>
+        </div>
+        <div class="al ali" style="margin-bottom:.9rem">هذه المعطيات تُستخدم لتخصيص أسلوب التقييم والتوجيه، لا للحكم على الطالب أو تصنيفه وصمياً.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem">
+          ${snapshotItems.map(item=>`<div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:.75rem"><div style="font-size:.72rem;color:var(--txt3);margin-bottom:.2rem">${escapeHtml(item.label)}</div><div style="color:var(--txt);font-size:.84rem;line-height:1.7">${escapeHtml(item.value)}</div></div>`).join('')}
+        </div>
+        ${ctx.notes ? `<div style="margin-top:.85rem;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem;border:1px solid var(--bdr)"><div style="font-size:.73rem;color:var(--txt3);margin-bottom:.25rem">ملاحظات إضافية</div><div style="color:var(--txt2);line-height:1.8">${escapeHtml(ctx.notes)}</div></div>` : ''}
+      </div>
+      <div class="card ct ct-t">
+        <h3 style="font-family:'Amiri',serif;font-size:1.08rem;color:var(--teal2);margin-bottom:.8rem">البصمة التربوية الذكية</h3>
+        <div style="font-size:.82rem;color:var(--txt3);margin-bottom:.65rem">أسلوب التعامل الأنسب</div>
+        <div style="color:var(--txt);line-height:1.9;margin-bottom:.95rem">${escapeHtml(persona.tone)}</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:.75rem">
+          <div style="background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.22);border-radius:10px;padding:.8rem">
+            <div style="color:#86efac;font-size:.78rem;margin-bottom:.35rem">نقاط القوة</div>
+            <ul style="margin:0;padding-right:1rem;color:var(--txt2);line-height:1.8;font-size:.82rem">${persona.strengths.map(item=>`<li>${escapeHtml(item)}</li>`).join('')}</ul>
+          </div>
+          <div style="background:rgba(234,88,12,.08);border:1px solid rgba(234,88,12,.22);border-radius:10px;padding:.8rem">
+            <div style="color:#fdba74;font-size:.78rem;margin-bottom:.35rem">ما يحتاج انتباهاً</div>
+            <ul style="margin:0;padding-right:1rem;color:var(--txt2);line-height:1.8;font-size:.82rem">${persona.risks.map(item=>`<li>${escapeHtml(item)}</li>`).join('')}</ul>
+          </div>
+          <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.22);border-radius:10px;padding:.8rem">
+            <div style="color:#c084fc;font-size:.78rem;margin-bottom:.35rem">أولويات التوجيه</div>
+            <ul style="margin:0;padding-right:1rem;color:var(--txt2);line-height:1.8;font-size:.82rem">${persona.actions.map(item=>`<li>${escapeHtml(item)}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card ct ct-v" style="margin-top:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.8rem">
+        <h3 style="font-family:'Amiri',serif;font-size:1.08rem;color:#c084fc">حسابات التواصل المرتبطة</h3>
+        <span style="padding:3px 10px;border-radius:999px;background:${socialSummary.consent ? 'rgba(22,163,74,.12)' : 'rgba(107,114,128,.12)'};color:${socialSummary.consent ? '#86efac' : 'var(--txt3)'};border:1px solid ${socialSummary.consent ? 'rgba(22,163,74,.22)' : 'rgba(107,114,128,.22)'};font-size:.72rem">${socialSummary.consent ? 'بموافقة الطالب' : 'غير مفعّل'}</span>
+      </div>
+      <div class="al ali" style="margin-bottom:.8rem">الربط اختياري تماماً. تُحفظ الحسابات التي يشاركها الطالب برغبته لاستخدامها في المتابعة التربوية والإشعارات داخل المنصة مستقبلاً.</div>
+      ${socialSummary.linked.length
+        ? `<div style="display:flex;gap:.5rem;flex-wrap:wrap">${socialSummary.linked.map(item=>item.url
+            ? `<a class="btn bgh xs" target="_blank" rel="noopener noreferrer" href="${escapeHtml(item.url)}">${escapeHtml(item.label)}: ${escapeHtml(item.value)}</a>`
+            : `<span class="btn bgh xs" style="cursor:default">${escapeHtml(item.label)}: ${escapeHtml(item.value)}</span>`
+          ).join('')}</div>`
+        : `<div style="color:var(--txt3);font-size:.82rem">لم يربط الطالب أي حساب حتى الآن.</div>`}
+    </div>
+    <div class="card ct ct-v" style="margin-top:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.8rem">
+        <h3 style="font-family:'Amiri',serif;font-size:1.08rem;color:#c084fc">سياق الذكاء الاصطناعي</h3>
+        <button class="btn bgh sm" onclick="copyStudentAiContext()">نسخ الملخص</button>
+      </div>
+      <div class="al ali" style="margin-bottom:.8rem">هذا النص جاهز لإدخاله في أي أداة ذكاء اصطناعي حتى يكون التقييم والتوجيه أكثر مهنية وملاءمة لظروف الطالب.</div>
+      <div style="white-space:pre-wrap;background:rgba(0,0,0,.14);border:1px solid var(--bdr);border-radius:10px;padding:1rem;color:var(--txt2);line-height:1.9;font-size:.82rem">${escapeHtml(buildStudentAIContext(student))}</div>
+    </div>` : '';
 
   el.innerHTML = `
     <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
@@ -2561,14 +3540,18 @@ function renderProfile(){
         </div>
       </div>
       <div style="flex:1">
-        <h3 style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--gold2)">${S.user.name||S.user.email}</h3>
-        <div style="color:var(--txt3);margin-bottom:8px">${S.user.email||''}</div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.05rem;color:var(--gold2)">${escapeHtml(activeUser.name||activeUser.email)}</h3>
+        <div style="color:var(--txt3);margin-bottom:4px">${escapeHtml(activeUser.email||'')}</div>
+        <div style="color:var(--txt2);font-size:.8rem;line-height:1.8;margin-bottom:8px">${escapeHtml(metaBits.join(' • ') || 'معلومات أساسية')}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn bg" onclick="openEditProfile()">تعديل الملف</button>
+          <button class="btn bg" onclick="openEditProfile()">${activeUser.role === 'student' ? 'تعديل الملف الذكي' : 'تعديل الملف'}</button>
+          ${activeUser.role === 'student' ? `<button class="btn bt" onclick="syncCurrentStudentProfileFromWebapp()">استيراد الاستمارة</button>` : ''}
           <button class="btn bgh" onclick="doLogout()">خروج</button>
         </div>
       </div>
     </div>
+    ${syncInfoHtml}
+    ${studentPanels}
     <div style="margin-top:14px" id="profile-edit-area"></div>
   `;
 }
@@ -2580,7 +3563,7 @@ function uploadProfilePic(files){
   reader.onload = function(e){
     const data = e.target.result;
     if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
-    S.user.profilePic = data;
+    applyCurrentUserPatch({profilePic:data});
     saveAppState(); buildNav(); renderProfile(); notify('تم تحديث الصورة الشخصية','✅');
   };
   reader.readAsDataURL(f);
@@ -2589,18 +3572,100 @@ function uploadProfilePic(files){
 function removeProfilePic(){
   if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
   if(!confirm('هل تريد إزالة الصورة الشخصية؟')) return;
-  delete S.user.profilePic; saveAppState(); buildNav(); renderProfile(); notify('تمت إزالة الصورة الشخصية','✅');
+  applyCurrentUserPatch({profilePic:''}); saveAppState(); buildNav(); renderProfile(); notify('تمت إزالة الصورة الشخصية','✅');
 }
 
 function openEditProfile(){
   const area = document.getElementById('profile-edit-area'); if(!area) return;
-  area.innerHTML = `<div class="card"><div style="display:flex;flex-direction:column;gap:.6rem"><label class="fl">الاسم الكامل</label><input class="fi" id="edit-name" value="${S.user.name||''}"><label class="fl">البريد الإلكتروني</label><input class="fi" id="edit-email" value="${S.user.email||''}"><div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.5rem"><button class="btn bgh" onclick="renderProfile()">إلغاء</button><button class="btn bg" onclick="saveProfileEdits()">حفظ</button></div></div></div>`;
+  if(S.user.role !== 'student'){
+    area.innerHTML = `<div class="card"><div style="display:flex;flex-direction:column;gap:.6rem"><label class="fl">الاسم الكامل</label><input class="fi" id="edit-name" value="${escapeHtml(S.user.name||'')}"><label class="fl">البريد الإلكتروني</label><input class="fi" id="edit-email" value="${escapeHtml(S.user.email||'')}"><div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.5rem"><button class="btn bgh" onclick="renderProfile()">إلغاء</button><button class="btn bg" onclick="saveProfileEdits()">حفظ</button></div></div></div>`;
+    return;
+  }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const ctx = normalizeStudentContext(student.smartProfile);
+  const accounts = normalizeSocialAccounts(ctx.socialAccounts);
+  const selected = (value, option) => value === option ? 'selected' : '';
+  area.innerHTML = `<div class="card">
+    <div class="al ali" style="margin-bottom:1rem">البيانات التالية اختيارية، ويمكن استيرادها من استمارة القبول المرسلة عبر تطبيق الويب ثم تعديلها هنا. الغرض منها تحسين عدالة التقييم والتوجيه الشخصي.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem">
+      <div class="fg"><label class="fl">الاسم الكامل</label><input class="fi" id="edit-name" value="${escapeHtml(S.user.name||'')}"></div>
+      <div class="fg"><label class="fl">البريد الإلكتروني</label><input class="fi" id="edit-email" type="email" value="${escapeHtml(S.user.email||'')}"></div>
+      <div class="fg"><label class="fl">الاندماج الاجتماعي</label><select class="fi" id="sp-social-integration"><option value="">غير محدد</option><option value="يحتاج دعماً" ${selected(ctx.socialIntegration,'يحتاج دعماً')}>يحتاج دعماً</option><option value="متوسط" ${selected(ctx.socialIntegration,'متوسط')}>متوسط</option><option value="جيد" ${selected(ctx.socialIntegration,'جيد')}>جيد</option></select></div>
+      <div class="fg"><label class="fl">الرصيد الثقافي</label><select class="fi" id="sp-cultural-exposure"><option value="">غير محدد</option><option value="محدود" ${selected(ctx.culturalExposure,'محدود')}>محدود</option><option value="متوسط" ${selected(ctx.culturalExposure,'متوسط')}>متوسط</option><option value="مرتفع" ${selected(ctx.culturalExposure,'مرتفع')}>مرتفع</option></select></div>
+      <div class="fg"><label class="fl">الوضع الاقتصادي</label><select class="fi" id="sp-economic-level"><option value="">غير محدد</option><option value="بحاجة إلى دعم" ${selected(ctx.economicLevel,'بحاجة إلى دعم')}>بحاجة إلى دعم</option><option value="متوسط" ${selected(ctx.economicLevel,'متوسط')}>متوسط</option><option value="مستقر" ${selected(ctx.economicLevel,'مستقر')}>مستقر</option></select></div>
+      <div class="fg"><label class="fl">الدعم الأسري</label><select class="fi" id="sp-family-support"><option value="">غير محدد</option><option value="محدودة" ${selected(ctx.familySupport,'محدودة')}>محدودة</option><option value="متوسطة" ${selected(ctx.familySupport,'متوسطة')}>متوسطة</option><option value="مرتفعة" ${selected(ctx.familySupport,'مرتفعة')}>مرتفعة</option></select></div>
+      <div class="fg"><label class="fl">بنية الأسرة</label><select class="fi" id="sp-family-structure"><option value="">غير محدد</option><option value="مع الوالدين" ${selected(ctx.familyStructure,'مع الوالدين')}>مع الوالدين</option><option value="مع أحد الوالدين" ${selected(ctx.familyStructure,'مع أحد الوالدين')}>مع أحد الوالدين</option><option value="مع أسرة ممتدة" ${selected(ctx.familyStructure,'مع أسرة ممتدة')}>مع أسرة ممتدة</option><option value="مستقل" ${selected(ctx.familyStructure,'مستقل')}>مستقل</option></select></div>
+      <div class="fg"><label class="fl">نوع السكن</label><select class="fi" id="sp-housing-type"><option value="">غير محدد</option><option value="منزل عائلي" ${selected(ctx.housingType,'منزل عائلي')}>منزل عائلي</option><option value="شقة" ${selected(ctx.housingType,'شقة')}>شقة</option><option value="سكن جامعي" ${selected(ctx.housingType,'سكن جامعي')}>سكن جامعي</option><option value="مع أقارب" ${selected(ctx.housingType,'مع أقارب')}>مع أقارب</option><option value="أخرى" ${selected(ctx.housingType,'أخرى')}>أخرى</option></select></div>
+      <div class="fg"><label class="fl">بيئة الدراسة</label><select class="fi" id="sp-study-space"><option value="">غير محدد</option><option value="غرفة مستقلة" ${selected(ctx.studySpace,'غرفة مستقلة')}>غرفة مستقلة</option><option value="زاوية هادئة" ${selected(ctx.studySpace,'زاوية هادئة')}>زاوية هادئة</option><option value="مساحة مشتركة" ${selected(ctx.studySpace,'مساحة مشتركة')}>مساحة مشتركة</option><option value="لا توجد مساحة ثابتة" ${selected(ctx.studySpace,'لا توجد مساحة ثابتة')}>لا توجد مساحة ثابتة</option></select></div>
+      <div class="fg"><label class="fl">رتبته بين الأولاد</label><input class="fi" id="sp-birth-order" type="number" min="1" placeholder="مثال: 2" value="${ctx.birthOrder === '' ? '' : ctx.birthOrder}"></div>
+      <div class="fg"><label class="fl">عدد الإخوة الذكور</label><input class="fi" id="sp-brothers-count" type="number" min="0" value="${ctx.brothersCount === '' ? '' : ctx.brothersCount}"></div>
+      <div class="fg"><label class="fl">عدد الأخوات</label><input class="fi" id="sp-sisters-count" type="number" min="0" value="${ctx.sistersCount === '' ? '' : ctx.sistersCount}"></div>
+      <div class="fg"><label class="fl">لغة التواصل في البيت</label><input class="fi" id="sp-home-language" placeholder="مثال: العربية الدارجة / الفصحى" value="${escapeHtml(ctx.homeLanguage)}"></div>
+      <div class="fg"><label class="fl">الأجهزة المتاحة</label><select class="fi" id="sp-devices-access"><option value="">غير محدد</option><option value="جهاز شخصي" ${selected(ctx.devicesAccess,'جهاز شخصي')}>جهاز شخصي</option><option value="جهاز مشترك" ${selected(ctx.devicesAccess,'جهاز مشترك')}>جهاز مشترك</option><option value="هاتف فقط" ${selected(ctx.devicesAccess,'هاتف فقط')}>هاتف فقط</option><option value="وصول محدود" ${selected(ctx.devicesAccess,'وصول محدود')}>وصول محدود</option></select></div>
+      <div class="fg"><label class="fl">جودة الإنترنت</label><select class="fi" id="sp-internet-access"><option value="">غير محدد</option><option value="مستقر" ${selected(ctx.internetAccess,'مستقر')}>مستقر</option><option value="متوسط" ${selected(ctx.internetAccess,'متوسط')}>متوسط</option><option value="ضعيف" ${selected(ctx.internetAccess,'ضعيف')}>ضعيف</option></select></div>
+      <div class="fg"><label class="fl">التزامات خارج الدراسة</label><select class="fi" id="sp-work-commitment"><option value="">غير محدد</option><option value="لا يوجد" ${selected(ctx.workCommitment,'لا يوجد')}>لا يوجد</option><option value="جزئي" ${selected(ctx.workCommitment,'جزئي')}>جزئي</option><option value="مرتفع" ${selected(ctx.workCommitment,'مرتفع')}>مرتفع</option></select></div>
+    </div>
+    <div class="fg" style="margin-top:.2rem"><label class="fl">ملاحظات إضافية للموجّه الذكي</label><textarea class="fi" id="sp-notes" rows="4" placeholder="أي تفاصيل تساعد على فهم ظروف الطالب بشكل أدق">${escapeHtml(ctx.notes)}</textarea></div>
+    <div class="card" style="margin-top:.9rem;background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.22)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.8rem">
+        <h4 style="font-family:'Amiri',serif;font-size:1.02rem;color:#c084fc">ربط حسابات التواصل الاجتماعي</h4>
+        <label style="display:flex;align-items:center;gap:6px;color:var(--txt2);font-size:.82rem;cursor:pointer"><input id="sp-social-consent" type="checkbox" style="accent-color:var(--gold)" ${ctx.socialConsent ? 'checked' : ''}> أوافق على ربط الحسابات التي أشاركها طوعاً</label>
+      </div>
+      <div class="al ali" style="margin-bottom:.8rem">لا يتم ربط أي حساب إلا إذا أدخل الطالب المعرّف أو الرابط بنفسه وفعّل هذه الموافقة. يمكن ترك أي حقل فارغاً.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem">
+        <div class="fg"><label class="fl">Facebook</label><input class="fi" id="sp-social-facebook" placeholder="رابط أو اسم المستخدم" value="${escapeHtml(accounts.facebook)}"></div>
+        <div class="fg"><label class="fl">Instagram</label><input class="fi" id="sp-social-instagram" placeholder="رابط أو @username" value="${escapeHtml(accounts.instagram)}"></div>
+        <div class="fg"><label class="fl">X</label><input class="fi" id="sp-social-x" placeholder="رابط أو @username" value="${escapeHtml(accounts.x)}"></div>
+        <div class="fg"><label class="fl">TikTok</label><input class="fi" id="sp-social-tiktok" placeholder="رابط أو @username" value="${escapeHtml(accounts.tiktok)}"></div>
+        <div class="fg"><label class="fl">YouTube</label><input class="fi" id="sp-social-youtube" placeholder="رابط أو @handle" value="${escapeHtml(accounts.youtube)}"></div>
+        <div class="fg"><label class="fl">Telegram</label><input class="fi" id="sp-social-telegram" placeholder="رابط أو username" value="${escapeHtml(accounts.telegram)}"></div>
+        <div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="sp-social-whatsapp" placeholder="رقم أو رابط" value="${escapeHtml(accounts.whatsapp)}"></div>
+        <div class="fg"><label class="fl">LinkedIn</label><input class="fi" id="sp-social-linkedin" placeholder="رابط أو اسم المستخدم" value="${escapeHtml(accounts.linkedin)}"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.6rem;justify-content:flex-end;margin-top:.6rem"><button class="btn bgh" onclick="renderProfile()">إلغاء</button><button class="btn bg" onclick="saveProfileEdits()">حفظ الملف الذكي</button></div>
+  </div>`;
 }
 
 function saveProfileEdits(){
   const n=document.getElementById('edit-name')?.value.trim(); const e=document.getElementById('edit-email')?.value.trim();
   if(!n||!e){ notify('الاسم والبريد مطلوبان','⚠️'); return; }
-  S.user.name=n; S.user.email=e; saveAppState(); buildNav(); renderProfile(); notify('تم حفظ التغييرات','✅');
+  if(S.user.role === 'student'){
+    const currentSmartProfile = normalizeStudentContext((getCurrentStudentRecord() || S.user).smartProfile);
+    const smartProfile = normalizeStudentContext({
+      ...currentSmartProfile,
+      socialIntegration: document.getElementById('sp-social-integration')?.value || '',
+      culturalExposure: document.getElementById('sp-cultural-exposure')?.value || '',
+      economicLevel: document.getElementById('sp-economic-level')?.value || '',
+      familySupport: document.getElementById('sp-family-support')?.value || '',
+      familyStructure: document.getElementById('sp-family-structure')?.value || '',
+      housingType: document.getElementById('sp-housing-type')?.value || '',
+      studySpace: document.getElementById('sp-study-space')?.value || '',
+      birthOrder: document.getElementById('sp-birth-order')?.value || '',
+      brothersCount: document.getElementById('sp-brothers-count')?.value || '',
+      sistersCount: document.getElementById('sp-sisters-count')?.value || '',
+      homeLanguage: document.getElementById('sp-home-language')?.value.trim() || '',
+      devicesAccess: document.getElementById('sp-devices-access')?.value || '',
+      internetAccess: document.getElementById('sp-internet-access')?.value || '',
+      workCommitment: document.getElementById('sp-work-commitment')?.value || '',
+      socialConsent: !!document.getElementById('sp-social-consent')?.checked,
+      socialAccounts: {
+        facebook: document.getElementById('sp-social-facebook')?.value.trim() || '',
+        instagram: document.getElementById('sp-social-instagram')?.value.trim() || '',
+        x: document.getElementById('sp-social-x')?.value.trim() || '',
+        tiktok: document.getElementById('sp-social-tiktok')?.value.trim() || '',
+        youtube: document.getElementById('sp-social-youtube')?.value.trim() || '',
+        telegram: document.getElementById('sp-social-telegram')?.value.trim() || '',
+        whatsapp: document.getElementById('sp-social-whatsapp')?.value.trim() || '',
+        linkedin: document.getElementById('sp-social-linkedin')?.value.trim() || '',
+      },
+      notes: document.getElementById('sp-notes')?.value.trim() || '',
+    });
+    applyCurrentUserPatch({name:n,email:e,smartProfile});
+  } else {
+    applyCurrentUserPatch({name:n,email:e});
+  }
+  saveAppState(); buildNav(); renderProfile(); notify('تم حفظ التغييرات','✅');
 }
 
 // ══════════════════════════════════════════════════════
@@ -2649,16 +3714,28 @@ function postDisc(){
 // ══════════════════════════════════════════════════════
 // DASHBOARD
 // ══════════════════════════════════════════════════════
+function getStudentDashboardIndicators(student){
+  const normalized = normalizeStudentRecord(student || {});
+  const persona = buildStudentPersona(normalized);
+  const completion = getSmartProfileCompletion(normalized.smartProfile);
+  const social = getSocialConnectionSummary(normalized.smartProfile);
+  return {persona, completion, social};
+}
+
 function renderDashStats(){
   const el=document.getElementById("dash-stats");if(!el)return;
   const pending_s=S.students.filter(x=>x.status==="pending").length;
   const pending_t=S.teachers.filter(x=>x.status==="pending").length;
   const approved_s=S.students.filter(x=>x.status==="approved").length;
   const approved_t=S.teachers.filter(x=>x.status==="approved").length;
+  const smart_ready=S.students.filter(x=>getSmartProfileCompletion(x.smartProfile).percent>=60).length;
+  const social_linked=S.students.filter(x=>{ const social=getSocialConnectionSummary(x.smartProfile); return social.consent&&social.count>0; }).length;
   el.innerHTML=[
     {n:pending_s+pending_t,l:"طلبات معلقة",c:"#fbbf24"},
     {n:approved_s,l:"طلاب مقبولون",c:"#4ade80"},
     {n:approved_t,l:"أساتذة مقبولون",c:"#c084fc"},
+    {n:smart_ready,l:"ملفات ذكية مكتملة",c:"#67e8f9"},
+    {n:social_linked,l:"روابط تواصل مفعلة",c:"#a78bfa"},
     {n:Object.keys(S.content).filter(k=>S.content[k].pdfUrl||S.content[k].content).length,l:"محتوى منشور",c:"var(--gold2)"},
   ].map(s=>`<div class="card" style="text-align:center"><div style="font-size:2.1rem;font-weight:900;color:${s.c};line-height:1">${s.n}</div><div style="color:var(--txt2);font-size:.73rem;margin-top:4px">${s.l}</div></div>`).join("");
 }
@@ -2681,21 +3758,28 @@ function renderDashContent(){
 
 function renderDashStudents(el){
   el.innerHTML=`<div class="tw"><table>
-    <thead><tr><th>الاسم</th><th>البريد</th><th>الشعبة</th><th>التاريخ</th><th>الحالة</th><th>التقدم</th><th>إجراء</th></tr></thead>
+    <thead><tr><th>الاسم</th><th>البريد</th><th>الشعبة</th><th>التاريخ</th><th>الحالة</th><th>الملف الذكي</th><th>الدعم</th><th>التواصل</th><th>التقدم</th><th>إجراء</th></tr></thead>
     <tbody>${S.students.map(s=>{
       const p = computeStudentProgress(s.id);
+      const indicators = getStudentDashboardIndicators(s);
+      const supportColors = getSupportLevelColor(indicators.persona.supportLevel);
       return `<tr>
       <td style="color:var(--txt);font-weight:600">${s.name}</td>
       <td>${s.email}</td>
       <td><span style="font-size:.72rem;color:var(--gold3)">${["اللغوية","الأدبية","النقدية"][s.branch]||"—"}</span></td>
       <td>${s.date}</td>
       <td><span class="st ${s.status==="pending"?"stp":s.status==="approved"?"sta":"str"}">${s.status==="pending"?"معلق":s.status==="approved"?"مقبول":"مرفوض"}</span></td>
+      <td style="min-width:110px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-weight:700">${indicators.completion.percent}%</div><div style="font-size:.72rem;color:var(--txt3)">${indicators.completion.filled}/${indicators.completion.total}</div><div style="font-size:.68rem;color:var(--txt3)">${s.smartProfile?.formSyncedAt ? 'مستورد من الاستمارة' : 'محلي / غير متزامن'}</div></div></td>
+      <td><span style="display:inline-flex;padding:3px 10px;border-radius:999px;background:${supportColors.bg};color:${supportColors.fg};border:1px solid ${supportColors.bd};font-size:.72rem;font-weight:700">${indicators.persona.supportLevel}</span></td>
+      <td style="min-width:100px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-weight:700">${indicators.social.count}</div><div style="font-size:.72rem;color:var(--txt3)">${indicators.social.consent ? 'بموافقة' : 'غير مفعّل'}</div></div></td>
       <td style="min-width:160px"><div style="display:flex;flex-direction:column;gap:4px"><div style="font-weight:700">${p.percent}%</div><div style="font-size:.72rem;color:var(--txt3)">${p.correct}/${p.totalQuestions||0} أسئلة — ${p.attempted} محاولة</div></div></td>
       <td>${s.status==="pending"
         ?`<div style="display:flex;gap:4px"><button class="btn bgr xs" onclick="approveUser('student','${s.id}')">قبول ✓</button><button class="btn br xs" onclick="rejectUser('student','${s.id}')">رفض ✗</button></div>`
-        :`<span style="color:var(--txt3);font-size:.72rem">تمّت</span>`
+        :s.status==="approved"
+          ?`<div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn bt xs" onclick="syncStudentSmartProfileFromWebapp('${s.id}')">استيراد الاستمارة</button><span style="color:var(--txt3);font-size:.72rem;align-self:center">تمّت</span></div>`
+          :`<span style="color:var(--txt3);font-size:.72rem">تمّت</span>`
       }</td>
-    </tr>`}).join("")||`<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
+    </tr>`}).join("")||`<tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--txt3)">لا توجد سجلات</td></tr>`}</tbody>
   </table></div>`;
 }
 
@@ -2809,6 +3893,154 @@ function importSampleUD(){
 }
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
+
+// ══════════════════════════════════════════════════════
+// STATIC NAHW QUIZ (FROM nahw_db.json)
+// ══════════════════════════════════════════════════════
+let nahwDatabase = {};
+let nahwCurrentLevel = "beginner";
+let nahwQuestionPool = [];
+let nahwCurrentQIndex = 0;
+
+function shuffleNahwArray(array){
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function showNahwQuestion(){
+  const question = nahwQuestionPool[nahwCurrentQIndex];
+  const qEl = document.getElementById("questionText");
+  if(!question || !qEl) return;
+  qEl.innerHTML = question.q;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").innerHTML = "";
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("checkBtn").style.display = "inline-flex";
+  updateNahwProgress();
+}
+
+function updateNahwProgress(){
+  const pEl = document.getElementById("progress");
+  if(!pEl) return;
+  if(!nahwQuestionPool.length){
+    pEl.innerHTML = "";
+    return;
+  }
+  pEl.innerHTML = "السؤال " + (nahwCurrentQIndex + 1) + " من " + nahwQuestionPool.length;
+}
+
+function startNahwSession(){
+  if(!nahwDatabase || !Object.keys(nahwDatabase).length) return;
+  nahwCurrentLevel = document.getElementById("levelSelect")?.value || "beginner";
+  const pool = Array.isArray(nahwDatabase[nahwCurrentLevel]) ? nahwDatabase[nahwCurrentLevel] : [];
+  nahwQuestionPool = shuffleNahwArray([...pool]);
+  nahwCurrentQIndex = 0;
+  const answerEl = document.getElementById("answer");
+  const feedbackEl = document.getElementById("feedback");
+  const questionEl = document.getElementById("questionText");
+  if(answerEl) answerEl.style.display = "inline-block";
+  if(feedbackEl) feedbackEl.innerHTML = "";
+  if(nahwQuestionPool.length === 0){
+    if(questionEl) questionEl.innerHTML = "لا توجد أسئلة متاحة لهذا المستوى حالياً.";
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    if(checkBtn) checkBtn.style.display = "none";
+    if(nextBtn) nextBtn.style.display = "none";
+    updateNahwProgress();
+    return;
+  }
+  showNahwQuestion();
+}
+
+function normalizeNahwText(text){
+  return String(text || "")
+    .toLowerCase()
+    .normalize("NFKC")
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/[ؤئ]/g, "")
+    .replace(/[\.,;:!\?،؛ـ"'()\[\]{}\/\\\-_]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function checkNahwAnswer(){
+  const answerEl = document.getElementById("answer");
+  const feedback = document.getElementById("feedback");
+  if(!answerEl || !feedback || !nahwQuestionPool.length) return;
+
+  const userAnswer = answerEl.value.trim();
+  const question = nahwQuestionPool[nahwCurrentQIndex];
+
+  if(userAnswer === ""){
+    feedback.innerHTML = "⚠️ اكتب إجابة أولاً.";
+    feedback.style.color = "orange";
+    return;
+  }
+
+  const normalizedUserAnswer = normalizeNahwText(userAnswer);
+  if(normalizedUserAnswer === ""){
+    feedback.innerHTML = "⚠️ اكتب إجابة نصية صالحة.";
+    feedback.style.color = "orange";
+    return;
+  }
+
+  const acceptedAnswers = Array.isArray(question.a) ? question.a : [];
+  const isCorrect = acceptedAnswers.some(a => normalizeNahwText(a) === normalizedUserAnswer);
+
+  if(isCorrect){
+    feedback.innerHTML = "✅ صحيح! الإجابة: " + question.a[0];
+    feedback.style.color = "#4ade80";
+  } else {
+    const correct = question.a && question.a[0] ? question.a[0] : "-";
+    const hint = question.hint ? " " + question.hint : "";
+    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: " + correct + "." + hint;
+    feedback.style.color = "#f87171";
+  }
+
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "inline-flex";
+}
+
+function nextNahwQuestion(){
+  nahwCurrentQIndex++;
+  if(nahwCurrentQIndex >= nahwQuestionPool.length){
+    document.getElementById("questionText").innerHTML = "🎉 لقد أنهيت جميع الأسئلة في هذا المستوى!";
+    document.getElementById("answer").style.display = "none";
+    document.getElementById("checkBtn").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("feedback").innerHTML = "";
+    document.getElementById("progress").innerHTML = "";
+    return;
+  }
+  showNahwQuestion();
+}
+
+function initNahwQuiz(){
+  fetch('nahw_db.json')
+    .then(response => {
+      if(!response.ok) throw new Error('فشل تحميل ملف nahw_db.json');
+      return response.json();
+    })
+    .then(data => {
+      nahwDatabase = data || {};
+      startNahwSession();
+    })
+    .catch(err => {
+      const qEl = document.getElementById('questionText');
+      const fEl = document.getElementById('feedback');
+      if(qEl) qEl.innerHTML = 'تعذّر تحميل قاعدة البيانات.';
+      if(fEl){
+        fEl.innerHTML = '⚠️ خطأ في تحميل قاعدة البيانات: ' + err.message;
+        fEl.style.color = '#f87171';
+      }
+      console.error('Nahw quiz load error:', err);
+    });
+}
+
+window.startNahwSession = startNahwSession;
+window.checkNahwAnswer = checkNahwAnswer;
+window.nextNahwQuestion = nextNahwQuestion;
 
 function viewSample(index){
   const key = `SAMPLE:${index}`;
@@ -3088,6 +4320,7 @@ async function pushStateToServer(){
 
 // Load saved state, import if needed, initialize UI and autosave
 loadAppState();
+hydrateAppState();
 if(!S.udImportKeys || S.udImportKeys.length===0) importUdQuestions();
 buildNav();
 autoSaveSetup();
@@ -3105,6 +4338,7 @@ function initTiaretMap(){
   }catch(e){ console.warn('initTiaretMap failed',e); }
 }
 initTiaretMap();
+initNahwQuiz();
 </script>
 </body>
 </html>
