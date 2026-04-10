@@ -181,6 +181,51 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 .sbox{text-align:center;padding:1.5rem}
 .sbig{font-size:3.5rem;font-weight:900;color:var(--gold2);line-height:1;font-family:'Amiri',serif}
 
+/* ADVANCED QUIZ — Progress Bar & Stats */
+.quiz-progress-wrap{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+.quiz-progress-title{font-size:.78rem;color:var(--txt3);margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center}
+.quiz-progress-bar-track{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin-bottom:.75rem}
+.quiz-progress-bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--teal),var(--teal2));transition:width .5s ease}
+.quiz-stats-row{display:flex;gap:.65rem;flex-wrap:wrap}
+.quiz-stat{flex:1;min-width:90px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:9px;padding:.6rem .75rem;text-align:center}
+.quiz-stat-val{font-size:1.45rem;font-weight:900;line-height:1;margin-bottom:2px}
+.quiz-stat-lbl{font-size:.64rem;color:var(--txt3);line-height:1.3}
+.qs-answered{color:var(--teal2)}
+.qs-correct{color:#4ade80}
+.qs-wrong{color:#f87171}
+.qs-pct{color:var(--gold2)}
+.qs-level{color:#c084fc}
+
+/* Session History */
+.session-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:.65rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.session-score-badge{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#7a4808);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.95rem;color:var(--bg);flex-shrink:0}
+.session-info{flex:1}
+.session-date{font-size:.7rem;color:var(--txt3)}
+.session-meta{font-size:.82rem;color:var(--txt2)}
+
+/* Question Management */
+.qmgmt-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:.85rem 1rem;margin-bottom:.65rem;display:flex;align-items:flex-start;gap:.9rem;transition:border-color .2s}
+.qmgmt-card:hover{border-color:rgba(201,150,42,.22)}
+.qmgmt-num{width:28px;height:28px;border-radius:7px;background:rgba(201,150,42,.12);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;margin-top:2px}
+.qmgmt-body{flex:1}
+.qmgmt-q{font-size:.88rem;color:var(--txt);font-weight:600;line-height:1.6;margin-bottom:.3rem}
+.qmgmt-meta{display:flex;gap:6px;flex-wrap:wrap}
+.qmgmt-tag{font-size:.64rem;padding:2px 8px;border-radius:12px;font-weight:700}
+.qmgmt-acts{display:flex;gap:5px;flex-shrink:0;margin-top:2px}
+
+/* Level & Type badges */
+.lvl-b{background:rgba(34,211,238,.1);color:#67e8f9;border:1px solid rgba(34,211,238,.22)}
+.lvl-m{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.22)}
+.lvl-a{background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.22)}
+.type-mcq{background:rgba(124,58,237,.1);color:#c084fc;border:1px solid rgba(124,58,237,.22)}
+.type-fill{background:rgba(22,163,74,.1);color:#4ade80;border:1px solid rgba(22,163,74,.22)}
+.type-text{background:rgba(234,88,12,.1);color:#fb923c;border:1px solid rgba(234,88,12,.22)}
+
+/* Search / Filter bar */
+.quiz-filter-bar{display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:1.1rem;align-items:center}
+.quiz-filter-bar .fi{flex:1;min-width:150px;max-width:240px}
+.quiz-filter-bar select.fi{flex:0 0 auto;width:auto;min-width:130px}
+
 /* DISCUSSION */
 .dp{background:var(--bg2);border:1px solid var(--bdr);border-radius:9px;padding:1rem;margin-bottom:.75rem;transition:border-color .2s}
 .dp.prf{border-color:rgba(201,150,42,.22);background:rgba(201,150,42,.03)}
@@ -499,32 +544,220 @@ select.fi{cursor:pointer}
 
   <div id="page-grades" class="page">
     <div class="sec">
-      <h2 class="sec-title">الدرجات</h2>
-      <p class="sec-sub">عرض نتائج الاختبارات والتقييمات الشخصية.</p>
+      <h2 class="sec-title">نظام التقييم المتقدم</h2>
+      <p class="sec-sub">اختبار تفاعلي مع شريط التقدم وحفظ النتائج وإدارة الأسئلة</p>
       <div class="hr"></div>
-      <div id="grades-content">
-        <div class="card" id="nahwApp">
-          <h3 style="color:var(--gold2);font-family:'Amiri',serif;margin-bottom:.6rem">قسم الاختبارات النحوية</h3>
-          <p style="color:var(--txt2);font-size:.84rem;line-height:1.8;margin-bottom:1rem">اختبار تفاعلي من قاعدة البيانات المحلية مع تتبّع التقدّم حسب المستوى.</p>
-          <div class="fg" style="max-width:320px">
-            <label class="fl" for="levelSelect">المستوى</label>
-            <select id="levelSelect" class="fi" onchange="startNahwSession()">
-              <option value="beginner">مبتدئ</option>
-              <option value="intermediate">متوسط</option>
-              <option value="advanced">متقدم</option>
-            </select>
-          </div>
-          <div class="qbox" style="margin-top:.75rem">
-            <div id="progress" style="color:var(--txt3);font-size:.78rem;margin-bottom:.65rem"></div>
-            <div id="questionText" style="color:var(--txt);font-size:.95rem;line-height:1.9;margin-bottom:.85rem">جاري تحميل الأسئلة...</div>
-            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
-              <input id="answer" class="fi" style="max-width:460px;flex:1" placeholder="اكتب إجابتك هنا">
-              <button id="checkBtn" class="btn bg" onclick="checkNahwAnswer()">تحقّق</button>
-              <button id="nextBtn" class="btn bo" style="display:none" onclick="nextNahwQuestion()">السؤال التالي</button>
+
+      <!-- Tabs: Quiz | History | Manage (admin) -->
+      <div style="display:flex;gap:4px;background:var(--bg3);border-radius:9px;padding:3px;margin-bottom:1.5rem;flex-wrap:wrap" id="grades-tabs">
+        <button class="stab on" id="gtab-quiz"   onclick="gradesTab('quiz',this)">📝 الاختبار</button>
+        <button class="stab"    id="gtab-browse" onclick="gradesTab('browse',this)">🔍 استعراض الأسئلة</button>
+        <button class="stab"    id="gtab-history"onclick="gradesTab('history',this)">📊 سجل النتائج</button>
+        <button class="stab"    id="gtab-manage" onclick="gradesTab('manage',this)" style="display:none">⚙️ إدارة الأسئلة</button>
+      </div>
+
+      <!-- ── TAB: QUIZ ── -->
+      <div id="gtab-content-quiz">
+        <div class="card" style="margin-bottom:1.25rem">
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end">
+            <div class="fg" style="flex:1;min-width:160px;margin-bottom:0">
+              <label class="fl">المستوى</label>
+              <select id="levelSelect" class="fi" onchange="startNahwSession()">
+                <option value="beginner">مبتدئ</option>
+                <option value="medium">متوسط</option>
+                <option value="advanced">متقدم</option>
+              </select>
             </div>
-            <div id="feedback" style="margin-top:.85rem;font-size:.86rem;line-height:1.8"></div>
+            <div class="fg" style="flex:1;min-width:160px;margin-bottom:0">
+              <label class="fl">صيغة السؤال</label>
+              <select id="quizTypeFilter" class="fi" onchange="startNahwSession()">
+                <option value="all">جميع الصيغ</option>
+                <option value="text">إملاء / نصية</option>
+                <option value="mcq">متعدد الخيارات</option>
+              </select>
+            </div>
+            <button class="btn bg" onclick="startNahwSession()" style="margin-bottom:0">▶ بدء جلسة جديدة</button>
           </div>
         </div>
+
+        <!-- Progress Bar -->
+        <div class="quiz-progress-wrap" id="nahw-progress-wrap" style="display:none">
+          <div class="quiz-progress-title">
+            <span>التقدم في الجلسة الحالية</span>
+            <span id="nahw-prog-label" style="color:var(--gold2);font-weight:700"></span>
+          </div>
+          <div class="quiz-progress-bar-track">
+            <div class="quiz-progress-bar-fill" id="nahw-prog-bar" style="width:0%"></div>
+          </div>
+          <div class="quiz-stats-row">
+            <div class="quiz-stat">
+              <div class="quiz-stat-val qs-answered" id="nahw-stat-answered">0</div>
+              <div class="quiz-stat-lbl">مجاب عليها</div>
+            </div>
+            <div class="quiz-stat">
+              <div class="quiz-stat-val qs-correct" id="nahw-stat-correct">0</div>
+              <div class="quiz-stat-lbl">إجابات صحيحة</div>
+            </div>
+            <div class="quiz-stat">
+              <div class="quiz-stat-val qs-wrong" id="nahw-stat-wrong">0</div>
+              <div class="quiz-stat-lbl">إجابات خاطئة</div>
+            </div>
+            <div class="quiz-stat">
+              <div class="quiz-stat-val qs-pct" id="nahw-stat-pct">0%</div>
+              <div class="quiz-stat-lbl">نسبة الصواب</div>
+            </div>
+            <div class="quiz-stat">
+              <div class="quiz-stat-val qs-level" id="nahw-stat-total">0</div>
+              <div class="quiz-stat-lbl">إجمالي الأسئلة</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question Box -->
+        <div class="qbox" id="nahwApp">
+          <div id="progress" style="color:var(--txt3);font-size:.78rem;margin-bottom:.65rem"></div>
+          <div id="questionText" style="color:var(--txt);font-size:.95rem;line-height:1.9;margin-bottom:.85rem">جاري تحميل الأسئلة...</div>
+
+          <!-- MCQ options (shown only for MCQ questions) -->
+          <div id="mcq-options" class="qopts" style="display:none;margin-bottom:.85rem"></div>
+
+          <!-- Text input (shown only for text questions) -->
+          <div id="text-input-area" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+            <input id="answer" class="fi" style="max-width:460px;flex:1" placeholder="اكتب إجابتك هنا">
+            <button id="checkBtn" class="btn bg" onclick="checkNahwAnswer()">تحقّق ✓</button>
+            <button id="nextBtn" class="btn bo" style="display:none" onclick="nextNahwQuestion()">التالي ←</button>
+          </div>
+
+          <div id="feedback" style="margin-top:.85rem;font-size:.86rem;line-height:1.8"></div>
+        </div>
+
+        <!-- Session End Summary (hidden until quiz ends) -->
+        <div id="nahw-session-summary" style="display:none"></div>
+      </div>
+
+      <!-- ── TAB: BROWSE ── -->
+      <div id="gtab-content-browse" style="display:none">
+        <div class="quiz-filter-bar">
+          <input class="fi" id="browse-search" placeholder="🔍 بحث بالكلمات المفتاحية..." oninput="renderBrowseQuestions()">
+          <select class="fi" id="browse-level" onchange="renderBrowseQuestions()">
+            <option value="all">جميع المستويات</option>
+            <option value="beginner">مبتدئ</option>
+            <option value="medium">متوسط</option>
+            <option value="advanced">متقدم</option>
+          </select>
+          <select class="fi" id="browse-type" onchange="renderBrowseQuestions()">
+            <option value="all">جميع الصيغ</option>
+            <option value="text">نصية / إملاء</option>
+            <option value="mcq">متعدد الخيارات</option>
+          </select>
+        </div>
+        <div id="browse-results"></div>
+      </div>
+
+      <!-- ── TAB: HISTORY ── -->
+      <div id="gtab-content-history" style="display:none">
+        <div id="history-content"></div>
+      </div>
+
+      <!-- ── TAB: MANAGE (admin only) ── -->
+      <div id="gtab-content-manage" style="display:none">
+        <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap">
+          <h3 style="font-family:'Amiri',serif;color:var(--gold2);flex:1">إدارة قاعدة الأسئلة</h3>
+          <button class="btn bg sm" onclick="openAddQuestionModal()">➕ إضافة سؤال</button>
+          <button class="btn bt sm" onclick="renderManageQuestions()">🔄 تحديث</button>
+        </div>
+        <div class="quiz-filter-bar">
+          <input class="fi" id="manage-search" placeholder="🔍 بحث..." oninput="renderManageQuestions()">
+          <select class="fi" id="manage-level" onchange="renderManageQuestions()">
+            <option value="all">جميع المستويات</option>
+            <option value="beginner">مبتدئ</option>
+            <option value="medium">متوسط</option>
+            <option value="advanced">متقدم</option>
+          </select>
+        </div>
+        <div id="manage-questions-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Add/Edit Question -->
+  <div class="ov" id="modal-add-question" onclick="if(event.target===this)closeM('modal-add-question')">
+    <div class="md mdl">
+      <div class="mhdr">
+        <span class="mttl" id="add-q-modal-title">إضافة سؤال جديد</span>
+        <button class="mcl" onclick="closeM('modal-add-question')">×</button>
+      </div>
+      <div class="fg">
+        <label class="fl">المستوى *</label>
+        <select class="fi" id="aq-level">
+          <option value="beginner">مبتدئ</option>
+          <option value="medium">متوسط</option>
+          <option value="advanced">متقدم</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">صيغة السؤال *</label>
+        <select class="fi" id="aq-type" onchange="toggleAqType()">
+          <option value="text">نصية / إملاء</option>
+          <option value="mcq">متعدد الخيارات</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">الموضوع / المقرر</label>
+        <input class="fi" id="aq-topic" placeholder="مثال: النحو، الصرف، اللسانيات">
+      </div>
+      <div class="fg">
+        <label class="fl">نص السؤال *</label>
+        <textarea class="fi" id="aq-q" rows="3" placeholder="اكتب نص السؤال هنا..."></textarea>
+      </div>
+      <!-- Text question fields -->
+      <div id="aq-text-fields">
+        <div class="fg">
+          <label class="fl">الإجابات المقبولة * (افصل بفاصلة)</label>
+          <input class="fi" id="aq-answers" placeholder="الإجابة الأولى، الإجابة الثانية">
+        </div>
+        <div class="fg">
+          <label class="fl">تلميح (اختياري)</label>
+          <input class="fi" id="aq-hint" placeholder="تلميح لمساعدة الطالب">
+        </div>
+      </div>
+      <!-- MCQ question fields -->
+      <div id="aq-mcq-fields" style="display:none">
+        <div class="fg">
+          <label class="fl">الخيار أ *</label><input class="fi" id="aq-opt0" placeholder="الخيار الأول">
+        </div>
+        <div class="fg">
+          <label class="fl">الخيار ب *</label><input class="fi" id="aq-opt1" placeholder="الخيار الثاني">
+        </div>
+        <div class="fg">
+          <label class="fl">الخيار ج</label><input class="fi" id="aq-opt2" placeholder="الخيار الثالث (اختياري)">
+        </div>
+        <div class="fg">
+          <label class="fl">الخيار د</label><input class="fi" id="aq-opt3" placeholder="الخيار الرابع (اختياري)">
+        </div>
+        <div class="fg">
+          <label class="fl">رقم الإجابة الصحيحة (0=أ، 1=ب، 2=ج، 3=د) *</label>
+          <select class="fi" id="aq-correct">
+            <option value="0">أ (الخيار الأول)</option>
+            <option value="1">ب (الخيار الثاني)</option>
+            <option value="2">ج (الخيار الثالث)</option>
+            <option value="3">د (الخيار الرابع)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">شرح الإجابة (اختياري)</label>
+          <input class="fi" id="aq-explain" placeholder="شرح مختصر للإجابة الصحيحة">
+        </div>
+      </div>
+      <!-- Preview -->
+      <div class="fg">
+        <div class="al ali" id="aq-preview" style="display:none"></div>
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:flex-end;flex-wrap:wrap">
+        <button class="btn bgh" onclick="previewQuestion()">👁 معاينة</button>
+        <button class="btn bgh" onclick="closeM('modal-add-question')">إلغاء</button>
+        <button class="btn bg" onclick="saveQuestion()" id="aq-save-btn">حفظ السؤال ✅</button>
       </div>
     </div>
   </div>
@@ -2493,6 +2726,11 @@ function goto(id){
   if(id==="dashboard"){ renderDashStats(); renderDashContent(); }
   if(id==="my-courses") renderTeacherCourses();
   if(id==="profile") renderProfile();
+  if(id==="grades"){
+    // Show or hide the admin manage tab based on role
+    const manageTab = document.getElementById("gtab-manage");
+    if(manageTab) manageTab.style.display = (S.user?.role === "admin") ? "inline-flex" : "none";
+  }
   window.scrollTo(0,0);
 }
 
@@ -3940,60 +4178,21 @@ function importSampleUD(){
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
 
 // ══════════════════════════════════════════════════════
-// STATIC NAHW QUIZ (FROM nahw_db.json)
+// ══════════════════════════════════════════════════════
+// STATIC NAHW QUIZ (FROM nahw_db.json) — ADVANCED
 // ══════════════════════════════════════════════════════
 let nahwDatabase = {};
 let nahwCurrentLevel = "beginner";
 let nahwQuestionPool = [];
 let nahwCurrentQIndex = 0;
+// Session tracking
+let nahwSession = { answered: 0, correct: 0, wrong: 0, history: [] };
+// Edit mode (for question management)
+let aqEditKey = null; // { level, index } or null for add
 
+// ── Utility ───────────────────────────────────────────
 function shuffleNahwArray(array){
   return array.sort(() => Math.random() - 0.5);
-}
-
-function showNahwQuestion(){
-  const question = nahwQuestionPool[nahwCurrentQIndex];
-  const qEl = document.getElementById("questionText");
-  if(!question || !qEl) return;
-  qEl.innerHTML = question.q;
-  document.getElementById("answer").value = "";
-  document.getElementById("feedback").innerHTML = "";
-  document.getElementById("nextBtn").style.display = "none";
-  document.getElementById("checkBtn").style.display = "inline-flex";
-  updateNahwProgress();
-}
-
-function updateNahwProgress(){
-  const pEl = document.getElementById("progress");
-  if(!pEl) return;
-  if(!nahwQuestionPool.length){
-    pEl.innerHTML = "";
-    return;
-  }
-  pEl.innerHTML = "السؤال " + (nahwCurrentQIndex + 1) + " من " + nahwQuestionPool.length;
-}
-
-function startNahwSession(){
-  if(!nahwDatabase || !Object.keys(nahwDatabase).length) return;
-  nahwCurrentLevel = document.getElementById("levelSelect")?.value || "beginner";
-  const pool = Array.isArray(nahwDatabase[nahwCurrentLevel]) ? nahwDatabase[nahwCurrentLevel] : [];
-  nahwQuestionPool = shuffleNahwArray([...pool]);
-  nahwCurrentQIndex = 0;
-  const answerEl = document.getElementById("answer");
-  const feedbackEl = document.getElementById("feedback");
-  const questionEl = document.getElementById("questionText");
-  if(answerEl) answerEl.style.display = "inline-block";
-  if(feedbackEl) feedbackEl.innerHTML = "";
-  if(nahwQuestionPool.length === 0){
-    if(questionEl) questionEl.innerHTML = "لا توجد أسئلة متاحة لهذا المستوى حالياً.";
-    const checkBtn = document.getElementById("checkBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    if(checkBtn) checkBtn.style.display = "none";
-    if(nextBtn) nextBtn.style.display = "none";
-    updateNahwProgress();
-    return;
-  }
-  showNahwQuestion();
 }
 
 function normalizeNahwText(text){
@@ -4009,6 +4208,142 @@ function normalizeNahwText(text){
     .trim();
 }
 
+function nahwLevelLabel(level){
+  return {beginner:"مبتدئ", medium:"متوسط", advanced:"متقدم"}[level] || level;
+}
+
+function nahwLevelClass(level){
+  return {beginner:"lvl-b", medium:"lvl-m", advanced:"lvl-a"}[level] || "";
+}
+
+// ── Progress Bar Update ───────────────────────────────
+function updateNahwProgress(){
+  const pEl = document.getElementById("progress");
+  if(pEl){
+    if(!nahwQuestionPool.length){ pEl.innerHTML = ""; }
+    else { pEl.innerHTML = "السؤال " + (nahwCurrentQIndex + 1) + " من " + nahwQuestionPool.length; }
+  }
+  // Advanced progress bar
+  const wrap = document.getElementById("nahw-progress-wrap");
+  if(!wrap) return;
+  const total = nahwQuestionPool.length;
+  if(!total){ wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  const pct = total ? Math.round((nahwSession.answered / total) * 100) : 0;
+  const correctPct = nahwSession.answered ? Math.round((nahwSession.correct / nahwSession.answered) * 100) : 0;
+  const bar = document.getElementById("nahw-prog-bar");
+  const label = document.getElementById("nahw-prog-label");
+  if(bar) bar.style.width = pct + "%";
+  if(label) label.textContent = pct + "% مكتمل";
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set("nahw-stat-answered", nahwSession.answered);
+  set("nahw-stat-correct",  nahwSession.correct);
+  set("nahw-stat-wrong",    nahwSession.wrong);
+  set("nahw-stat-pct",      correctPct + "%");
+  set("nahw-stat-total",    total);
+}
+
+// ── Show a single question ────────────────────────────
+function showNahwQuestion(){
+  const question = nahwQuestionPool[nahwCurrentQIndex];
+  const qEl = document.getElementById("questionText");
+  if(!question || !qEl) return;
+
+  const isMcq = question.type === "mcq" || (Array.isArray(question.options) && question.options.length > 0);
+
+  qEl.innerHTML = `<span style="color:var(--txt3);font-size:.78rem;margin-left:.5rem">[${isMcq ? "متعدد الخيارات" : "إملاء / نصي"}]</span> ${question.q}`;
+
+  const mcqDiv = document.getElementById("mcq-options");
+  const textArea = document.getElementById("text-input-area");
+  const answerEl = document.getElementById("answer");
+  const feedbackEl = document.getElementById("feedback");
+  const checkBtn = document.getElementById("checkBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  if(feedbackEl) feedbackEl.innerHTML = "";
+  if(nextBtn) nextBtn.style.display = "none";
+  if(checkBtn) checkBtn.style.display = "inline-flex";
+
+  if(isMcq){
+    // MCQ mode
+    if(textArea) textArea.style.display = "none";
+    if(mcqDiv){
+      mcqDiv.style.display = "flex";
+      mcqDiv.innerHTML = "";
+      (question.options || []).forEach((opt, oi) => {
+        const label = document.createElement("label");
+        label.className = "qo";
+        label.innerHTML = `<input type="radio" name="nahw_mcq" value="${oi}" style="accent-color:var(--gold)">&nbsp;${opt}`;
+        label.addEventListener("change", () => {
+          document.querySelectorAll("#mcq-options .qo").forEach(l => l.classList.remove("sel"));
+          label.classList.add("sel");
+        });
+        mcqDiv.appendChild(label);
+      });
+    }
+    if(checkBtn){
+      checkBtn.onclick = checkNahwMcqAnswer;
+    }
+  } else {
+    // Text / fill-in mode
+    if(mcqDiv){ mcqDiv.style.display = "none"; mcqDiv.innerHTML = ""; }
+    if(textArea) textArea.style.display = "flex";
+    if(answerEl){ answerEl.value = ""; answerEl.focus(); }
+    if(checkBtn){
+      checkBtn.onclick = checkNahwAnswer;
+    }
+  }
+
+  updateNahwProgress();
+}
+
+// ── Start Session ─────────────────────────────────────
+function startNahwSession(){
+  if(!nahwDatabase || !Object.keys(nahwDatabase).length) return;
+
+  nahwCurrentLevel = document.getElementById("levelSelect")?.value || "beginner";
+  const typeFilter = document.getElementById("quizTypeFilter")?.value || "all";
+  let pool = Array.isArray(nahwDatabase[nahwCurrentLevel]) ? nahwDatabase[nahwCurrentLevel] : [];
+
+  // Apply type filter
+  if(typeFilter === "mcq"){
+    pool = pool.filter(q => q.type === "mcq" || (Array.isArray(q.options) && q.options.length > 0));
+  } else if(typeFilter === "text"){
+    pool = pool.filter(q => q.type !== "mcq" && !(Array.isArray(q.options) && q.options.length > 0));
+  }
+
+  nahwQuestionPool = shuffleNahwArray([...pool]);
+  nahwCurrentQIndex = 0;
+  nahwSession = { answered: 0, correct: 0, wrong: 0, history: [], level: nahwCurrentLevel };
+
+  // Hide summary
+  const summaryEl = document.getElementById("nahw-session-summary");
+  if(summaryEl) summaryEl.style.display = "none";
+
+  const feedbackEl = document.getElementById("feedback");
+  if(feedbackEl) feedbackEl.innerHTML = "";
+
+  if(nahwQuestionPool.length === 0){
+    const questionEl = document.getElementById("questionText");
+    if(questionEl) questionEl.innerHTML = "لا توجد أسئلة متاحة لهذا المستوى وهذه الصيغة حالياً.";
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const mcqDiv = document.getElementById("mcq-options");
+    const textArea = document.getElementById("text-input-area");
+    if(checkBtn) checkBtn.style.display = "none";
+    if(nextBtn) nextBtn.style.display = "none";
+    if(mcqDiv){ mcqDiv.style.display = "none"; mcqDiv.innerHTML = ""; }
+    if(textArea) textArea.style.display = "none";
+    const wrap = document.getElementById("nahw-progress-wrap");
+    if(wrap) wrap.style.display = "none";
+    const pEl = document.getElementById("progress");
+    if(pEl) pEl.innerHTML = "";
+    return;
+  }
+  showNahwQuestion();
+}
+
+// ── Check Text/Fill-in Answer ─────────────────────────
 function checkNahwAnswer(){
   const answerEl = document.getElementById("answer");
   const feedback = document.getElementById("feedback");
@@ -4022,7 +4357,6 @@ function checkNahwAnswer(){
     feedback.style.color = "orange";
     return;
   }
-
   const normalizedUserAnswer = normalizeNahwText(userAnswer);
   if(normalizedUserAnswer === ""){
     feedback.innerHTML = "⚠️ اكتب إجابة نصية صالحة.";
@@ -4033,13 +4367,15 @@ function checkNahwAnswer(){
   const acceptedAnswers = Array.isArray(question.a) ? question.a : [];
   const isCorrect = acceptedAnswers.some(a => normalizeNahwText(a) === normalizedUserAnswer);
 
+  _recordNahwAnswer(isCorrect, question);
+
   if(isCorrect){
     feedback.innerHTML = "✅ صحيح! الإجابة: " + question.a[0];
     feedback.style.color = "#4ade80";
   } else {
     const correct = question.a && question.a[0] ? question.a[0] : "-";
-    const hint = question.hint ? " " + question.hint : "";
-    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: " + correct + "." + hint;
+    const hint = question.hint ? `<br><span style="color:var(--txt3)">💡 ${question.hint}</span>` : "";
+    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + correct + "</strong>" + hint;
     feedback.style.color = "#f87171";
   }
 
@@ -4047,20 +4383,461 @@ function checkNahwAnswer(){
   document.getElementById("nextBtn").style.display = "inline-flex";
 }
 
+// ── Check MCQ Answer ──────────────────────────────────
+function checkNahwMcqAnswer(){
+  const feedback = document.getElementById("feedback");
+  const question = nahwQuestionPool[nahwCurrentQIndex];
+  if(!feedback || !question) return;
+
+  const selected = document.querySelector('#mcq-options input[name="nahw_mcq"]:checked');
+  if(!selected){
+    feedback.innerHTML = "⚠️ اختر إجابة أولاً.";
+    feedback.style.color = "orange";
+    return;
+  }
+
+  const selectedIdx = parseInt(selected.value, 10);
+  const isCorrect = selectedIdx === question.correct;
+
+  // Highlight choices
+  document.querySelectorAll("#mcq-options .qo").forEach((label, idx) => {
+    label.classList.remove("sel");
+    if(idx === question.correct) label.classList.add("ok");
+    else if(idx === selectedIdx) label.classList.add("bad");
+    const inp = label.querySelector("input");
+    if(inp) inp.disabled = true;
+  });
+
+  _recordNahwAnswer(isCorrect, question);
+
+  if(isCorrect){
+    feedback.innerHTML = "✅ أحسنت! الإجابة صحيحة.";
+    feedback.style.color = "#4ade80";
+  } else {
+    const correct = (question.options || [])[question.correct] || "-";
+    const explain = question.explain ? `<br><span class="qexp">${question.explain}</span>` : "";
+    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + correct + "</strong>" + explain;
+    feedback.style.color = "#f87171";
+  }
+
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "inline-flex";
+}
+
+function _recordNahwAnswer(isCorrect, question){
+  nahwSession.answered++;
+  if(isCorrect) nahwSession.correct++;
+  else nahwSession.wrong++;
+  nahwSession.history.push({
+    q: question.q,
+    correct: isCorrect,
+    timestamp: new Date().toISOString()
+  });
+  updateNahwProgress();
+}
+
+// ── Next Question ─────────────────────────────────────
 function nextNahwQuestion(){
   nahwCurrentQIndex++;
   if(nahwCurrentQIndex >= nahwQuestionPool.length){
-    document.getElementById("questionText").innerHTML = "🎉 لقد أنهيت جميع الأسئلة في هذا المستوى!";
-    document.getElementById("answer").style.display = "none";
-    document.getElementById("checkBtn").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("feedback").innerHTML = "";
-    document.getElementById("progress").innerHTML = "";
+    _showNahwSessionEnd();
     return;
   }
   showNahwQuestion();
 }
 
+function _showNahwSessionEnd(){
+  // Hide question UI
+  document.getElementById("questionText").innerHTML = "";
+  const mcqDiv = document.getElementById("mcq-options");
+  if(mcqDiv){ mcqDiv.style.display = "none"; mcqDiv.innerHTML = ""; }
+  const textArea = document.getElementById("text-input-area");
+  if(textArea) textArea.style.display = "none";
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("feedback").innerHTML = "";
+  document.getElementById("progress").innerHTML = "";
+
+  const total = nahwQuestionPool.length;
+  const correct = nahwSession.correct;
+  const pct = total ? Math.round((correct / total) * 100) : 0;
+  const medal = pct >= 90 ? "🏆" : pct >= 70 ? "🥈" : pct >= 50 ? "🥉" : "📚";
+  const verdict = pct >= 90 ? "ممتاز" : pct >= 70 ? "جيد جداً" : pct >= 50 ? "مقبول" : "بحاجة إلى مراجعة";
+  const verdictColor = pct >= 70 ? "#4ade80" : pct >= 50 ? "#fbbf24" : "#f87171";
+
+  const summaryEl = document.getElementById("nahw-session-summary");
+  if(summaryEl){
+    summaryEl.style.display = "block";
+    summaryEl.innerHTML = `
+      <div class="card" style="text-align:center;padding:2rem;margin-top:1rem">
+        <div style="font-size:3rem;margin-bottom:.5rem">${medal}</div>
+        <div style="font-family:'Amiri',serif;font-size:2.2rem;color:var(--gold2);font-weight:900">${correct} / ${total}</div>
+        <div style="font-size:1.1rem;font-weight:700;color:${verdictColor};margin:.3rem 0">${verdict} — ${pct}%</div>
+        <div style="color:var(--txt2);font-size:.83rem;margin:.65rem 0 1.25rem">
+          المستوى: ${nahwLevelLabel(nahwSession.level)} &nbsp;|&nbsp;
+          صحيح: ${correct} &nbsp;|&nbsp; خطأ: ${nahwSession.wrong}
+        </div>
+        <button class="btn bg" onclick="saveNahwSessionResult();startNahwSession()">حفظ النتيجة وجلسة جديدة 🔄</button>
+        <button class="btn bgh sm" onclick="gradesTab('history',document.getElementById('gtab-history'))" style="margin-right:.5rem">عرض السجل 📊</button>
+      </div>`;
+  }
+  // Auto-save result
+  saveNahwSessionResult();
+  updateNahwProgress();
+}
+
+// ── Save Session Result ───────────────────────────────
+function saveNahwSessionResult(){
+  const total = nahwQuestionPool.length;
+  if(!total || !nahwSession.answered) return;
+  const result = {
+    date: new Date().toLocaleString("ar-DZ"),
+    isoDate: new Date().toISOString(),
+    level: nahwSession.level || nahwCurrentLevel,
+    levelLabel: nahwLevelLabel(nahwSession.level || nahwCurrentLevel),
+    total,
+    correct: nahwSession.correct,
+    wrong: nahwSession.wrong,
+    answered: nahwSession.answered,
+    pct: total ? Math.round((nahwSession.correct / total) * 100) : 0,
+  };
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem("nahw_session_history") || "[]"); } catch(e){}
+  if(!Array.isArray(history)) history = [];
+  history.unshift(result);
+  if(history.length > 50) history = history.slice(0, 50); // keep last 50
+  try { localStorage.setItem("nahw_session_history", JSON.stringify(history)); } catch(e){}
+}
+
+// ── Load Session History ──────────────────────────────
+function loadNahwHistory(){
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem("nahw_session_history") || "[]"); } catch(e){}
+  if(!Array.isArray(history)) history = [];
+  return history;
+}
+
+function renderNahwHistory(){
+  const el = document.getElementById("history-content");
+  if(!el) return;
+  const history = loadNahwHistory();
+  if(!history.length){
+    el.innerHTML = `<div class="empty"><div class="eic">📊</div><div>لا توجد جلسات محفوظة بعد. أكمل اختباراً لحفظ نتيجتك.</div></div>`;
+    return;
+  }
+
+  // Summary stats
+  const avgPct = Math.round(history.reduce((s, h) => s + h.pct, 0) / history.length);
+  const bestPct = Math.max(...history.map(h => h.pct));
+  let html = `
+    <div class="g3" style="margin-bottom:1.25rem">
+      <div class="card ct ct-g" style="text-align:center">
+        <div style="font-size:2rem;font-weight:900;color:var(--gold2)">${history.length}</div>
+        <div style="color:var(--txt3);font-size:.78rem">جلسات محفوظة</div>
+      </div>
+      <div class="card ct ct-t" style="text-align:center">
+        <div style="font-size:2rem;font-weight:900;color:var(--teal2)">${avgPct}%</div>
+        <div style="color:var(--txt3);font-size:.78rem">متوسط النسبة</div>
+      </div>
+      <div class="card ct ct-v" style="text-align:center">
+        <div style="font-size:2rem;font-weight:900;color:#c084fc">${bestPct}%</div>
+        <div style="color:var(--txt3);font-size:.78rem">أفضل نتيجة</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.75rem">
+      <button class="btn br xs" onclick="if(confirm('هل تريد حذف سجل الجلسات؟')){localStorage.removeItem('nahw_session_history');renderNahwHistory();}">🗑 حذف السجل</button>
+    </div>`;
+  history.forEach((h, i) => {
+    const color = h.pct >= 70 ? "#4ade80" : h.pct >= 50 ? "#fbbf24" : "#f87171";
+    const medal = h.pct >= 90 ? "🏆" : h.pct >= 70 ? "🥈" : h.pct >= 50 ? "🥉" : "📚";
+    html += `
+      <div class="session-card">
+        <div class="session-score-badge">${medal}</div>
+        <div class="session-info">
+          <div class="session-meta"><strong style="color:${color}">${h.pct}%</strong> &nbsp;—&nbsp; ${h.correct}/${h.total} إجابة صحيحة &nbsp;|&nbsp; مستوى: <span class="qmgmt-tag ${nahwLevelClass(h.level)}">${h.levelLabel}</span></div>
+          <div class="session-date">${h.date}</div>
+        </div>
+      </div>`;
+  });
+  el.innerHTML = html;
+}
+
+// ── Browse Questions ──────────────────────────────────
+function renderBrowseQuestions(){
+  const el = document.getElementById("browse-results");
+  if(!el) return;
+  if(!nahwDatabase || !Object.keys(nahwDatabase).length){
+    el.innerHTML = `<div class="al alw">لم يتم تحميل قاعدة الأسئلة بعد.</div>`;
+    return;
+  }
+  const search = (document.getElementById("browse-search")?.value || "").trim().toLowerCase();
+  const levelFilter = document.getElementById("browse-level")?.value || "all";
+  const typeFilter = document.getElementById("browse-type")?.value || "all";
+
+  const levels = levelFilter === "all" ? ["beginner", "medium", "advanced"] : [levelFilter];
+  let allQ = [];
+  levels.forEach(lvl => {
+    (nahwDatabase[lvl] || []).forEach(q => allQ.push({...q, level: lvl}));
+  });
+
+  // Apply search
+  if(search) allQ = allQ.filter(q => q.q && q.q.toLowerCase().includes(search));
+  // Apply type filter
+  if(typeFilter === "mcq") allQ = allQ.filter(q => q.type === "mcq" || (Array.isArray(q.options) && q.options.length > 0));
+  else if(typeFilter === "text") allQ = allQ.filter(q => q.type !== "mcq" && !(Array.isArray(q.options) && q.options.length > 0));
+
+  if(!allQ.length){
+    el.innerHTML = `<div class="empty"><div class="eic">🔍</div><div>لا توجد أسئلة تطابق معايير البحث.</div></div>`;
+    return;
+  }
+
+  let html = `<div style="color:var(--txt3);font-size:.76rem;margin-bottom:.65rem">${allQ.length} سؤال</div>`;
+  allQ.forEach((q, i) => {
+    const isMcq = q.type === "mcq" || (Array.isArray(q.options) && q.options.length > 0);
+    const typeTag = isMcq
+      ? `<span class="qmgmt-tag type-mcq">MCQ</span>`
+      : `<span class="qmgmt-tag type-text">نصي</span>`;
+    const lvlTag = `<span class="qmgmt-tag ${nahwLevelClass(q.level)}">${nahwLevelLabel(q.level)}</span>`;
+    const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${q.topic}</span>` : "";
+    const answer = isMcq
+      ? `الإجابة: ${(q.options||[])[q.correct]||""}`
+      : `الإجابة: ${(q.a||[])[0]||""}`;
+    html += `
+      <div class="qmgmt-card">
+        <div class="qmgmt-num">${i+1}</div>
+        <div class="qmgmt-body">
+          <div class="qmgmt-q">${q.q}</div>
+          <div class="qmgmt-meta">${lvlTag}${typeTag}${topicTag}</div>
+          <div style="font-size:.76rem;color:var(--txt3);margin-top:.3rem">${answer}</div>
+          ${q.hint ? `<div style="font-size:.73rem;color:var(--txt3);margin-top:.2rem">💡 ${q.hint}</div>` : ""}
+        </div>
+      </div>`;
+  });
+  el.innerHTML = html;
+}
+
+// ── Grades Tabs ───────────────────────────────────────
+function gradesTab(tab, btn){
+  ["quiz","browse","history","manage"].forEach(t => {
+    const ct = document.getElementById("gtab-content-" + t);
+    const bt = document.getElementById("gtab-" + t);
+    if(ct) ct.style.display = "none";
+    if(bt) bt.classList.remove("on");
+  });
+  const ct = document.getElementById("gtab-content-" + tab);
+  if(ct) ct.style.display = "block";
+  if(btn) btn.classList.add("on");
+
+  if(tab === "history") renderNahwHistory();
+  if(tab === "browse") renderBrowseQuestions();
+  if(tab === "manage") renderManageQuestions();
+}
+
+// ── Admin: Question Management ────────────────────────
+function renderManageQuestions(){
+  const el = document.getElementById("manage-questions-list");
+  if(!el) return;
+  if(!nahwDatabase || !Object.keys(nahwDatabase).length){
+    el.innerHTML = `<div class="al alw">لم يتم تحميل قاعدة الأسئلة بعد.</div>`;
+    return;
+  }
+  const search = (document.getElementById("manage-search")?.value || "").trim().toLowerCase();
+  const levelFilter = document.getElementById("manage-level")?.value || "all";
+
+  const levels = levelFilter === "all" ? ["beginner", "medium", "advanced"] : [levelFilter];
+  let total = 0;
+  let html = "";
+
+  levels.forEach(lvl => {
+    const questions = nahwDatabase[lvl] || [];
+    const filtered = search
+      ? questions.filter(q => q.q && q.q.toLowerCase().includes(search))
+      : questions;
+    if(!filtered.length) return;
+
+    const lvlLabel = nahwLevelLabel(lvl);
+    html += `<div style="color:var(--gold2);font-family:'Amiri',serif;font-size:1rem;margin:.85rem 0 .45rem;border-bottom:1px solid var(--bdr);padding-bottom:.3rem">${lvlLabel} (${filtered.length})</div>`;
+    filtered.forEach((q, i) => {
+      const realIdx = questions.indexOf(q);
+      const isMcq = q.type === "mcq" || (Array.isArray(q.options) && q.options.length > 0);
+      const typeTag = isMcq
+        ? `<span class="qmgmt-tag type-mcq">MCQ</span>`
+        : `<span class="qmgmt-tag type-text">نصي</span>`;
+      const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${q.topic}</span>` : "";
+      html += `
+        <div class="qmgmt-card">
+          <div class="qmgmt-num">${total + 1}</div>
+          <div class="qmgmt-body">
+            <div class="qmgmt-q">${q.q}</div>
+            <div class="qmgmt-meta">${typeTag}${topicTag}</div>
+          </div>
+          <div class="qmgmt-acts">
+            <button class="btn bt xs" onclick="openEditQuestionModal('${lvl}',${realIdx})">✏️</button>
+            <button class="btn br xs" onclick="deleteQuestion('${lvl}',${realIdx})">🗑</button>
+          </div>
+        </div>`;
+      total++;
+    });
+  });
+
+  if(!html){
+    el.innerHTML = `<div class="empty"><div class="eic">🔍</div><div>لا توجد أسئلة تطابق معايير البحث.</div></div>`;
+    return;
+  }
+
+  // Stats bar
+  const countByLevel = {};
+  ["beginner","medium","advanced"].forEach(lvl => {
+    countByLevel[lvl] = (nahwDatabase[lvl] || []).length;
+  });
+  const statsHtml = `
+    <div class="g3" style="margin-bottom:1rem">
+      <div class="card" style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:900;color:var(--gold2)">${countByLevel.beginner}</div>
+        <div style="font-size:.72rem;color:var(--txt3)">مبتدئ</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:900;color:#fbbf24">${countByLevel.medium}</div>
+        <div style="font-size:.72rem;color:var(--txt3)">متوسط</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:1.6rem;font-weight:900;color:#f87171">${countByLevel.advanced}</div>
+        <div style="font-size:.72rem;color:var(--txt3)">متقدم</div>
+      </div>
+    </div>`;
+  el.innerHTML = statsHtml + html;
+}
+
+// ── Add / Edit Question Modal ─────────────────────────
+function toggleAqType(){
+  const type = document.getElementById("aq-type")?.value;
+  const textFields = document.getElementById("aq-text-fields");
+  const mcqFields = document.getElementById("aq-mcq-fields");
+  if(textFields) textFields.style.display = type === "mcq" ? "none" : "block";
+  if(mcqFields) mcqFields.style.display = type === "mcq" ? "block" : "none";
+  const preview = document.getElementById("aq-preview");
+  if(preview) preview.style.display = "none";
+}
+
+function openAddQuestionModal(){
+  aqEditKey = null;
+  document.getElementById("add-q-modal-title").textContent = "إضافة سؤال جديد";
+  document.getElementById("aq-save-btn").textContent = "حفظ السؤال ✅";
+  ["aq-level","aq-type","aq-topic","aq-q","aq-answers","aq-hint","aq-opt0","aq-opt1","aq-opt2","aq-opt3","aq-explain"].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = id === "aq-level" ? "beginner" : id === "aq-type" ? "text" : "";
+  });
+  if(document.getElementById("aq-correct")) document.getElementById("aq-correct").value = "0";
+  toggleAqType();
+  const preview = document.getElementById("aq-preview");
+  if(preview) preview.style.display = "none";
+  openM("modal-add-question");
+}
+
+function openEditQuestionModal(level, idx){
+  const q = (nahwDatabase[level] || [])[idx];
+  if(!q){ notify("السؤال غير موجود","⚠️"); return; }
+  aqEditKey = { level, index: idx };
+  const isMcq = q.type === "mcq" || (Array.isArray(q.options) && q.options.length > 0);
+  document.getElementById("add-q-modal-title").textContent = "تحرير السؤال";
+  document.getElementById("aq-save-btn").textContent = "حفظ التعديلات ✅";
+  document.getElementById("aq-level").value = level;
+  document.getElementById("aq-type").value = isMcq ? "mcq" : "text";
+  document.getElementById("aq-topic").value = q.topic || "";
+  document.getElementById("aq-q").value = q.q || "";
+  if(!isMcq){
+    document.getElementById("aq-answers").value = (q.a || []).join("، ");
+    document.getElementById("aq-hint").value = q.hint || "";
+  } else {
+    (q.options || []).forEach((opt, oi) => {
+      const el = document.getElementById("aq-opt" + oi);
+      if(el) el.value = opt;
+    });
+    document.getElementById("aq-correct").value = String(q.correct || 0);
+    document.getElementById("aq-explain").value = q.explain || "";
+  }
+  toggleAqType();
+  const preview = document.getElementById("aq-preview");
+  if(preview) preview.style.display = "none";
+  openM("modal-add-question");
+}
+
+function previewQuestion(){
+  const type = document.getElementById("aq-type")?.value;
+  const q = (document.getElementById("aq-q")?.value || "").trim();
+  const preview = document.getElementById("aq-preview");
+  if(!preview) return;
+  if(!q){ preview.style.display = "block"; preview.innerHTML = "⚠️ أدخل نص السؤال أولاً."; return; }
+  let html = `<strong>السؤال:</strong> ${q}<br>`;
+  if(type === "mcq"){
+    const opts = [0,1,2,3].map(i => document.getElementById("aq-opt"+i)?.value).filter(Boolean);
+    const cor = parseInt(document.getElementById("aq-correct")?.value || "0", 10);
+    html += opts.map((o,i) => `<br>${i===cor?"✅":"○"} ${o}`).join("");
+  } else {
+    const ans = (document.getElementById("aq-answers")?.value || "").split(/،|,/).map(a=>a.trim()).filter(Boolean);
+    html += `<br><strong>الإجابة:</strong> ${ans.join(" / ")}`;
+    const hint = (document.getElementById("aq-hint")?.value || "").trim();
+    if(hint) html += `<br>💡 ${hint}`;
+  }
+  preview.style.display = "block";
+  preview.innerHTML = html;
+}
+
+function saveQuestion(){
+  const level = document.getElementById("aq-level")?.value;
+  const type = document.getElementById("aq-type")?.value;
+  const topic = (document.getElementById("aq-topic")?.value || "").trim();
+  const q = (document.getElementById("aq-q")?.value || "").trim();
+  if(!q){ notify("أدخل نص السؤال","⚠️"); return; }
+
+  let qObj = { q, topic: topic || undefined };
+  if(type === "mcq"){
+    const opts = [0,1,2,3].map(i => (document.getElementById("aq-opt"+i)?.value||"").trim()).filter(Boolean);
+    if(opts.length < 2){ notify("أدخل خيارين على الأقل","⚠️"); return; }
+    const cor = parseInt(document.getElementById("aq-correct")?.value || "0", 10);
+    const explain = (document.getElementById("aq-explain")?.value || "").trim();
+    qObj = {...qObj, type:"mcq", options: opts, correct: cor};
+    if(explain) qObj.explain = explain;
+  } else {
+    const answers = (document.getElementById("aq-answers")?.value || "").split(/،|,/).map(a=>a.trim()).filter(Boolean);
+    if(!answers.length){ notify("أدخل إجابة واحدة على الأقل","⚠️"); return; }
+    const hint = (document.getElementById("aq-hint")?.value || "").trim();
+    qObj = {...qObj, a: answers};
+    if(hint) qObj.hint = hint;
+  }
+
+  if(!nahwDatabase[level]) nahwDatabase[level] = [];
+
+  if(aqEditKey && aqEditKey.level === level){
+    nahwDatabase[level][aqEditKey.index] = {...nahwDatabase[level][aqEditKey.index], ...qObj};
+    notify("تم تحديث السؤال ✅");
+  } else if(aqEditKey && aqEditKey.level !== level){
+    // Level changed: remove from old, add to new
+    nahwDatabase[aqEditKey.level].splice(aqEditKey.index, 1);
+    qObj.id = Date.now();
+    nahwDatabase[level].push(qObj);
+    notify("تم نقل السؤال وحفظه ✅");
+  } else {
+    qObj.id = Date.now();
+    nahwDatabase[level].push(qObj);
+    notify("تم إضافة السؤال ✅");
+  }
+
+  closeM("modal-add-question");
+  renderManageQuestions();
+  renderBrowseQuestions();
+}
+
+function deleteQuestion(level, idx){
+  if(!confirm("هل تريد حذف هذا السؤال؟")) return;
+  if(!nahwDatabase[level]) return;
+  nahwDatabase[level].splice(idx, 1);
+  notify("تم حذف السؤال","🗑");
+  renderManageQuestions();
+  renderBrowseQuestions();
+}
+
+// ── Init ──────────────────────────────────────────────
 function initNahwQuiz(){
   fetch('nahw_db.json')
     .then(response => {
@@ -4069,6 +4846,12 @@ function initNahwQuiz(){
     })
     .then(data => {
       nahwDatabase = data || {};
+      // Show admin manage tab if admin
+      const manageTab = document.getElementById("gtab-manage");
+      if(manageTab){
+        const isAdmin = S && S.user && S.user.role === "admin";
+        manageTab.style.display = isAdmin ? "inline-flex" : "none";
+      }
       startNahwSession();
     })
     .catch(err => {
@@ -4086,6 +4869,17 @@ function initNahwQuiz(){
 window.startNahwSession = startNahwSession;
 window.checkNahwAnswer = checkNahwAnswer;
 window.nextNahwQuestion = nextNahwQuestion;
+window.gradesTab = gradesTab;
+window.renderBrowseQuestions = renderBrowseQuestions;
+window.renderManageQuestions = renderManageQuestions;
+window.openAddQuestionModal = openAddQuestionModal;
+window.openEditQuestionModal = openEditQuestionModal;
+window.deleteQuestion = deleteQuestion;
+window.previewQuestion = previewQuestion;
+window.saveQuestion = saveQuestion;
+window.toggleAqType = toggleAqType;
+window.renderNahwHistory = renderNahwHistory;
+window.saveNahwSessionResult = saveNahwSessionResult;
 
 function viewSample(index){
   const key = `SAMPLE:${index}`;
