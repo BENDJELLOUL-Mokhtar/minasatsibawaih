@@ -493,6 +493,62 @@ select.fi{cursor:pointer}
   </div>
 </div>
 
+<!-- ══ PAGE: PRESENTATION VIEWER ══ -->
+<div id="page-presentation" class="page">
+  <div style="background:var(--bg);min-height:100vh;display:flex;flex-direction:column">
+    <!-- Presentation Topbar -->
+    <div style="background:rgba(11,17,32,.97);border-bottom:1px solid rgba(201,150,42,.2);padding:.65rem 1.25rem;display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;position:sticky;top:62px;z-index:150">
+      <button class="btn bgh sm" onclick="goto('home')">← رجوع</button>
+      <div style="flex:1;text-align:center">
+        <span style="font-family:'Amiri',serif;font-size:.95rem;color:var(--gold2)">🎓 عرض المشروع</span>
+        <span style="color:var(--txt3);font-size:.75rem;margin-right:.5rem">الملتقى الدولي — المجلس الأعلى للغة العربية، ماي 2026</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0">
+        <button class="btn bgh sm" id="pres-prev-top" onclick="presGo(-1)" title="السابق">&#8592;</button>
+        <span id="pres-counter-top" style="font-size:.8rem;color:var(--txt2);min-width:60px;text-align:center">— / —</span>
+        <button class="btn bgh sm" id="pres-next-top" onclick="presGo(1)" title="التالي">&#8594;</button>
+        <button class="btn bg sm" id="pres-fs" onclick="presFullscreen()" title="ملء الشاشة">⛶</button>
+        <a class="btn bgh sm" href="assets/docs/The_AI_Learning_Transition.pdf" target="_blank">↓ تحميل</a>
+      </div>
+    </div>
+
+    <!-- Slide Stage -->
+    <div id="pres-stage" style="flex:1;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(8,145,178,.06),transparent 70%);overflow:hidden">
+      <!-- outer box controls max-width; inner sizer locks 16:9 with padding trick -->
+      <div style="width:100%;max-width:960px;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7);border:1px solid rgba(201,150,42,.18)">
+        <div id="pres-slide-wrap" style="position:relative;width:100%;padding-bottom:56.25%;background:#1a1a2e;overflow:hidden">
+          <canvas id="pres-canvas-a" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:1;transition:opacity .5s ease;will-change:opacity;z-index:2"></canvas>
+          <canvas id="pres-canvas-b" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity .5s ease;will-change:opacity;z-index:1"></canvas>
+          <div id="pres-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--txt2);background:#1a1a2e;z-index:10">
+            <div class="spin" style="width:36px;height:36px;border-width:4px"></div>
+            <span style="font-size:.85rem">جاري تحميل العرض...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress + Nav Footer -->
+    <div style="background:rgba(11,17,32,.95);border-top:1px solid rgba(255,255,255,.05);padding:.75rem 1.25rem;display:flex;align-items:center;gap:1rem">
+      <button class="btn bgh" id="pres-prev" onclick="presGo(-1)">&#8592; السابق</button>
+      <div style="flex:1">
+        <div id="pres-progress-bar" style="height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden">
+          <div id="pres-progress-fill" style="height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:2px;width:0%;transition:width .4s ease"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span id="pres-slide-title" style="font-size:.72rem;color:var(--txt3)"></span>
+          <span id="pres-counter" style="font-size:.72rem;color:var(--txt3)">— / —</span>
+        </div>
+      </div>
+      <button class="btn bg" id="pres-next" onclick="presGo(1)">التالي &#8594;</button>
+    </div>
+
+    <!-- Thumbnail Strip -->
+    <div id="pres-thumbs" style="background:var(--bg2);border-top:1px solid var(--bdr);padding:.6rem 1rem;display:flex;gap:.5rem;overflow-x:auto;min-height:80px;align-items:center">
+      <span style="font-size:.72rem;color:var(--txt3);white-space:nowrap">الشرائح:</span>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODALS ══ -->
   <!-- ══ PAGES: ADDITIONAL LMS SERVICES (PLACEHOLDERS) ══ -->
   <div id="page-notifications" class="page">
@@ -978,20 +1034,20 @@ const CURRICULUM = {
       },
       { id:"L033", title:"علم النحو 2", unit:"وحدة علوم اللغة",
         items:[
-          {t:"lec",n:1,txt:"الإسمية: المبتدأ والخبر: تطبيقات في الدلالة الإسمية — تطبيقات..."},
-          {t:"td",n:2,txt:"الحذف في الدلالة الإسمية — حذف المسند والمسند إليه، وما يعمل عملهما"},
-          {t:"lec",n:3,txt:"الحواسق الناسخة 1 — كان وأدواتها وما يعمل عملها"},
-          {t:"lec",n:4,txt:"الحواسق الناسخة 2 — أن وأدواتها وإن وأدواتها"},
-          {t:"lec",n:5,txt:"الحواسق الناسخة 3 — ظن وأدواتها ودلالاتها وإعرابها"},
-          {t:"lec",n:6,txt:"أفعال الحواسق الناسخة — دلالاتها وإعرابها وأدواتها"},
-          {t:"td",n:7,txt:"المجرورات: الأنواع والدلالات — المجرور بحروف الجر، بالإضافة..."},
-          {t:"lec",n:8,txt:"حروف العطف: الأنواع والدلالات — معاني حروف العطف"},
-          {t:"lec",n:9,txt:"التعريف والتنكير — أنواع المعارف"},
-          {t:"lec",n:10,txt:"أسماء الإشارة والضمائر والأسماء الموصولة"},
-          {t:"lec",n:11,txt:"التوابع — إعراب الصفة والبدل والتوكيد..."},
-          {t:"lec",n:12,txt:"أسلوب النداء — حروفه وإعرابه"},
-          {t:"lec",n:13,txt:"أنواع الجمل 1 — الجمل التي لها محل من الإعراب"},
-          {t:"lec",n:14,txt:"أنواع الجمل 2 — الجمل التي لها محل من الإعراب"},
+          {t:"lec",n:1,txt:"الإسمية: المبتدأ والخبر: تطبيقات في الدلالة الإسمية — تطبيقات...",pdf:"cours/001الاسناد في الجملة الاسمية.pdf"},
+          {t:"td",n:2,txt:"الحذف في الدلالة الإسمية — حذف المسند والمسند إليه، وما يعمل عملهما",pdf:"cours/002الحذف في الجملة الاسمية.pdf"},
+          {t:"lec",n:3,txt:"الحواسق الناسخة 1 — كان وأدواتها وما يعمل عملها",pdf:"cours/003كان وأخواتها وما يعمل عملها.pdf"},
+          {t:"lec",n:4,txt:"الحواسق الناسخة 2 — أن وأدواتها وإن وأدواتها",pdf:"cours/005إنَّ وأخواتها الحروف المشبهة بالأفعال.pdf"},
+          {t:"lec",n:5,txt:"الحواسق الناسخة 3 — ظن وأدواتها ودلالاتها وإعرابها",pdf:"cours/006ظن وأخواتها.pdf"},
+          {t:"lec",n:6,txt:"أفعال الحواسق الناسخة — دلالاتها وإعرابها وأدواتها",pdf:"cours/004أفعال المقاربة إعرابها ودلالاتها.pdf"},
+          {t:"td",n:7,txt:"المجرورات: الأنواع والدلالات — المجرور بحروف الجر، بالإضافة...",pdf:"cours/007المجرورات الدلالات والأنواع.pdf"},
+          {t:"lec",n:8,txt:"حروف العطف: الأنواع والدلالات — معاني حروف العطف",pdf:"cours/008حروف العطف الانواع و الدلالات.pdf"},
+          {t:"lec",n:9,txt:"التعريف والتنكير — أنواع المعارف",pdf:"cours/009المحاضرة التاسعة التعريف والتنكير.pdf"},
+          {t:"lec",n:10,txt:"أسماء الإشارة والضمائر والأسماء الموصولة",pdf:"cours/010المحاضرة العاشرة الاسماء المبهمة.pdf"},
+          {t:"lec",n:11,txt:"التوابع — إعراب الصفة والبدل والتوكيد...",pdf:"cours/011المحاضرة الحادية عشر االتوابع.pdf"},
+          {t:"lec",n:12,txt:"أسلوب النداء — حروفه وإعرابه",pdf:"cours/012المحاضرة الثانية عشر اسلوب النداء.pdf"},
+          {t:"lec",n:13,txt:"أنواع الجمل 1 — الجمل التي لها محل من الإعراب",pdf:"cours/013المحاضرة الثالثة عشر الجمل التي لها محل من الاعراب.pdf"},
+          {t:"lec",n:14,txt:"أنواع الجمل 2 — الجمل التي لها محل من الإعراب",pdf:"cours/014المحاضرة الرابعة عشر الجمل التي لا محل من الاعراب.pdf"},
         ]
       },
       { id:"L034", title:"اللسانيات العامة", unit:"وحدة علوم اللغة",
@@ -2670,6 +2726,7 @@ function buildNav(){
   } else {
     h+=`<button class="nb out" onclick="doLogout()">خروج</button>`;
   }
+  h+=`<button class="nb" onclick="goto('presentation')" title="عرض المشروع — ملتقى المجلس الأعلى للغة العربية ماي 2026" style="background:linear-gradient(135deg,rgba(8,145,178,.18),rgba(201,150,42,.12));border-color:rgba(8,145,178,.4);color:#67e8f9;font-weight:700">🎓 عرض المشروع</button>`;
   document.getElementById("nav").innerHTML=h;
   // إضافة زر استيراد أسئلة UD في شريط التنقل العلوي (مرئي دائماً)
   const navEl = document.getElementById("nav");
@@ -2726,6 +2783,7 @@ function goto(id){
   if(id==="dashboard"){ renderDashStats(); renderDashContent(); }
   if(id==="my-courses") renderTeacherCourses();
   if(id==="profile") renderProfile();
+  if(id==="presentation") setTimeout(initPresentation, 100);
   if(id==="grades"){
     // Show or hide the admin manage tab based on role
     const manageTab = document.getElementById("gtab-manage");
@@ -2864,14 +2922,14 @@ function renderCourses(){
       if(it.t==="lec"){typeLabel="مح";typeCls="ci-lec";}
       else if(it.t==="td"){typeLabel="أم";typeCls="ci-td";}
       else{typeLabel="مد";typeCls="ci-merged";}
-      const hasPdf=stored.pdfUrl?"<span style='font-size:.65rem;color:#fb923c'>📄</span>":"";
+      const hasPdf=(stored.pdfUrl||it.pdf)?"<span style='font-size:.65rem;color:#fb923c'>📄</span>":"";
       const hasQuiz=stored.quiz?"<span style='font-size:.65rem;color:#67e8f9'>🤖</span>":"";
       let actions="";
       if(canEdit){
         actions=`<button class="btn bgh xs" onclick="openAddContent('${mod.id}',${ii},'${it.t}')">+ محتوى</button>`;
         if(stored.content&&!stored.quiz) actions+=` <button class="btn xs" style="background:rgba(8,145,178,.15);color:#67e8f9;border:1px solid rgba(8,145,178,.25)" onclick="genQuiz('${mod.id}',${ii})">🤖</button>`;
       }
-      const viewBtn=stored.pdfUrl||stored.content||stored.quiz
+      const viewBtn=stored.pdfUrl||stored.content||stored.quiz||it.pdf
         ?`<button class="btn bg xs" onclick="viewContent('${mod.id}',${ii})">دخول →</button>`:""
       return `<div class="ci ${typeCls}">
         <div class="ci-num">${typeLabel}${it.n}</div>
@@ -3215,17 +3273,31 @@ function viewContent(modId, itemIdx){
       <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
       <h2 style="font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2);flex:1">${item?.txt}</h2>
     </div>`;
-  if(stored.pdfUrl){
-    let pdfActions=`<a href="${stored.pdfUrl}" target="_blank" class="btn bgh sm">تحميل ↓</a>`;
+  const activePdfUrl = stored.pdfUrl || item?.pdf || null;
+  if(activePdfUrl){
+    const encodedPdfUrl = activePdfUrl.startsWith('blob:') ? activePdfUrl : activePdfUrl.split('/').map(s=>encodeURIComponent(s)).join('/');
+    const isLocalFile = location.protocol === 'file:';
+    let pdfActions=`<a href="${encodedPdfUrl}" target="_blank" class="btn bgh sm">📂 فتح PDF</a>`;
     if((isAdmin||canEditModule(modId))&&!stored.content){
-      pdfActions+=` <button class="btn bt sm" onclick="genFromPdfUrl('${modId}',${itemIdx},'${stored.pdfUrl}')">⚡ استخراج وتوليد</button>`;
+      pdfActions+=` <button class="btn bt sm" onclick="genFromPdfUrl('${modId}',${itemIdx},'${encodedPdfUrl}')">⚡ استخراج وتوليد</button>`;
     }
-    html+=`<div class="pdfbox"><div class="pdfbar"><span>📄 ${item?.txt?.slice(0,50)}</span>${pdfActions}</div><iframe class="pdff" src="${stored.pdfUrl}"></iframe></div>`;
+    const pdfEmbed = isLocalFile
+      ? `<div style="padding:1.5rem;text-align:center;color:var(--txt2)">
+           <div style="font-size:2rem;margin-bottom:.5rem">📄</div>
+           <p style="margin-bottom:.85rem;font-size:.85rem">لعرض PDF مباشرةً، افتح الصفحة عبر خادم محلي أو</p>
+           <a href="${encodedPdfUrl}" target="_blank" class="btn bg">فتح الملف في تبويب جديد ↗</a>
+         </div>`
+      : `<object class="pdff" data="${encodedPdfUrl}" type="application/pdf">
+           <iframe class="pdff" src="${encodedPdfUrl}">
+             <div style="padding:1rem;color:var(--txt2)">المتصفح لا يدعم عرض PDF — <a href="${encodedPdfUrl}" target="_blank" style="color:var(--gold2)">تحميل الملف</a></div>
+           </iframe>
+         </object>`;
+    html+=`<div class="pdfbox"><div class="pdfbar"><span>📄 ${item?.txt?.slice(0,50)}</span>${pdfActions}</div>${pdfEmbed}</div>`;
   }
   if(stored.content){
     html+=`<div class="card ct ct-g" style="margin-bottom:1.25rem"><div style="color:var(--txt);line-height:2.1;font-size:.9rem;white-space:pre-wrap">${stored.content}</div></div>`;
   }
-  if(!stored.pdfUrl&&!stored.content){
+  if(!activePdfUrl&&!stored.content){
     html+=`<div class="empty"><div class="eic">📄</div><p>لم يُضف بعد أي محتوى لهذا العنصر</p></div>`;
   }
 
@@ -5180,6 +5252,177 @@ hydrateAppState();
 if(!S.udImportKeys || S.udImportKeys.length===0) importUdQuestions();
 buildNav();
 autoSaveSetup();
+// Warn if opened directly as file:// (PDFs won't embed)
+if(location.protocol==='file:'){
+  const banner=document.createElement('div');
+  banner.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;border-top:2px solid #f59e0b;color:#fbbf24;padding:10px 16px;font-size:.8rem;text-align:center;z-index:9999;display:flex;align-items:center;justify-content:center;gap:12px;font-family:Tajawal,sans-serif';
+  banner.innerHTML='⚠️ الصفحة مفتوحة كملف محلي — ملفات PDF لن تُعرض مضمّنة. لعرضها: <strong>python -m http.server 8000</strong> ثم افتح <a href="http://localhost:8000" target="_blank" style="color:#38bdf8">http://localhost:8000</a> <button onclick="this.parentElement.remove()" style="background:transparent;border:none;color:#9ca3af;cursor:pointer;font-size:1rem">✕</button>';
+  document.body.appendChild(banner);
+}
+// ══════════════════════════════════════════════════════
+// PRESENTATION VIEWER — عرض الشرائح
+// ══════════════════════════════════════════════════════
+const PRES = {
+  pdf: null,
+  total: 0,
+  current: 1,
+  rendering: false,
+  active: 'a', // which canvas is visible
+  thumbsBuilt: false,
+};
+
+async function initPresentation(){
+  if(PRES.pdf) return; // already loaded
+  const url = 'assets/docs/The_AI_Learning_Transition.pdf';
+  try{
+    const loadingTask = pdfjsLib.getDocument(url);
+    PRES.pdf = await loadingTask.promise;
+    PRES.total = PRES.pdf.numPages;
+    document.getElementById('pres-loading').style.display='none';
+    await presRenderPage(1, true);
+    presUpdateUI();
+    presRenderThumbs();
+  }catch(e){
+    document.getElementById('pres-loading').innerHTML=
+      `<div style="color:#f87171;text-align:center;padding:1rem">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">⚠️</div>
+        <p style="font-size:.85rem">تعذّر تحميل الملف. افتح الصفحة عبر خادم محلي.</p>
+        <a href="assets/docs/The_AI_Learning_Transition.pdf" target="_blank" class="btn bg" style="margin-top:.75rem;display:inline-flex">فتح في تبويب جديد ↗</a>
+       </div>`;
+    console.error('Presentation load error:', e);
+  }
+}
+
+async function presRenderPage(pageNum, instant=false){
+  if(!PRES.pdf || PRES.rendering) return;
+  PRES.rendering = true;
+
+  const page = await PRES.pdf.getPage(pageNum);
+
+  // Render at high resolution into a fully offscreen canvas — never touches DOM layout
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const wrap = document.getElementById('pres-slide-wrap');
+  const dispW = (wrap.clientWidth || 960);
+  const nativeVp = page.getViewport({scale:1});
+  const scale = (dispW * dpr) / nativeVp.width;
+  const viewport = page.getViewport({scale});
+
+  const offscreen = (typeof OffscreenCanvas !== 'undefined')
+    ? new OffscreenCanvas(viewport.width, viewport.height)
+    : Object.assign(document.createElement('canvas'), {width:viewport.width, height:viewport.height});
+  await page.render({canvasContext: offscreen.getContext('2d'), viewport}).promise;
+
+  // Which display canvas is currently hidden vs visible
+  const isAactive = PRES.active === 'a';
+  const hiddenCvs  = document.getElementById(isAactive ? 'pres-canvas-b' : 'pres-canvas-a');
+  const visibleCvs = document.getElementById(isAactive ? 'pres-canvas-a' : 'pres-canvas-b');
+
+  // Paint the rendered frame into the HIDDEN canvas — change pixel dims only on hidden one
+  hiddenCvs.width  = viewport.width;
+  hiddenCvs.height = viewport.height;
+  hiddenCvs.getContext('2d').drawImage(offscreen, 0, 0);
+
+  // Ensure visible canvas has pixel dims set (first load)
+  if(visibleCvs.width === 0){
+    visibleCvs.width  = viewport.width;
+    visibleCvs.height = viewport.height;
+  }
+
+  if(instant){
+    hiddenCvs.style.transition  = 'none';
+    visibleCvs.style.transition = 'none';
+    hiddenCvs.style.opacity  = '1';
+    visibleCvs.style.opacity = '0';
+    hiddenCvs.style.zIndex   = '2';
+    visibleCvs.style.zIndex  = '1';
+  } else {
+    hiddenCvs.style.transition  = 'opacity .5s ease';
+    visibleCvs.style.transition = 'opacity .5s ease';
+    hiddenCvs.style.zIndex   = '2';
+    visibleCvs.style.zIndex  = '1';
+    // Use rAF so the browser paints the new canvas before fading it in
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{
+      hiddenCvs.style.opacity  = '1';
+      visibleCvs.style.opacity = '0';
+    }));
+  }
+
+  PRES.active  = isAactive ? 'b' : 'a';
+  PRES.current = pageNum;
+  PRES.rendering = false;
+  presUpdateUI();
+  presHighlightThumb(pageNum);
+}
+
+function presGo(delta){
+  const next = PRES.current + delta;
+  if(next < 1 || next > PRES.total || PRES.rendering) return;
+  presRenderPage(next);
+}
+
+function presUpdateUI(){
+  const c = PRES.current, t = PRES.total || '—';
+  const txt = `${c} / ${t}`;
+  ['pres-counter','pres-counter-top'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=txt;
+  });
+  const pct = PRES.total ? (PRES.current / PRES.total * 100) : 0;
+  const fill = document.getElementById('pres-progress-fill');
+  if(fill) fill.style.width = pct + '%';
+  ['pres-prev','pres-prev-top'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.disabled = PRES.current<=1;
+  });
+  ['pres-next','pres-next-top'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.disabled = PRES.current>=PRES.total;
+  });
+}
+
+async function presRenderThumbs(){
+  if(PRES.thumbsBuilt || !PRES.pdf) return;
+  PRES.thumbsBuilt = true;
+  const strip = document.getElementById('pres-thumbs');
+  strip.innerHTML = '<span style="font-size:.72rem;color:var(--txt3);white-space:nowrap;flex-shrink:0">الشرائح:</span>';
+  for(let i=1; i<=PRES.total; i++){
+    const page = await PRES.pdf.getPage(i);
+    const vp = page.getViewport({scale: 0.18});
+    const cvs = document.createElement('canvas');
+    cvs.width = vp.width; cvs.height = vp.height;
+    await page.render({canvasContext: cvs.getContext('2d'), viewport: vp}).promise;
+    const wrap = document.createElement('div');
+    wrap.style.cssText=`flex-shrink:0;cursor:pointer;border-radius:5px;overflow:hidden;border:2px solid transparent;transition:border-color .2s;position:relative`;
+    wrap.id = `pres-thumb-${i}`;
+    wrap.onclick = ()=>presRenderPage(i);
+    const num = document.createElement('span');
+    num.textContent = i;
+    num.style.cssText='position:absolute;bottom:2px;right:4px;font-size:.58rem;color:#fff;text-shadow:0 1px 3px #000;font-weight:700';
+    wrap.appendChild(cvs); wrap.appendChild(num);
+    strip.appendChild(wrap);
+    if(i===1) presHighlightThumb(1);
+  }
+}
+
+function presHighlightThumb(n){
+  for(let i=1; i<=PRES.total; i++){
+    const el=document.getElementById(`pres-thumb-${i}`);
+    if(!el) continue;
+    el.style.borderColor = i===n ? 'var(--gold)' : 'transparent';
+    if(i===n) el.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  }
+}
+
+function presFullscreen(){
+  const el = document.getElementById('pres-slide-wrap');
+  if(el.requestFullscreen) el.requestFullscreen();
+  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+
+// keyboard navigation
+document.addEventListener('keydown', e=>{
+  if(S.page !== 'presentation') return;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') presGo(-1);
+  if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   presGo(1);
+});
+
 // Initialize Tiaret map on the homepage
 function initTiaretMap(){
   const el = document.getElementById('tiaret-map'); if(!el) return;
