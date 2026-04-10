@@ -4325,7 +4325,7 @@ function startNahwSession(){
   if(typeFilter === "mcq"){
     pool = pool.filter(q => isNahwMcq(q));
   } else if(typeFilter === "text"){
-    pool = pool.filter(q => q.type !== "mcq" && !(Array.isArray(q.options) && q.options.length > 0));
+    pool = pool.filter(q => !isNahwMcq(q));
   }
 
   nahwQuestionPool = shuffleNahwArray([...pool]);
@@ -4589,8 +4589,8 @@ function renderBrowseQuestions(){
   const search = (document.getElementById("browse-search")?.value || "").trim().toLowerCase();
   const levelFilter = document.getElementById("browse-level")?.value || "all";
   const typeFilter = document.getElementById("browse-type")?.value || "all";
-
-  const levels = levelFilter === "all" ? ["beginner", "medium", "advanced"] : [levelFilter];
+  const validLevels = ["beginner", "medium", "advanced"];
+  const levels = levelFilter === "all" ? validLevels : (validLevels.includes(levelFilter) ? [levelFilter] : validLevels);
   let allQ = [];
   levels.forEach(lvl => {
     (nahwDatabase[lvl] || []).forEach(q => allQ.push({...q, level: lvl}));
@@ -4600,7 +4600,7 @@ function renderBrowseQuestions(){
   if(search) allQ = allQ.filter(q => q.q && q.q.toLowerCase().includes(search));
   // Apply type filter
   if(typeFilter === "mcq") allQ = allQ.filter(q => isNahwMcq(q));
-  else if(typeFilter === "text") allQ = allQ.filter(q => q.type !== "mcq" && !(Array.isArray(q.options) && q.options.length > 0));
+  else if(typeFilter === "text") allQ = allQ.filter(q => !isNahwMcq(q));
 
   if(!allQ.length){
     el.innerHTML = `<div class="empty"><div class="eic">🔍</div><div>لا توجد أسئلة تطابق معايير البحث.</div></div>`;
@@ -4659,8 +4659,8 @@ function renderManageQuestions(){
   }
   const search = (document.getElementById("manage-search")?.value || "").trim().toLowerCase();
   const levelFilter = document.getElementById("manage-level")?.value || "all";
-
-  const levels = levelFilter === "all" ? ["beginner", "medium", "advanced"] : [levelFilter];
+  const validLevels = ["beginner", "medium", "advanced"];
+  const levels = levelFilter === "all" ? validLevels : (validLevels.includes(levelFilter) ? [levelFilter] : validLevels);
   let total = 0;
   let html = "";
 
@@ -4806,7 +4806,8 @@ function saveQuestion(){
   const q = (document.getElementById("aq-q")?.value || "").trim();
   if(!q){ notify("أدخل نص السؤال","⚠️"); return; }
 
-  let qObj = { q, topic: topic || undefined };
+  let qObj = { q };
+  if(topic) qObj.topic = topic;
   if(type === "mcq"){
     const opts = [0,1,2,3].map(i => (document.getElementById("aq-opt"+i)?.value||"").trim()).filter(Boolean);
     if(opts.length < 2){ notify("أدخل خيارين على الأقل","⚠️"); return; }
