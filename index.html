@@ -4216,6 +4216,15 @@ function nahwLevelClass(level){
   return {beginner:"lvl-b", medium:"lvl-m", advanced:"lvl-a"}[level] || "";
 }
 
+function escH(str){
+  return String(str || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
 // ── Progress Bar Update ───────────────────────────────
 function updateNahwProgress(){
   const pEl = document.getElementById("progress");
@@ -4251,7 +4260,7 @@ function showNahwQuestion(){
 
   const isMcq = question.type === "mcq" || (Array.isArray(question.options) && question.options.length > 0);
 
-  qEl.innerHTML = `<span style="color:var(--txt3);font-size:.78rem;margin-left:.5rem">[${isMcq ? "متعدد الخيارات" : "إملاء / نصي"}]</span> ${question.q}`;
+  qEl.innerHTML = `<span style="color:var(--txt3);font-size:.78rem;margin-left:.5rem">[${isMcq ? "متعدد الخيارات" : "إملاء / نصي"}]</span> ${escH(question.q)}`;
 
   const mcqDiv = document.getElementById("mcq-options");
   const textArea = document.getElementById("text-input-area");
@@ -4273,7 +4282,7 @@ function showNahwQuestion(){
       (question.options || []).forEach((opt, oi) => {
         const label = document.createElement("label");
         label.className = "qo";
-        label.innerHTML = `<input type="radio" name="nahw_mcq" value="${oi}" style="accent-color:var(--gold)">&nbsp;${opt}`;
+        label.innerHTML = `<input type="radio" name="nahw_mcq" value="${oi}" style="accent-color:var(--gold)">&nbsp;${escH(opt)}`;
         label.addEventListener("change", () => {
           document.querySelectorAll("#mcq-options .qo").forEach(l => l.classList.remove("sel"));
           label.classList.add("sel");
@@ -4370,12 +4379,12 @@ function checkNahwAnswer(){
   _recordNahwAnswer(isCorrect, question);
 
   if(isCorrect){
-    feedback.innerHTML = "✅ صحيح! الإجابة: " + question.a[0];
+    feedback.innerHTML = "✅ صحيح! الإجابة: " + escH(question.a[0]);
     feedback.style.color = "#4ade80";
   } else {
     const correct = question.a && question.a[0] ? question.a[0] : "-";
-    const hint = question.hint ? `<br><span style="color:var(--txt3)">💡 ${question.hint}</span>` : "";
-    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + correct + "</strong>" + hint;
+    const hint = question.hint ? `<br><span style="color:var(--txt3)">💡 ${escH(question.hint)}</span>` : "";
+    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + escH(correct) + "</strong>" + hint;
     feedback.style.color = "#f87171";
   }
 
@@ -4415,8 +4424,8 @@ function checkNahwMcqAnswer(){
     feedback.style.color = "#4ade80";
   } else {
     const correct = (question.options || [])[question.correct] || "-";
-    const explain = question.explain ? `<br><span class="qexp">${question.explain}</span>` : "";
-    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + correct + "</strong>" + explain;
+    const explain = question.explain ? `<br><span class="qexp">${escH(question.explain)}</span>` : "";
+    feedback.innerHTML = "❌ خطأ. الإجابة الصحيحة: <strong>" + escH(correct) + "</strong>" + explain;
     feedback.style.color = "#f87171";
   }
 
@@ -4554,8 +4563,8 @@ function renderNahwHistory(){
       <div class="session-card">
         <div class="session-score-badge">${medal}</div>
         <div class="session-info">
-          <div class="session-meta"><strong style="color:${color}">${h.pct}%</strong> &nbsp;—&nbsp; ${h.correct}/${h.total} إجابة صحيحة &nbsp;|&nbsp; مستوى: <span class="qmgmt-tag ${nahwLevelClass(h.level)}">${h.levelLabel}</span></div>
-          <div class="session-date">${h.date}</div>
+          <div class="session-meta"><strong style="color:${color}">${h.pct}%</strong> &nbsp;—&nbsp; ${h.correct}/${h.total} إجابة صحيحة &nbsp;|&nbsp; مستوى: <span class="qmgmt-tag ${nahwLevelClass(h.level)}">${escH(h.levelLabel)}</span></div>
+          <div class="session-date">${escH(h.date)}</div>
         </div>
       </div>`;
   });
@@ -4598,18 +4607,18 @@ function renderBrowseQuestions(){
       ? `<span class="qmgmt-tag type-mcq">MCQ</span>`
       : `<span class="qmgmt-tag type-text">نصي</span>`;
     const lvlTag = `<span class="qmgmt-tag ${nahwLevelClass(q.level)}">${nahwLevelLabel(q.level)}</span>`;
-    const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${q.topic}</span>` : "";
+    const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${escH(q.topic)}</span>` : "";
     const answer = isMcq
-      ? `الإجابة: ${(q.options||[])[q.correct]||""}`
-      : `الإجابة: ${(q.a||[])[0]||""}`;
+      ? `الإجابة: ${escH((q.options||[])[q.correct]||"")}`
+      : `الإجابة: ${escH((q.a||[])[0]||"")}`;
     html += `
       <div class="qmgmt-card">
         <div class="qmgmt-num">${i+1}</div>
         <div class="qmgmt-body">
-          <div class="qmgmt-q">${q.q}</div>
+          <div class="qmgmt-q">${escH(q.q)}</div>
           <div class="qmgmt-meta">${lvlTag}${typeTag}${topicTag}</div>
           <div style="font-size:.76rem;color:var(--txt3);margin-top:.3rem">${answer}</div>
-          ${q.hint ? `<div style="font-size:.73rem;color:var(--txt3);margin-top:.2rem">💡 ${q.hint}</div>` : ""}
+          ${q.hint ? `<div style="font-size:.73rem;color:var(--txt3);margin-top:.2rem">💡 ${escH(q.hint)}</div>` : ""}
         </div>
       </div>`;
   });
@@ -4663,17 +4672,17 @@ function renderManageQuestions(){
       const typeTag = isMcq
         ? `<span class="qmgmt-tag type-mcq">MCQ</span>`
         : `<span class="qmgmt-tag type-text">نصي</span>`;
-      const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${q.topic}</span>` : "";
+      const topicTag = q.topic ? `<span class="qmgmt-tag" style="background:rgba(255,255,255,.04);color:var(--txt3);border:1px solid var(--bdr)">${escH(q.topic)}</span>` : "";
       html += `
         <div class="qmgmt-card">
           <div class="qmgmt-num">${total + 1}</div>
           <div class="qmgmt-body">
-            <div class="qmgmt-q">${q.q}</div>
+            <div class="qmgmt-q">${escH(q.q)}</div>
             <div class="qmgmt-meta">${typeTag}${topicTag}</div>
           </div>
           <div class="qmgmt-acts">
-            <button class="btn bt xs" onclick="openEditQuestionModal('${lvl}',${realIdx})">✏️</button>
-            <button class="btn br xs" onclick="deleteQuestion('${lvl}',${realIdx})">🗑</button>
+            <button class="btn bt xs" onclick="openEditQuestionModal('${escH(lvl)}',${realIdx})">✏️</button>
+            <button class="btn br xs" onclick="deleteQuestion('${escH(lvl)}',${realIdx})">🗑</button>
           </div>
         </div>`;
       total++;
@@ -4768,16 +4777,16 @@ function previewQuestion(){
   const preview = document.getElementById("aq-preview");
   if(!preview) return;
   if(!q){ preview.style.display = "block"; preview.innerHTML = "⚠️ أدخل نص السؤال أولاً."; return; }
-  let html = `<strong>السؤال:</strong> ${q}<br>`;
+  let html = `<strong>السؤال:</strong> ${escH(q)}<br>`;
   if(type === "mcq"){
     const opts = [0,1,2,3].map(i => document.getElementById("aq-opt"+i)?.value).filter(Boolean);
     const cor = parseInt(document.getElementById("aq-correct")?.value || "0", 10);
-    html += opts.map((o,i) => `<br>${i===cor?"✅":"○"} ${o}`).join("");
+    html += opts.map((o,i) => `<br>${i===cor?"✅":"○"} ${escH(o)}`).join("");
   } else {
     const ans = (document.getElementById("aq-answers")?.value || "").split(/،|,/).map(a=>a.trim()).filter(Boolean);
-    html += `<br><strong>الإجابة:</strong> ${ans.join(" / ")}`;
+    html += `<br><strong>الإجابة:</strong> ${ans.map(escH).join(" / ")}`;
     const hint = (document.getElementById("aq-hint")?.value || "").trim();
-    if(hint) html += `<br>💡 ${hint}`;
+    if(hint) html += `<br>💡 ${escH(hint)}`;
   }
   preview.style.display = "block";
   preview.innerHTML = html;
