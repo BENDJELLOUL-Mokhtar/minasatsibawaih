@@ -226,6 +226,66 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 .quiz-filter-bar .fi{flex:1;min-width:150px;max-width:240px}
 .quiz-filter-bar select.fi{flex:0 0 auto;width:auto;min-width:130px}
 
+/* TRANSCRIPT */
+.transcript-actions{display:flex;gap:.85rem;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.transcript-filter-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.75rem;margin-top:1rem}
+.transcript-paper-wrap{max-width:1040px;margin:0 auto}
+.transcript-paper{background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:20px;padding:1.65rem 1.75rem;box-shadow:0 24px 50px rgba(0,0,0,.28)}
+.transcript-kicker{font-size:.72rem;color:#64748b;margin-bottom:.25rem}
+.transcript-title{font-family:'Amiri',serif;font-size:2rem;color:#9a6b1a;line-height:1.3}
+.transcript-subtitle{color:#475569;font-size:.82rem;line-height:1.8;margin-top:.35rem}
+.transcript-head{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.transcript-badge{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border-radius:999px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-size:.74rem;font-weight:800;height:fit-content}
+.transcript-meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-bottom:1rem}
+.transcript-meta-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:.8rem .95rem}
+.transcript-meta-card span{display:block;font-size:.72rem;color:#64748b;margin-bottom:.2rem}
+.transcript-meta-card strong{display:block;font-size:1rem;color:#0f172a}
+.transcript-table-wrap{overflow:auto;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:1rem}
+.transcript-table{width:100%;border-collapse:collapse;background:#fff}
+.transcript-table th{background:#f8fafc;color:#9a6b1a;padding:12px 14px;text-align:right;font-weight:800;border-bottom:1px solid #e2e8f0}
+.transcript-table td{padding:12px 14px;border-bottom:1px solid #e5e7eb;color:#0f172a;vertical-align:middle}
+.transcript-table tr:last-child td{border-bottom:none}
+.transcript-table small{display:block;color:#64748b;font-size:.7rem;margin-top:3px}
+.transcript-score-box{display:flex;align-items:center;justify-content:center}
+.transcript-score-input{width:86px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:7px 10px;color:#0f172a;font-family:'Tajawal',sans-serif;font-size:.9rem;text-align:center;direction:ltr}
+.transcript-score-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(8,145,178,.12)}
+.transcript-score-input::-webkit-outer-spin-button,.transcript-score-input::-webkit-inner-spin-button{appearance:none;margin:0}
+.transcript-print-value{display:none;font-weight:800}
+.transcript-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem;margin:1rem 0}
+.transcript-summary-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:1rem;text-align:center}
+.transcript-summary-card strong{display:block;font-size:1.9rem;color:#0f172a;line-height:1}
+.transcript-summary-card span{display:block;font-size:.72rem;color:#64748b;margin-top:.35rem;line-height:1.6}
+.transcript-ai-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1rem 1.1rem}
+.transcript-ai-card h3{font-family:'Amiri',serif;font-size:1.2rem;color:#9a6b1a;margin-bottom:.5rem}
+.transcript-ai-card p{color:#1f2937;line-height:1.9;font-size:.84rem;margin-bottom:.7rem}
+.transcript-ai-list{display:flex;flex-wrap:wrap;gap:.5rem}
+.transcript-chip{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;font-size:.72rem;font-weight:700}
+.transcript-footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:1.25rem;padding-top:1rem;border-top:1px dashed #cbd5e1;font-size:.78rem;color:#475569}
+.screen-only{display:block}
+
+/* ASSIGNMENTS */
+.assign-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.85rem;margin-bottom:1rem}
+.assign-summary-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;padding:1rem;text-align:center}
+.assign-summary-card strong{display:block;font-size:1.9rem;line-height:1;color:var(--gold2)}
+.assign-summary-card span{display:block;font-size:.74rem;color:var(--txt3);margin-top:.35rem;line-height:1.6}
+.assign-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:.85rem;flex-wrap:wrap;margin-bottom:1rem}
+.assign-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.assign-card{background:linear-gradient(160deg,var(--bg2),rgba(26,37,53,.96));border:1px solid var(--bdr);border-radius:16px;padding:1rem;display:flex;flex-direction:column;gap:.85rem}
+.assign-head{display:flex;justify-content:space-between;gap:.75rem;align-items:flex-start;flex-wrap:wrap}
+.assign-title{font-family:'Amiri',serif;font-size:1.2rem;color:var(--gold2);line-height:1.5}
+.assign-module{font-size:.75rem;color:var(--txt3);line-height:1.7;margin-top:.15rem}
+.assign-status{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;font-size:.72rem;font-weight:800;border:1px solid transparent}
+.assign-status.pending{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.25);color:#fbbf24}
+.assign-status.progress{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.25);color:#67e8f9}
+.assign-status.submitted{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.25);color:#4ade80}
+.assign-meta{display:flex;flex-wrap:wrap;gap:.45rem}
+.assign-meta-chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--txt2);font-size:.7rem}
+.assign-body{color:var(--txt2);font-size:.83rem;line-height:1.9}
+.assign-note-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:.8rem}
+.assign-note-title{font-size:.73rem;color:var(--txt3);margin-bottom:.35rem}
+.assign-interaction{padding:.7rem .8rem;border-radius:12px;background:rgba(8,145,178,.08);border:1px solid rgba(8,145,178,.18);color:#bae6fd;font-size:.77rem;line-height:1.85}
+.assign-actions{display:flex;gap:.55rem;flex-wrap:wrap}
+
 /* DISCUSSION */
 .dp{background:var(--bg2);border:1px solid var(--bdr);border-radius:9px;padding:1rem;margin-bottom:.75rem;transition:border-color .2s}
 .dp.prf{border-color:rgba(201,150,42,.22);background:rgba(201,150,42,.03)}
@@ -326,6 +386,24 @@ select.fi{cursor:pointer}
   .identity-chiprow{justify-content:center}
   .sec{padding:2rem 1rem}
   .branch-tabs{flex-direction:column}
+  .transcript-paper{padding:1.15rem}
+  .transcript-head{flex-direction:column}
+  .transcript-score-input{width:72px}
+  .assign-cards{grid-template-columns:1fr}
+}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;color:#000}
+  .motto,.bar,#toast,.foot,.screen-only{display:none !important}
+  .page{display:none !important}
+  #page-transcript{display:block !important}
+  #page-transcript .sec{max-width:none;padding:0;margin:0}
+  #page-transcript .transcript-paper-wrap{max-width:none}
+  #page-transcript .transcript-paper{box-shadow:none;border:none;border-radius:0;padding:0}
+  #page-transcript .transcript-table-wrap{overflow:visible}
+  #page-transcript .transcript-print-value{display:inline !important}
+  #page-transcript .transcript-score-box .screen-only{display:none !important}
 }
 </style>
 </head>
@@ -548,6 +626,16 @@ select.fi{cursor:pointer}
       <p class="sec-sub">اختبار تفاعلي مع شريط التقدم وحفظ النتائج وإدارة الأسئلة</p>
       <div class="hr"></div>
 
+      <div class="card screen-only" style="margin-bottom:1.15rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;flex-wrap:wrap">
+          <div>
+            <h3 style="font-family:'Amiri',serif;color:var(--gold2);font-size:1.15rem;margin-bottom:.2rem">كشف النقاط القابل للطباعة</h3>
+            <p style="color:var(--txt2);font-size:.8rem;line-height:1.8">صفحة مستقلة تعرض مقاييس المنصة مع درجات افتراضية قابلة للتعديل والطباعة.</p>
+          </div>
+          <button class="btn bt" onclick="goto('transcript')">🖨 فتح كشف النقاط</button>
+        </div>
+      </div>
+
       <!-- Tabs: Quiz | History | Manage (admin) -->
       <div style="display:flex;gap:4px;background:var(--bg3);border-radius:9px;padding:3px;margin-bottom:1.5rem;flex-wrap:wrap" id="grades-tabs">
         <button class="stab on" id="gtab-quiz"   onclick="gradesTab('quiz',this)">📝 الاختبار</button>
@@ -622,11 +710,14 @@ select.fi{cursor:pointer}
           <div id="mcq-options" class="qopts" style="display:none;margin-bottom:.85rem"></div>
 
           <!-- Text input (shown only for text questions) -->
-          <div id="text-input-area" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
-            <input id="answer" class="fi" style="max-width:460px;flex:1" placeholder="اكتب إجابتك هنا">
-            <button id="checkBtn" class="btn bg" onclick="checkNahwAnswer()">تحقّق ✓</button>
-            <button id="nextBtn" class="btn bo" style="display:none" onclick="nextNahwQuestion()">التالي ←</button>
-          </div>
+            <div id="text-input-area" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem">
+              <input id="answer" class="fi" style="max-width:460px;flex:1" placeholder="اكتب إجابتك هنا">
+            </div>
+
+            <div id="nahw-action-area" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <button id="checkBtn" class="btn bg" onclick="checkNahwAnswer()">تحقّق ✓</button>
+              <button id="nextBtn" class="btn bo" style="display:none" onclick="nextNahwQuestion()">التالي ←</button>
+            </div>
 
           <div id="feedback" style="margin-top:.85rem;font-size:.86rem;line-height:1.8"></div>
         </div>
@@ -770,6 +861,17 @@ select.fi{cursor:pointer}
       <div id="reports-content">
         <div class="card">لوحة تقارير بسيطة — متاحة للمديرين والأساتذة.</div>
       </div>
+    </div>
+  </div>
+
+  <div id="page-transcript" class="page">
+    <div class="sec">
+      <div class="screen-only">
+        <h2 class="sec-title">كشف النقاط القابل للطباعة</h2>
+        <p class="sec-sub">صفحة مستقلة لعرض المقاييس والدرجات والمعدل مع تغذية راجعة ذكية.</p>
+        <div class="hr"></div>
+      </div>
+      <div id="transcript-content"></div>
     </div>
   </div>
 
@@ -1899,6 +2001,8 @@ let S = {
     {id:"d1",author:"يوسف مسعود",init:"ي",role:"student",cid:"all",text:"كيف نميّز بين الحال والتمييز في الجملة الاسمية؟",time:"منذ يومين",likes:5,replies:[]},
     {id:"d2",author:"أ.د. بن جلول مختار",init:"م",role:"admin",cid:"all",text:"الحال وصف يبيّن هيئة صاحبه وقت الحدث كـ«جاء مسرعاً»، والتمييز يرفع الإبهام كـ«عشرين كتاباً».",time:"منذ يومين",likes:11,replies:[]},
   ],
+  assignmentState: {semByStudent:{}, interactions:{}},
+  gradeSheetDraft: {studentName:"",branch:0,sem:3,scores:{},updatedAt:""},
 };
 
 function escapeHtml(value){
@@ -2543,6 +2647,11 @@ function hydrateAppState(){
   S.students = Array.isArray(S.students) ? S.students.map(normalizeStudentRecord) : [];
   S.teachers = Array.isArray(S.teachers) ? S.teachers : [];
   S.content = S.content || {};
+  S.assignmentState = (S.assignmentState && typeof S.assignmentState === "object") ? S.assignmentState : {};
+  S.assignmentState.semByStudent = (S.assignmentState.semByStudent && typeof S.assignmentState.semByStudent === "object") ? S.assignmentState.semByStudent : {};
+  S.assignmentState.interactions = (S.assignmentState.interactions && typeof S.assignmentState.interactions === "object") ? S.assignmentState.interactions : {};
+  S.gradeSheetDraft = (S.gradeSheetDraft && typeof S.gradeSheetDraft === "object") ? S.gradeSheetDraft : {};
+  S.gradeSheetDraft.scores = (S.gradeSheetDraft.scores && typeof S.gradeSheetDraft.scores === "object") ? S.gradeSheetDraft.scores : {};
   if(S.user?.role === "student"){
     const student = getCurrentStudentRecord();
     if(student){
@@ -2655,6 +2764,7 @@ function buildNav(){
     {id:"home",l:"الرئيسية",always:true},
     {id:"courses",l:"المقررات",auth:true},
     {id:"disc",l:"النقاش",auth:true},
+    {id:"transcript",l:"كشف النقاط",auth:true},
     {id:"my-courses",l:"مقرراتي",teacher:true},
     {id:"dashboard",l:"لوحة التحكم",admin:true},
   ];
@@ -2723,9 +2833,11 @@ function goto(id){
   buildNav();
   if(id==="courses") renderCourses();
   if(id==="disc") renderDisc();
+  if(id==="assignments") renderAssignments();
   if(id==="dashboard"){ renderDashStats(); renderDashContent(); }
   if(id==="my-courses") renderTeacherCourses();
   if(id==="profile") renderProfile();
+  if(id==="transcript") renderTranscriptPage();
   if(id==="grades"){
     // Show or hide the admin manage tab based on role
     const manageTab = document.getElementById("gtab-manage");
@@ -4186,7 +4298,7 @@ let nahwCurrentLevel = "beginner";
 let nahwQuestionPool = [];
 let nahwCurrentQIndex = 0;
 // Session tracking
-let nahwSession = { answered: 0, correct: 0, wrong: 0, history: [] };
+let nahwSession = { answered: 0, correct: 0, wrong: 0, history: [], saved: false };
 // Edit mode (for question management)
 let aqEditKey = null; // { level, index } or null for add
 // Maximum number of session history entries to keep
@@ -4271,6 +4383,7 @@ function showNahwQuestion(){
 
   const mcqDiv = document.getElementById("mcq-options");
   const textArea = document.getElementById("text-input-area");
+  const actionArea = document.getElementById("nahw-action-area");
   const answerEl = document.getElementById("answer");
   const feedbackEl = document.getElementById("feedback");
   const checkBtn = document.getElementById("checkBtn");
@@ -4279,6 +4392,7 @@ function showNahwQuestion(){
   if(feedbackEl) feedbackEl.innerHTML = "";
   if(nextBtn) nextBtn.style.display = "none";
   if(checkBtn) checkBtn.style.display = "inline-flex";
+  if(actionArea) actionArea.style.display = "flex";
 
   if(isMcq){
     // MCQ mode
@@ -4330,7 +4444,7 @@ function startNahwSession(){
 
   nahwQuestionPool = shuffleNahwArray([...pool]);
   nahwCurrentQIndex = 0;
-  nahwSession = { answered: 0, correct: 0, wrong: 0, history: [], level: nahwCurrentLevel };
+  nahwSession = { answered: 0, correct: 0, wrong: 0, history: [], level: nahwCurrentLevel, saved: false };
 
   // Hide summary
   const summaryEl = document.getElementById("nahw-session-summary");
@@ -4346,10 +4460,12 @@ function startNahwSession(){
     const nextBtn = document.getElementById("nextBtn");
     const mcqDiv = document.getElementById("mcq-options");
     const textArea = document.getElementById("text-input-area");
+    const actionArea = document.getElementById("nahw-action-area");
     if(checkBtn) checkBtn.style.display = "none";
     if(nextBtn) nextBtn.style.display = "none";
     if(mcqDiv){ mcqDiv.style.display = "none"; mcqDiv.innerHTML = ""; }
     if(textArea) textArea.style.display = "none";
+    if(actionArea) actionArea.style.display = "none";
     const wrap = document.getElementById("nahw-progress-wrap");
     if(wrap) wrap.style.display = "none";
     const pEl = document.getElementById("progress");
@@ -4468,11 +4584,17 @@ function _showNahwSessionEnd(){
   const mcqDiv = document.getElementById("mcq-options");
   if(mcqDiv){ mcqDiv.style.display = "none"; mcqDiv.innerHTML = ""; }
   const textArea = document.getElementById("text-input-area");
+  const actionArea = document.getElementById("nahw-action-area");
   if(textArea) textArea.style.display = "none";
-  document.getElementById("checkBtn").style.display = "none";
-  document.getElementById("nextBtn").style.display = "none";
-  document.getElementById("feedback").innerHTML = "";
-  document.getElementById("progress").innerHTML = "";
+  if(actionArea) actionArea.style.display = "none";
+  const checkBtn = document.getElementById("checkBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const feedbackEl = document.getElementById("feedback");
+  const progressEl = document.getElementById("progress");
+  if(checkBtn) checkBtn.style.display = "none";
+  if(nextBtn) nextBtn.style.display = "none";
+  if(feedbackEl) feedbackEl.innerHTML = "";
+  if(progressEl) progressEl.innerHTML = "";
 
   const total = nahwQuestionPool.length;
   const correct = nahwSession.correct;
@@ -4493,7 +4615,7 @@ function _showNahwSessionEnd(){
           المستوى: ${nahwLevelLabel(nahwSession.level)} &nbsp;|&nbsp;
           صحيح: ${correct} &nbsp;|&nbsp; خطأ: ${nahwSession.wrong}
         </div>
-        <button class="btn bg" onclick="saveNahwSessionResult();startNahwSession()">حفظ النتيجة وجلسة جديدة 🔄</button>
+        <button class="btn bg" onclick="startNahwSession()">جلسة جديدة 🔄</button>
         <button class="btn bgh sm" onclick="gradesTab('history',document.getElementById('gtab-history'))" style="margin-right:.5rem">عرض السجل 📊</button>
       </div>`;
   }
@@ -4505,7 +4627,7 @@ function _showNahwSessionEnd(){
 // ── Save Session Result ───────────────────────────────
 function saveNahwSessionResult(){
   const total = nahwQuestionPool.length;
-  if(!total || !nahwSession.answered) return;
+  if(!total || !nahwSession.answered || nahwSession.saved) return;
   const result = {
     date: new Date().toLocaleString("ar-DZ"),
     isoDate: new Date().toISOString(),
@@ -4523,6 +4645,7 @@ function saveNahwSessionResult(){
   history.unshift(result);
   if(history.length > NAHW_MAX_HISTORY) history = history.slice(0, NAHW_MAX_HISTORY);
   try { localStorage.setItem("nahw_session_history", JSON.stringify(history)); } catch(e){}
+  nahwSession.saved = true;
 }
 
 // ── Load Session History ──────────────────────────────
@@ -4576,6 +4699,573 @@ function renderNahwHistory(){
       </div>`;
   });
   el.innerHTML = html;
+}
+
+function createEmptyGradeSheetDraft(){
+  return {studentName:"", branch:0, sem:3, scores:{}, updatedAt:""};
+}
+
+function ensureGradeSheetDraft(){
+  const linkedStudent = S.user?.role === "student"
+    ? (getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)})
+    : null;
+  const current = (S.gradeSheetDraft && typeof S.gradeSheetDraft === "object") ? S.gradeSheetDraft : {};
+  const draft = {
+    ...createEmptyGradeSheetDraft(),
+    ...current,
+    scores: (current.scores && typeof current.scores === "object") ? current.scores : {},
+  };
+  draft.sem = draft.sem === 4 ? 4 : 3;
+  draft.branch = Number.isInteger(draft.branch) ? Math.max(0, Math.min(2, draft.branch)) : 0;
+  if(linkedStudent){
+    draft.studentName = linkedStudent.name || draft.studentName || "طالب";
+    draft.branch = typeof linkedStudent.branch === "number" ? linkedStudent.branch : draft.branch;
+  } else if(!String(draft.studentName || "").trim()){
+    draft.studentName = S.user?.name || "طالب افتراضي";
+  }
+  S.gradeSheetDraft = draft;
+  return draft;
+}
+
+function getGradeSheetModules(branch, sem){
+  return (CURRICULUM[branch]?.[sem] || []).map(module => ({
+    id: module.id,
+    title: module.title,
+    unit: module.unit,
+  }));
+}
+
+function transcriptSeedFromString(value){
+  let hash = 0;
+  const text = String(value || "");
+  for(let i=0;i<text.length;i++){
+    hash = (hash * 31 + text.charCodeAt(i)) % 1000003;
+  }
+  return hash;
+}
+
+function clampTranscriptScore(value){
+  const parsed = typeof value === "number" ? value : parseFloat(value);
+  if(!Number.isFinite(parsed)) return null;
+  return Math.max(0, Math.min(20, Math.round(parsed * 10) / 10));
+}
+
+function buildVirtualTranscriptScores(draft, modules){
+  if(!modules.length) return {};
+  const targetAverage = 15.8;
+  const rawScores = modules.map((module, index) => 13.4 + ((transcriptSeedFromString(`${draft.studentName}|${draft.branch}|${draft.sem}|${module.id}|${index}`) % 43) / 10));
+  const currentAverage = rawScores.reduce((sum, score) => sum + score, 0) / modules.length;
+  const offset = targetAverage - currentAverage;
+  return modules.reduce((acc, module, index) => {
+    const tuned = rawScores[index] + offset + (index % 3 === 0 ? 0.2 : index % 4 === 0 ? -0.1 : 0);
+    acc[module.id] = clampTranscriptScore(tuned);
+    return acc;
+  }, {});
+}
+
+function ensureGradeSheetScores(draft, force=false){
+  const modules = getGradeSheetModules(draft.branch, draft.sem);
+  const generated = buildVirtualTranscriptScores(draft, modules);
+  modules.forEach(module => {
+    const existing = clampTranscriptScore(draft.scores[module.id]);
+    draft.scores[module.id] = (force || existing === null) ? generated[module.id] : existing;
+  });
+  draft.updatedAt = new Date().toISOString();
+  return modules;
+}
+
+function formatTranscriptScore(score){
+  return Number.isFinite(score) ? score.toFixed(1) : "—";
+}
+
+function getTranscriptMention(score){
+  if(score >= 17) return "ممتاز";
+  if(score >= 15) return "جيد جداً";
+  if(score >= 13) return "جيد";
+  if(score >= 10) return "مقبول";
+  return "غير كاف";
+}
+
+function getTranscriptMentionTone(score){
+  if(score >= 17) return {bg:"#dcfce7", bd:"#86efac", fg:"#166534", label:"ممتاز"};
+  if(score >= 15) return {bg:"#dbeafe", bd:"#93c5fd", fg:"#1d4ed8", label:"جيد جداً"};
+  if(score >= 13) return {bg:"#fef3c7", bd:"#fcd34d", fg:"#92400e", label:"جيد"};
+  if(score >= 10) return {bg:"#ffedd5", bd:"#fdba74", fg:"#9a3412", label:"مقبول"};
+  return {bg:"#fee2e2", bd:"#fca5a5", fg:"#991b1b", label:"غير كاف"};
+}
+
+function renderTranscriptMention(score){
+  const tone = getTranscriptMentionTone(score);
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;background:${tone.bg};border:1px solid ${tone.bd};color:${tone.fg};font-size:.72rem;font-weight:800">${tone.label}</span>`;
+}
+
+function getTranscriptRows(draft){
+  const modules = ensureGradeSheetScores(draft, false);
+  return modules.map(module => ({
+    ...module,
+    score: clampTranscriptScore(draft.scores[module.id]),
+  }));
+}
+
+function computeTranscriptStats(rows){
+  const validRows = rows.filter(row => Number.isFinite(row.score));
+  const average = validRows.length ? Math.round((validRows.reduce((sum, row) => sum + row.score, 0) / validRows.length) * 10) / 10 : 0;
+  const sortedDesc = [...validRows].sort((a,b) => b.score - a.score);
+  const sortedAsc = [...validRows].sort((a,b) => a.score - b.score);
+  return {
+    average,
+    mention: getTranscriptMention(average),
+    highest: sortedDesc[0] || null,
+    lowest: sortedAsc[0] || null,
+    strongest: sortedDesc.slice(0,2),
+    weakest: sortedAsc.slice(0,2),
+    count: validRows.length,
+  };
+}
+
+function buildTranscriptAiFeedback(stats){
+  const student = S.user?.role === "student"
+    ? (getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)})
+    : null;
+  const persona = student ? buildStudentPersona(student, {score: stats.average, maxScore: 20, label:"كشف النقاط"}) : null;
+  const strongTitles = stats.strongest.map(row => row.title);
+  const weakTitles = stats.weakest.map(row => row.title);
+  let summary = "";
+  if(stats.average >= 16.5) summary = "التحليل الذكي يظهر تمكناً قوياً عبر أغلب المقاييس مع قدرة جيدة على الثبات والتحليل.";
+  else if(stats.average >= 15) summary = "التحليل الذكي يظهر مستوى جيداً جداً مع قاعدة مستقرة تحتاج فقط إلى رفع جودة التعليل في بعض المقاييس.";
+  else if(stats.average >= 13) summary = "التحليل الذكي يبين فهماً جيداً، لكن النتائج تحتاج إلى تثبيت أكبر في المقاييس الأضعف.";
+  else summary = "التحليل الذكي يوصي بخطة علاجية أقصر وأكثر تركيزاً على الأساسيات قبل توسيع نطاق المقاييس.";
+  if(persona?.supportLevel === "مرتفع") summary += " يُستحسن الحفاظ على وتيرة مرنة مع أهداف قصيرة وواضحة.";
+  const nextAction = persona?.actions?.[0] || (weakTitles.length ? `ابدأ بمراجعة ${weakTitles.join(" و ")} بتمارين قصيرة مع تصحيح فوري.` : "استمر في مراجعة المقاييس تدريجياً مع تثبيت الأخطاء المتكررة.");
+  return {summary, strongTitles, weakTitles, nextAction};
+}
+
+function updateGradeSheetDraft(field, value){
+  const draft = ensureGradeSheetDraft();
+  if(field === "studentName"){
+    draft.studentName = String(value || "").trim() || "طالب افتراضي";
+  } else if(field === "branch"){
+    draft.branch = Math.max(0, Math.min(2, parseInt(value, 10) || 0));
+  } else if(field === "sem"){
+    draft.sem = parseInt(value, 10) === 4 ? 4 : 3;
+  }
+  ensureGradeSheetScores(draft, false);
+  saveAppState();
+  renderTranscriptPage();
+}
+
+function setGradeSheetScore(moduleId, value){
+  const draft = ensureGradeSheetDraft();
+  const cleaned = String(value || "").trim();
+  if(!cleaned){
+    delete draft.scores[moduleId];
+  } else {
+    const score = clampTranscriptScore(cleaned);
+    if(score === null){
+      notify("أدخل علامة صحيحة بين 0 و20","⚠️");
+      return;
+    }
+    draft.scores[moduleId] = score;
+  }
+  draft.updatedAt = new Date().toISOString();
+  saveAppState();
+  renderTranscriptPage();
+}
+
+function regenerateVirtualGradeSheet(){
+  const draft = ensureGradeSheetDraft();
+  ensureGradeSheetScores(draft, true);
+  saveAppState();
+  renderTranscriptPage();
+  notify("تم توليد كشف نقاط افتراضي جديد","✅");
+}
+
+function printTranscriptPage(){
+  const draft = ensureGradeSheetDraft();
+  ensureGradeSheetScores(draft, false);
+  saveAppState();
+  window.print();
+}
+
+function renderTranscriptPage(){
+  const el = document.getElementById("transcript-content");
+  if(!el) return;
+  if(!S.user){
+    el.innerHTML = `<div class="card"><div class="al ali">سجّل الدخول أولاً لإنشاء كشف النقاط القابل للطباعة.</div><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>`;
+    return;
+  }
+  const draft = ensureGradeSheetDraft();
+  const currentStudent = S.user.role === "student"
+    ? (getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)})
+    : null;
+  if(currentStudent){
+    draft.studentName = currentStudent.name || draft.studentName;
+    draft.branch = typeof currentStudent.branch === "number" ? currentStudent.branch : draft.branch;
+  }
+  const rows = getTranscriptRows(draft);
+  const stats = computeTranscriptStats(rows);
+  const feedback = buildTranscriptAiFeedback(stats);
+  const semLabel = draft.sem === 4 ? "السداسي الرابع" : "السداسي الثالث";
+  const updatedAt = draft.updatedAt ? formatIsoDateTime(draft.updatedAt) : "الآن";
+  const studentName = escapeHtml(draft.studentName || "طالب افتراضي");
+  const isStudent = S.user.role === "student";
+  const branchOptions = BRANCH_LABELS.map((label, index) => `<option value="${index}" ${draft.branch === index ? "selected" : ""}>${label}</option>`).join("");
+  const semOptions = [3,4].map(value => `<option value="${value}" ${draft.sem === value ? "selected" : ""}>${value === 3 ? "السداسي الثالث" : "السداسي الرابع"}</option>`).join("");
+  const rowsHtml = rows.map((row, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <strong style="display:block">${escapeHtml(row.title)}</strong>
+          <small>${escapeHtml(row.unit)}</small>
+        </td>
+        <td>
+          <div class="transcript-score-box">
+            <div class="screen-only">
+              <input class="transcript-score-input" type="number" min="0" max="20" step="0.1" value="${Number.isFinite(row.score) ? row.score : ""}" onchange="setGradeSheetScore('${row.id}', this.value)">
+            </div>
+            <span class="transcript-print-value">${formatTranscriptScore(row.score)}</span>
+          </div>
+        </td>
+        <td>${renderTranscriptMention(row.score || 0)}</td>
+      </tr>`).join("");
+
+  el.innerHTML = `
+    <div class="card screen-only" style="margin-bottom:1rem">
+      <div class="transcript-actions">
+        <div>
+          <h3 style="font-family:'Amiri',serif;color:var(--gold2);font-size:1.2rem;margin-bottom:.25rem">صفحة كشف النقاط القابلة للطباعة</h3>
+          <p style="color:var(--txt2);font-size:.82rem;line-height:1.8">يمكنك تعديل العلامات يدوياً أو توليد كشف افتراضي جديد ثم طباعته مباشرة من المنصة.</p>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn bt" onclick="regenerateVirtualGradeSheet()">🎲 توليد درجات افتراضية</button>
+          <button class="btn bg" onclick="printTranscriptPage()">🖨 طباعة كشف النقاط</button>
+        </div>
+      </div>
+      <div class="transcript-filter-row">
+        <div class="fg" style="margin-bottom:0">
+          <label class="fl">اسم الطالب</label>
+          <input class="fi" value="${studentName}" ${isStudent ? "disabled" : ""} onchange="updateGradeSheetDraft('studentName', this.value)">
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="fl">الفرع</label>
+          <select class="fi" ${isStudent ? "disabled" : ""} onchange="updateGradeSheetDraft('branch', this.value)">${branchOptions}</select>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label class="fl">السداسي</label>
+          <select class="fi" onchange="updateGradeSheetDraft('sem', this.value)">${semOptions}</select>
+        </div>
+      </div>
+    </div>
+
+    <div class="transcript-paper-wrap">
+      <div class="transcript-paper">
+        <div class="transcript-head">
+          <div>
+            <div class="transcript-kicker">الجمهورية الجزائرية الديمقراطية الشعبية • وزارة التعليم العالي والبحث العلمي</div>
+            <div class="transcript-title">كشف نقاط قابل للطباعة</div>
+            <div class="transcript-subtitle">منصة الكسائي الرقمية • قسم اللغة العربية وآدابها • جامعة ابن خلدون تيارت</div>
+          </div>
+          <div class="transcript-badge">بيان افتراضي للتجريب والطباعة</div>
+        </div>
+
+        <div class="transcript-meta-grid">
+          <div class="transcript-meta-card"><span>اسم الطالب</span><strong>${studentName}</strong></div>
+          <div class="transcript-meta-card"><span>الفرع</span><strong>${escapeHtml(getBranchLabel(draft.branch))}</strong></div>
+          <div class="transcript-meta-card"><span>السداسي</span><strong>${semLabel}</strong></div>
+          <div class="transcript-meta-card"><span>آخر تحديث</span><strong>${escapeHtml(updatedAt)}</strong></div>
+        </div>
+
+        <div class="transcript-table-wrap">
+          <table class="transcript-table">
+            <thead>
+              <tr>
+                <th style="width:60px">#</th>
+                <th>المقياس</th>
+                <th style="width:130px">العلامة /20</th>
+                <th style="width:150px">التقدير</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml || `<tr><td colspan="4" style="text-align:center;color:#64748b">لا توجد مقاييس مسجلة لهذا الفرع في هذا السداسي.</td></tr>`}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="transcript-summary-grid">
+          <div class="transcript-summary-card">
+            <strong>${formatTranscriptScore(stats.average)}</strong>
+            <span>المعدل العام</span>
+          </div>
+          <div class="transcript-summary-card">
+            <strong>${escapeHtml(stats.mention)}</strong>
+            <span>التقدير العام</span>
+          </div>
+          <div class="transcript-summary-card">
+            <strong>${stats.highest ? formatTranscriptScore(stats.highest.score) : "—"}</strong>
+            <span>أعلى مقياس: ${escapeHtml(stats.highest ? stats.highest.title : "—")}</span>
+          </div>
+          <div class="transcript-summary-card">
+            <strong>${stats.lowest ? formatTranscriptScore(stats.lowest.score) : "—"}</strong>
+            <span>أقل مقياس: ${escapeHtml(stats.lowest ? stats.lowest.title : "—")}</span>
+          </div>
+        </div>
+
+        <div class="transcript-ai-card">
+          <h3>التغذية الراجعة الذكية</h3>
+          <p>${escapeHtml(feedback.summary)}</p>
+          <div class="transcript-ai-list" style="margin-bottom:.7rem">
+            ${feedback.strongTitles.map(title => `<span class="transcript-chip">قوة: ${escapeHtml(title)}</span>`).join("") || `<span class="transcript-chip">قوة: يتقدم بثبات في المقاييس الأساسية</span>`}
+            ${feedback.weakTitles.map(title => `<span class="transcript-chip" style="background:#fff1f2;border-color:#fecdd3;color:#9f1239">أولوية: ${escapeHtml(title)}</span>`).join("")}
+          </div>
+          <p style="margin-bottom:0"><strong>التوصية الآلية:</strong> ${escapeHtml(feedback.nextAction)}</p>
+        </div>
+
+        <div class="transcript-footer">
+          <div>إمضاء الأستاذ: ....................................</div>
+          <div>إمضاء رئيس القسم: ....................................</div>
+          <div>الختم: ....................................</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function createEmptyAssignmentState(){
+  return {semByStudent:{}, interactions:{}};
+}
+
+function ensureAssignmentState(){
+  const current = (S.assignmentState && typeof S.assignmentState === "object") ? S.assignmentState : {};
+  S.assignmentState = {
+    ...createEmptyAssignmentState(),
+    ...current,
+    semByStudent: (current.semByStudent && typeof current.semByStudent === "object") ? current.semByStudent : {},
+    interactions: (current.interactions && typeof current.interactions === "object") ? current.interactions : {},
+  };
+  return S.assignmentState;
+}
+
+function getAssignmentStudentKey(student){
+  return student?.id || student?.email || S.user?.id || S.user?.email || "guest";
+}
+
+function getSelectedAssignmentSemester(student){
+  const state = ensureAssignmentState();
+  const key = getAssignmentStudentKey(student);
+  const saved = state.semByStudent[key];
+  if(saved === 4 || saved === "4") return 4;
+  if(saved === 3 || saved === "3") return 3;
+  return S.sem === 4 ? 4 : 3;
+}
+
+function setSelectedAssignmentSemester(value){
+  if(S.user?.role !== "student") return;
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const key = getAssignmentStudentKey(student);
+  const state = ensureAssignmentState();
+  state.semByStudent[key] = parseInt(value, 10) === 4 ? 4 : 3;
+  saveAppState();
+  renderAssignments();
+}
+
+function buildVirtualAssignments(branch, sem){
+  const modules = getGradeSheetModules(branch, sem);
+  const patterns = [
+    {kind:"تلخيص تحليلي", deliverable:"ملخص من فقرتين مع خلاصة شخصية", intro:"لخّص المفاهيم المركزية في"},
+    {kind:"بطاقة مفاهيم", deliverable:"بطاقة تضم المفاهيم والعلاقات الأساسية", intro:"أنجز بطاقة مفاهيمية حول"},
+    {kind:"تطبيق موجّه", deliverable:"حل تمرينين تطبيقيين مع تعليل مختصر", intro:"طبّق ما درسته في"},
+    {kind:"عرض قصير", deliverable:"عرض قصير من 5 أسطر مع مثال", intro:"أعد عرضاً قصيراً حول"},
+    {kind:"مقارنة علمية", deliverable:"مقارنة بين مفهومين أو اتجاهين", intro:"قارن بين أهم محاور"},
+  ];
+  const now = new Date();
+  return modules.map((module, index) => {
+    const pattern = patterns[index % patterns.length];
+    const due = new Date(now);
+    due.setDate(due.getDate() + 3 + index * 2 + (sem === 4 ? 2 : 0));
+    due.setHours(23, 59, 0, 0);
+    return {
+      id: `${module.id}-asg`,
+      moduleId: module.id,
+      moduleTitle: module.title,
+      unit: module.unit,
+      kind: pattern.kind,
+      title: `${pattern.kind} في ${module.title}`,
+      brief: `${pattern.intro} ${module.title} مع ربطه بمحاور ${module.unit}.`,
+      deliverable: pattern.deliverable,
+      estimatedMinutes: 30 + ((index % 4) * 10),
+      dueIso: due.toISOString(),
+      dueLabel: due.toLocaleDateString("ar-DZ", {year:"numeric", month:"long", day:"numeric"}),
+    };
+  });
+}
+
+function getAssignmentInteraction(studentKey, assignmentId){
+  const state = ensureAssignmentState();
+  return (((state.interactions || {})[studentKey] || {})[assignmentId]) || null;
+}
+
+function setAssignmentInteraction(studentKey, assignmentId, patch){
+  const state = ensureAssignmentState();
+  state.interactions[studentKey] = state.interactions[studentKey] || {};
+  const current = state.interactions[studentKey][assignmentId] || {};
+  state.interactions[studentKey][assignmentId] = {...current, ...patch};
+}
+
+function getAssignmentStatusMeta(status){
+  if(status === "submitted") return {label:"تم التسليم", cls:"submitted"};
+  if(status === "in-progress") return {label:"قيد الإنجاز", cls:"progress"};
+  return {label:"لم يبدأ", cls:"pending"};
+}
+
+function formatAssignmentInteraction(interaction){
+  if(!interaction) return "لم يسجل الطالب أي تعامل مع هذا الواجب بعد.";
+  if(interaction.status === "submitted"){
+    return `سلّم الطالب هذا الواجب ${interaction.submittedAt ? `بتاريخ ${formatIsoDateTime(interaction.submittedAt)}` : "بعد إتمامه"}${interaction.note ? `، مع ملاحظة: ${interaction.note}` : ""}.`;
+  }
+  if(interaction.status === "in-progress"){
+    return `بدأ الطالب العمل على هذا الواجب${interaction.startedAt ? ` منذ ${formatIsoDateTime(interaction.startedAt)}` : ""}${interaction.note ? `، ودوّن: ${interaction.note}` : ""}.`;
+  }
+  return "لم يبدأ الطالب هذا الواجب بعد.";
+}
+
+function beginVirtualAssignment(assignmentId){
+  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
+  setAssignmentInteraction(studentKey, assignmentId, {
+    status: existing.status === "submitted" ? "submitted" : "in-progress",
+    startedAt: existing.startedAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
+  saveAppState();
+  renderAssignments();
+  notify("تم تسجيل بدء العمل على الواجب","✅");
+}
+
+function submitVirtualAssignment(assignmentId){
+  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
+  setAssignmentInteraction(studentKey, assignmentId, {
+    status: "submitted",
+    startedAt: existing.startedAt || new Date().toISOString(),
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
+  saveAppState();
+  renderAssignments();
+  notify("تم تسجيل تسليم الواجب افتراضياً","✅");
+}
+
+function resetVirtualAssignment(assignmentId){
+  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const studentKey = getAssignmentStudentKey(student);
+  const state = ensureAssignmentState();
+  if(state.interactions[studentKey]) delete state.interactions[studentKey][assignmentId];
+  saveAppState();
+  renderAssignments();
+  notify("تمت إعادة تهيئة تعامل الطالب مع الواجب","✅");
+}
+
+function saveVirtualAssignmentNote(assignmentId){
+  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const studentKey = getAssignmentStudentKey(student);
+  const field = document.getElementById(`assignment-note-${assignmentId}`);
+  const note = (field?.value || "").trim();
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
+  setAssignmentInteraction(studentKey, assignmentId, {
+    note,
+    status: existing.status === "submitted" ? "submitted" : (note || existing.startedAt ? "in-progress" : (existing.status || "pending")),
+    startedAt: existing.startedAt || (note ? new Date().toISOString() : ""),
+    updatedAt: new Date().toISOString(),
+  });
+  saveAppState();
+  renderAssignments();
+  notify("تم حفظ ملاحظة الطالب حول الواجب","✅");
+}
+
+function renderAssignments(){
+  const el = document.getElementById("assignments-content");
+  if(!el) return;
+  if(!S.user){
+    el.innerHTML = `<div class="card">لا توجد واجبات مخصصة حالياً. سجّل الدخول لعرض واجباتك.</div><div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>`;
+    return;
+  }
+  if(S.user.role !== "student"){
+    el.innerHTML = `<div class="card"><div class="al ali">تفاعلات الواجبات تُسجَّل داخل حسابات الطلبة. ادخل بحساب طالب لمشاهدة التعامل مع الواجبات أو لاستخدام الصفحة كتجربة فعلية.</div><div style="color:var(--txt2);line-height:1.9;font-size:.84rem">المنصة أصبحت تدعم واجبات افتراضية مرتبطة بالمقاييس، مع حالات مثل: لم يبدأ، قيد الإنجاز، وتم التسليم.</div></div>`;
+    return;
+  }
+
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const state = ensureAssignmentState();
+  const studentKey = getAssignmentStudentKey(student);
+  const sem = getSelectedAssignmentSemester(student);
+  const assignments = buildVirtualAssignments(student.branch, sem);
+  const rows = assignments.map(assignment => {
+    const interaction = getAssignmentInteraction(studentKey, assignment.id);
+    const statusMeta = getAssignmentStatusMeta(interaction?.status);
+    return {assignment, interaction, statusMeta};
+  });
+  const pendingCount = rows.filter(row => row.statusMeta.cls === "pending").length;
+  const progressCount = rows.filter(row => row.statusMeta.cls === "progress").length;
+  const submittedCount = rows.filter(row => row.statusMeta.cls === "submitted").length;
+
+  const cards = rows.map(({assignment, interaction, statusMeta}) => `
+    <div class="assign-card">
+      <div class="assign-head">
+        <div>
+          <div class="assign-title">${escapeHtml(assignment.title)}</div>
+          <div class="assign-module">${escapeHtml(assignment.moduleTitle)} • ${escapeHtml(assignment.unit)}</div>
+        </div>
+        <span class="assign-status ${statusMeta.cls}">${statusMeta.label}</span>
+      </div>
+      <div class="assign-meta">
+        <span class="assign-meta-chip">الاستحقاق: ${escapeHtml(assignment.dueLabel)}</span>
+        <span class="assign-meta-chip">النوع: ${escapeHtml(assignment.kind)}</span>
+        <span class="assign-meta-chip">الزمن المتوقع: ${assignment.estimatedMinutes} دقيقة</span>
+      </div>
+      <div class="assign-body">${escapeHtml(assignment.brief)}<br><span style="color:var(--gold3)">المطلوب:</span> ${escapeHtml(assignment.deliverable)}</div>
+      <div class="assign-interaction">${escapeHtml(formatAssignmentInteraction(interaction))}</div>
+      <div class="assign-note-box">
+        <div class="assign-note-title">تعامل الطالب مع الواجب</div>
+        <textarea class="fi" id="assignment-note-${assignment.id}" rows="3" placeholder="اكتب كيف بدأ الطالب، الصعوبات التي واجهها، أو ملاحظته على الإنجاز...">${escapeHtml(interaction?.note || "")}</textarea>
+      </div>
+      <div class="assign-actions">
+        <button class="btn bt sm" onclick="beginVirtualAssignment('${assignment.id}')">بدء العمل</button>
+        <button class="btn bg sm" onclick="submitVirtualAssignment('${assignment.id}')">تسجيل التسليم</button>
+        <button class="btn bgh sm" onclick="saveVirtualAssignmentNote('${assignment.id}')">حفظ الملاحظة</button>
+        <button class="btn br sm" onclick="resetVirtualAssignment('${assignment.id}')">إعادة التهيئة</button>
+      </div>
+    </div>`).join("");
+
+  el.innerHTML = `
+    <div class="assign-summary-grid">
+      <div class="assign-summary-card"><strong>${assignments.length}</strong><span>إجمالي الواجبات الافتراضية</span></div>
+      <div class="assign-summary-card"><strong>${pendingCount}</strong><span>لم يبدأها الطالب بعد</span></div>
+      <div class="assign-summary-card"><strong>${progressCount}</strong><span>واجبات قيد الإنجاز</span></div>
+      <div class="assign-summary-card"><strong>${submittedCount}</strong><span>واجبات تم تسليمها</span></div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <div class="assign-toolbar">
+        <div>
+          <h3 style="font-family:'Amiri',serif;color:var(--gold2);font-size:1.18rem;margin-bottom:.25rem">واجبات افتراضية للطالب ${escapeHtml(student.name || "")}</h3>
+          <div style="color:var(--txt2);font-size:.82rem;line-height:1.8">${escapeHtml(getBranchLabel(student.branch))} • ${sem === 4 ? "السداسي الرابع" : "السداسي الثالث"} • كل واجب مرتبط بمقياس موجود فعلاً في المنصة.</div>
+        </div>
+        <div class="fg" style="min-width:190px;margin-bottom:0">
+          <label class="fl">السداسي المعروض</label>
+          <select class="fi" onchange="setSelectedAssignmentSemester(this.value)">
+            <option value="3" ${sem === 3 ? "selected" : ""}>السداسي الثالث</option>
+            <option value="4" ${sem === 4 ? "selected" : ""}>السداسي الرابع</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="assign-cards">${cards}</div>`;
 }
 
 // ── Browse Questions ──────────────────────────────────
