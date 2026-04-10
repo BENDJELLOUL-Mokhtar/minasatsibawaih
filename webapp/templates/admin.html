@@ -14,6 +14,7 @@
         <th>البريد</th>
         <th>الدور</th>
         <th>الحالة</th>
+        <th>استمارة الملف</th>
         <th>تاريخ</th>
         <th>إجراءات</th>
       </tr>
@@ -25,7 +26,28 @@
         <td>{{ u.name }}</td>
         <td>{{ u.email }}</td>
         <td>{{ 'طالب' if u.role=='student' else 'أستاذ' }}</td>
-        <td>{{ u.status }}</td>
+        <td>
+          {% if u.status == 'pending' %}
+            <span class="badge text-bg-warning">بانتظار القرار</span>
+          {% elif u.status == 'approved' %}
+            <span class="badge text-bg-success">مقبول</span>
+          {% else %}
+            <span class="badge text-bg-danger">مرفوض</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if u.role == 'student' %}
+            <div>{{ profile_form_status_label(u.profile_form_status) }}</div>
+            {% if u.profile_form_sent_at %}
+              <div class="small text-muted">إرسال الرابط: {{ u.profile_form_sent_at.strftime('%Y-%m-%d %H:%M') }}</div>
+            {% endif %}
+            {% if u.profile_form_submitted_at %}
+              <div class="small text-muted">استلام الإجابات: {{ u.profile_form_submitted_at.strftime('%Y-%m-%d %H:%M') }}</div>
+            {% endif %}
+          {% else %}
+            <span class="text-muted">غير مطلوب</span>
+          {% endif %}
+        </td>
         <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
         <td>
           {% if u.status=='pending' %}
@@ -34,6 +56,10 @@
             </form>
             <form method="post" action="{{ url_for('reject', user_id=u.id) }}" style="display:inline;margin-left:6px">
               <button class="btn btn-sm btn-danger">رفض</button>
+            </form>
+          {% elif u.role == 'student' and u.status == 'approved' %}
+            <form method="post" action="{{ url_for('send_profile_form', user_id=u.id) }}" style="display:inline">
+              <button class="btn btn-sm btn-outline-primary">إعادة إرسال الاستبيان</button>
             </form>
           {% else %}
             <span class="text-muted">لا توجد إجراءات</span>

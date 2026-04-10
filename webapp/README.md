@@ -17,6 +17,11 @@ flask --app webapp.app init-db
 flask --app webapp.app run
 ```
 
+إذا كنت ستستخدم [index.html](..\index.html) مع خادم `scripts/save_results_server.py` في الوقت نفسه، شغّل تطبيق الويب على منفذ مختلف لتجنّب التعارض:
+```powershell
+flask --app webapp.app run --port 5050
+```
+
 إعداد متغيرات البيئة المهمة:
 
 - `ADMIN_PASSWORD` — كلمة مرور دخول المشرف (افتراضي: `admin`)
@@ -53,18 +58,8 @@ flask --app webapp.app send-test-email recipient@example.com
 ملاحظات:
 - إن لم تُضبط متغيرات SMTP، يعمل النظام في وضع التطوير ويطبع محتوى الرسائل في الـstdout بدلاً من إرسالها فعليًا.
 - لتشغيل لوحة المشرف: ادخل إلى `/admin` ثم سجّل الدخول باستخدام `ADMIN_PASSWORD`.
-
-الشهادات (PDF):
-
-- يعتمد توليد شهادات PDF على مكتبة `reportlab`. ثبتها مع الاعتماديات (`pip install -r requirements.txt`).
-- لتجسيد نص عربي صحيح قد تحتاج إلى خط TTF يدعم العربية. ضع مسار الملف في متغير البيئة `CERT_FONT_PATH` قبل تشغيل التطبيق، مثال (PowerShell):
-```powershell
-$env:CERT_FONT_PATH = 'C:\path\to\YourArabicFont.ttf'
-``` 
-- لتوليد شهادة لنسخة اختبار محفوظة عبر CLI:
-```powershell
-flask --app webapp.app gen-cert <ATTEMPT_ID>
-# مع ارسال بالبريد:
-flask --app webapp.app gen-cert <ATTEMPT_ID> --send
-```
-- عبر واجهة الإدارة: افتح `/admin` → `دفتر الدرجات` ثم استخدم زر "توليد وإرسال" أو زر "تحميل" لتحميل ملف الشهادة.
+- عند قبول طالب من لوحة المشرف، يُنشئ النظام رابطًا خاصًا لاستمارة الملف الذكي ويرسله إلى بريد الطالب تلقائيًا.
+- يمكن للمشرف إعادة إرسال رابط الاستمارة من لوحة المشرف للطلبة المقبولين.
+- الحقول الجديدة الخاصة بالاستمارة تُضاف تلقائيًا إلى قاعدة البيانات الحالية عند تشغيل التطبيق أو تنفيذ `init-db`.
+- يوفّر التطبيق أيضًا واجهة `GET /api/student-profile?email=...` لتستورد [index.html](..\index.html) بيانات الاستمارة إلى الملف الذكي المحلي.
+- صفحة [index.html](..\index.html) تحاول الوصول إلى خادم التسجيل على `http://127.0.0.1:5050` أولاً ثم `http://127.0.0.1:5000`، ويمكن تجاوز ذلك بتحديد `window.MINASAT_WEBAPP_API` أو `localStorage.MINASAT_WEBAPP_API`.

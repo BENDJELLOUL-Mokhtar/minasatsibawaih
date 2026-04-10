@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4 p-md-5">
+      <h2 class="mb-3">استمارة الملف الذكي للطالب</h2>
+      <p class="text-muted mb-4">مرحبًا {{ user.name }}. تساعدنا هذه البيانات على فهم ظروفك الدراسية والاجتماعية والثقافية بشكل أدق، حتى تكون المتابعة والتوجيه أكثر ملاءمة.</p>
+
+      {% if already_submitted %}
+        <div class="alert alert-info">تم استلام إجاباتك سابقًا. يمكنك تعديلها وإعادة الإرسال من خلال هذا النموذج إذا لزم الأمر.</div>
+      {% endif %}
+
+      <form method="post" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">الاندماج الاجتماعي</label>
+          <select class="form-select" name="socialIntegration">
+            <option value="" {% if not data.socialIntegration %}selected{% endif %}>اختر</option>
+            <option value="مرتفع" {% if data.socialIntegration=='مرتفع' %}selected{% endif %}>مرتفع</option>
+            <option value="متوسط" {% if data.socialIntegration=='متوسط' %}selected{% endif %}>متوسط</option>
+            <option value="منخفض" {% if data.socialIntegration=='منخفض' %}selected{% endif %}>منخفض</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">الانفتاح الثقافي</label>
+          <select class="form-select" name="culturalExposure">
+            <option value="" {% if not data.culturalExposure %}selected{% endif %}>اختر</option>
+            <option value="واسع" {% if data.culturalExposure=='واسع' %}selected{% endif %}>واسع</option>
+            <option value="متوسط" {% if data.culturalExposure=='متوسط' %}selected{% endif %}>متوسط</option>
+            <option value="محدود" {% if data.culturalExposure=='محدود' %}selected{% endif %}>محدود</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">الوضع الاقتصادي</label>
+          <select class="form-select" name="economicLevel">
+            <option value="" {% if not data.economicLevel %}selected{% endif %}>اختر</option>
+            <option value="مستقر" {% if data.economicLevel=='مستقر' %}selected{% endif %}>مستقر</option>
+            <option value="متوسط" {% if data.economicLevel=='متوسط' %}selected{% endif %}>متوسط</option>
+            <option value="يحتاج دعماً" {% if data.economicLevel=='يحتاج دعماً' %}selected{% endif %}>يحتاج دعماً</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">الدعم الأسري</label>
+          <select class="form-select" name="familySupport">
+            <option value="" {% if not data.familySupport %}selected{% endif %}>اختر</option>
+            <option value="قوي" {% if data.familySupport=='قوي' %}selected{% endif %}>قوي</option>
+            <option value="متوسط" {% if data.familySupport=='متوسط' %}selected{% endif %}>متوسط</option>
+            <option value="ضعيف" {% if data.familySupport=='ضعيف' %}selected{% endif %}>ضعيف</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">البنية الأسرية</label>
+          <input class="form-control" name="familyStructure" value="{{ data.familyStructure }}" placeholder="مثال: أسرة ممتدة، أسرة نووية">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">نوع السكن</label>
+          <select class="form-select" name="housingType">
+            <option value="" {% if not data.housingType %}selected{% endif %}>اختر</option>
+            <option value="منزل عائلي" {% if data.housingType=='منزل عائلي' %}selected{% endif %}>منزل عائلي</option>
+            <option value="شقة" {% if data.housingType=='شقة' %}selected{% endif %}>شقة</option>
+            <option value="إقامة جامعية" {% if data.housingType=='إقامة جامعية' %}selected{% endif %}>إقامة جامعية</option>
+            <option value="سكن مشترك" {% if data.housingType=='سكن مشترك' %}selected{% endif %}>سكن مشترك</option>
+            <option value="أخرى" {% if data.housingType=='أخرى' %}selected{% endif %}>أخرى</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">هل لديك فضاء مناسب للمذاكرة؟</label>
+          <select class="form-select" name="studySpace">
+            <option value="" {% if not data.studySpace %}selected{% endif %}>اختر</option>
+            <option value="متوفر" {% if data.studySpace=='متوفر' %}selected{% endif %}>متوفر</option>
+            <option value="متوفر جزئياً" {% if data.studySpace=='متوفر جزئياً' %}selected{% endif %}>متوفر جزئياً</option>
+            <option value="غير متوفر" {% if data.studySpace=='غير متوفر' %}selected{% endif %}>غير متوفر</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">ترتيبك بين الأولاد</label>
+          <input type="number" min="0" class="form-control" name="birthOrder" value="{{ data.birthOrder }}">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">عدد الإخوة</label>
+          <input type="number" min="0" class="form-control" name="brothersCount" value="{{ data.brothersCount }}">
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">عدد الأخوات</label>
+          <input type="number" min="0" class="form-control" name="sistersCount" value="{{ data.sistersCount }}">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">اللغة الأكثر استعمالاً في البيت</label>
+          <input class="form-control" name="homeLanguage" value="{{ data.homeLanguage }}" placeholder="مثال: العربية الفصحى، الدارجة، الأمازيغية">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">توفر الأجهزة الرقمية</label>
+          <select class="form-select" name="devicesAccess">
+            <option value="" {% if not data.devicesAccess %}selected{% endif %}>اختر</option>
+            <option value="جيد" {% if data.devicesAccess=='جيد' %}selected{% endif %}>جيد</option>
+            <option value="محدود" {% if data.devicesAccess=='محدود' %}selected{% endif %}>محدود</option>
+            <option value="ضعيف" {% if data.devicesAccess=='ضعيف' %}selected{% endif %}>ضعيف</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">جودة الوصول إلى الإنترنت</label>
+          <select class="form-select" name="internetAccess">
+            <option value="" {% if not data.internetAccess %}selected{% endif %}>اختر</option>
+            <option value="جيدة" {% if data.internetAccess=='جيدة' %}selected{% endif %}>جيدة</option>
+            <option value="متوسطة" {% if data.internetAccess=='متوسطة' %}selected{% endif %}>متوسطة</option>
+            <option value="ضعيفة" {% if data.internetAccess=='ضعيفة' %}selected{% endif %}>ضعيفة</option>
+            <option value="غير ثابتة" {% if data.internetAccess=='غير ثابتة' %}selected{% endif %}>غير ثابتة</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">هل لديك التزام عمل أو مسؤوليات تعيق الدراسة؟</label>
+          <input class="form-control" name="workCommitment" value="{{ data.workCommitment }}" placeholder="مثال: عمل جزئي، رعاية الأسرة، لا يوجد">
+        </div>
+
+        <div class="col-12 mt-4">
+          <div class="border rounded p-3 bg-light">
+            <h5 class="mb-3">ربط اختياري بحسابات التواصل الاجتماعي</h5>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" role="switch" id="socialConsent" name="socialConsent" {% if data.socialConsent %}checked{% endif %}>
+              <label class="form-check-label" for="socialConsent">أوافق على مشاركة الحسابات التالية لأغراض أكاديمية وتربوية فقط</label>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Facebook</label>
+                <input class="form-control" name="socialFacebook" value="{{ data.socialAccounts.facebook }}" placeholder="رابط أو اسم الحساب">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Instagram</label>
+                <input class="form-control" name="socialInstagram" value="{{ data.socialAccounts.instagram }}" placeholder="رابط أو اسم الحساب">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">X</label>
+                <input class="form-control" name="socialX" value="{{ data.socialAccounts.x }}" placeholder="رابط أو اسم الحساب">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">TikTok</label>
+                <input class="form-control" name="socialTiktok" value="{{ data.socialAccounts.tiktok }}" placeholder="رابط أو اسم الحساب">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">YouTube</label>
+                <input class="form-control" name="socialYoutube" value="{{ data.socialAccounts.youtube }}" placeholder="رابط أو اسم الحساب">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Telegram</label>
+                <input class="form-control" name="socialTelegram" value="{{ data.socialAccounts.telegram }}" placeholder="معرف أو رقم">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">WhatsApp</label>
+                <input class="form-control" name="socialWhatsapp" value="{{ data.socialAccounts.whatsapp }}" placeholder="رقم أو رابط">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">LinkedIn</label>
+                <input class="form-control" name="socialLinkedin" value="{{ data.socialAccounts.linkedin }}" placeholder="رابط أو اسم الحساب">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">ملاحظات إضافية</label>
+          <textarea class="form-control" rows="5" name="notes" placeholder="أي تفاصيل تساعد الأستاذ على فهم ظروفك الدراسية بشكل أفضل">{{ data.notes }}</textarea>
+        </div>
+
+        <div class="col-12 d-flex gap-2 justify-content-end">
+          <button type="submit" class="btn btn-primary">إرسال الاستمارة</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
