@@ -278,13 +278,36 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-
 .assign-status.pending{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.25);color:#fbbf24}
 .assign-status.progress{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.25);color:#67e8f9}
 .assign-status.submitted{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.25);color:#4ade80}
+.assign-status.reviewed{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.28);color:#d8b4fe}
+.assign-status.ready{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.22);color:#86efac}
+.assign-status.locked{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.22);color:#fcd34d}
+.assign-status.overdue{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.22);color:#fca5a5}
 .assign-meta{display:flex;flex-wrap:wrap;gap:.45rem}
 .assign-meta-chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--txt2);font-size:.7rem}
 .assign-body{color:var(--txt2);font-size:.83rem;line-height:1.9}
 .assign-note-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:.8rem}
 .assign-note-title{font-size:.73rem;color:var(--txt3);margin-bottom:.35rem}
+.assign-submission-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:.8rem;display:flex;flex-direction:column;gap:.7rem}
+.assign-submission-title{font-size:.74rem;color:var(--gold3);font-weight:800}
+.assign-response-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem}
+.assign-submission-text{padding:.75rem .85rem;border-radius:12px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.07);color:var(--txt2);font-size:.8rem;line-height:1.9}
+.assign-attachment-row{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;padding:.65rem .75rem;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);font-size:.75rem;color:var(--txt2)}
+.assign-link-anchor{color:#93c5fd;font-size:.76rem;word-break:break-all}
+.assign-hint{font-size:.71rem;color:var(--txt3);line-height:1.8}
+.assign-review-box{background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);border-radius:12px;padding:.85rem;display:flex;flex-direction:column;gap:.7rem}
+.assign-review-box.reviewed{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.16)}
+.assign-review-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.assign-review-title{font-size:.78rem;color:#e9d5ff;font-weight:800}
+.assign-review-box.reviewed .assign-review-title{color:#bbf7d0}
+.assign-review-score{display:inline-flex;align-items:center;justify-content:center;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:.8rem;font-weight:900}
+.assign-review-meta{font-size:.72rem;color:var(--txt3);line-height:1.8}
 .assign-interaction{padding:.7rem .8rem;border-radius:12px;background:rgba(8,145,178,.08);border:1px solid rgba(8,145,178,.18);color:#bae6fd;font-size:.77rem;line-height:1.85}
 .assign-actions{display:flex;gap:.55rem;flex-wrap:wrap}
+.assign-conditions{display:flex;flex-wrap:wrap;gap:.45rem}
+.assign-condition-chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:rgba(201,150,42,.08);border:1px solid rgba(201,150,42,.18);color:var(--gold3);font-size:.68rem}
+.assign-lock-list{margin:0;padding-right:1rem;color:#fcd34d;font-size:.76rem;line-height:1.9}
+.assign-lock-list li{margin-bottom:.2rem}
+.assign-manager-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem}
 
 /* DISCUSSION */
 .dp{background:var(--bg2);border:1px solid var(--bdr);border-radius:9px;padding:1rem;margin-bottom:.75rem;transition:border-color .2s}
@@ -2032,6 +2055,18 @@ function getAllSubjects(branches) {
 // ══════════════════════════════════════════════════════
 const ADMIN = { email:"bendjalloul@univ-tiaret.dz", pw:"Admin2025" };
 const BRANCH_LABELS = ["الدراسات اللغوية","الدراسات الأدبية","الدراسات النقدية"];
+const PLATFORM_MANAGER_TEACHER = {
+  id:"t-admin",
+  name:"أ.د. بن جلول مختار",
+  email:ADMIN.email,
+  pw:ADMIN.pw,
+  rank:"مدير المنصة",
+  spec:"الإشراف العلمي وإدارة المنصة",
+  status:"approved",
+  branches:[0,1,2],
+  subjects:["علم النحو 2"],
+  date:"2025-02-01"
+};
 
 let S = {
   user: null,
@@ -2050,6 +2085,7 @@ let S = {
     {id:"s3",name:"أحمد بن عمر",email:"ahmed@etud.dz",pw:"123456",status:"pending",branch:2,date:"2025-03-05"},
   ],
   teachers: [
+    {id:"t-admin",name:"أ.د. بن جلول مختار",email:"bendjalloul@univ-tiaret.dz",pw:"Admin2025",rank:"مدير المنصة",spec:"الإشراف العلمي وإدارة المنصة",status:"approved",branches:[0,1,2],subjects:["علم النحو 2"],date:"2025-02-01"},
     {id:"t1",name:"د. فاطمة الزهراء سليماني",email:"sliimani@univ-tiaret.dz",pw:"teacher1",rank:"أستاذ محاضر أ",spec:"لسانيات عربية",status:"approved",branches:[0,1,2],subjects:["علم النحو 2","اللسانيات العامة"],date:"2025-02-20"},
     {id:"t2",name:"د. محمد بن علية",email:"benalia@univ-tiaret.dz",pw:"teacher2",rank:"أستاذ محاضر ب",spec:"أدب عربي حديث",status:"pending",branches:[1,2],subjects:["النص الأدبي الحديث","النقد الأدبي الحديث"],date:"2025-03-01"},
   ],
@@ -2057,7 +2093,7 @@ let S = {
     {id:"d1",author:"يوسف مسعود",init:"ي",role:"student",cid:"all",text:"كيف نميّز بين الحال والتمييز في الجملة الاسمية؟",time:"منذ يومين",likes:5,replies:[]},
     {id:"d2",author:"أ.د. بن جلول مختار",init:"م",role:"admin",cid:"all",text:"الحال وصف يبيّن هيئة صاحبه وقت الحدث كـ«جاء مسرعاً»، والتمييز يرفع الإبهام كـ«عشرين كتاباً».",time:"منذ يومين",likes:11,replies:[]},
   ],
-  assignmentState: {semByStudent:{}, interactions:{}},
+  assignmentState: {assignments:[], interactions:{}},
   gradeSheetDraft: {studentName:"",branch:0,sem:3,scores:{},updatedAt:""},
 };
 
@@ -2216,17 +2252,86 @@ function normalizeStudentRecord(student){
   };
 }
 
+function normalizeTeacherRecord(teacher){
+  const branches = Array.isArray(teacher?.branches)
+    ? teacher.branches
+        .map(value=>parseInt(value, 10))
+        .filter(value=>Number.isFinite(value) && value >= 0 && value <= 2)
+        .filter((value, index, arr)=>arr.indexOf(value) === index)
+    : [];
+  const subjects = Array.isArray(teacher?.subjects)
+    ? teacher.subjects
+        .map(value=>String(value || '').trim())
+        .filter(Boolean)
+        .filter((value, index, arr)=>arr.indexOf(value) === index)
+    : [];
+  return {
+    ...teacher,
+    name: String(teacher?.name || ''),
+    email: String(teacher?.email || '').trim(),
+    rank: String(teacher?.rank || 'أستاذ'),
+    spec: String(teacher?.spec || '').trim(),
+    status: String(teacher?.status || 'pending'),
+    branches,
+    subjects,
+    profilePic: teacher?.profilePic || "",
+  };
+}
+
+function ensurePlatformManagerTeacherRecord(){
+  S.teachers = Array.isArray(S.teachers) ? S.teachers : [];
+  const managerEmail = String(ADMIN.email || '').trim().toLowerCase();
+  const existing = S.teachers.find(item=>item.id === PLATFORM_MANAGER_TEACHER.id || String(item.email || '').trim().toLowerCase() === managerEmail);
+  if(existing){
+    const merged = normalizeTeacherRecord({
+      ...PLATFORM_MANAGER_TEACHER,
+      ...existing,
+      id: existing.id || PLATFORM_MANAGER_TEACHER.id,
+      email: ADMIN.email,
+      name: existing.name || PLATFORM_MANAGER_TEACHER.name,
+      status: 'approved',
+      branches: Array.from(new Set([...(Array.isArray(existing.branches) ? existing.branches : []), ...PLATFORM_MANAGER_TEACHER.branches])),
+      subjects: Array.from(new Set([...(Array.isArray(existing.subjects) ? existing.subjects : []), ...PLATFORM_MANAGER_TEACHER.subjects])),
+    });
+    Object.assign(existing, merged);
+    return existing;
+  }
+  const created = normalizeTeacherRecord(PLATFORM_MANAGER_TEACHER);
+  S.teachers.unshift(created);
+  return created;
+}
+
 function buildSessionUserFromRecord(role, record){
-  const sessionUser = {...record, role};
+  const baseRecord = role === "student"
+    ? normalizeStudentRecord(record)
+    : role === "teacher"
+      ? normalizeTeacherRecord(record)
+      : {...record};
+  const sessionUser = {...baseRecord, role};
   delete sessionUser.pw;
   if(role === "student") sessionUser.smartProfile = normalizeStudentContext(record.smartProfile);
   return sessionUser;
 }
 
+function getCurrentTeacherRecord(){
+  if(!S.user || !["teacher","admin"].includes(S.user.role)) return null;
+  const userId = String(S.user.id || '').trim();
+  const userEmail = String(S.user.email || '').trim().toLowerCase();
+  const teacher = (S.teachers||[]).find(x=>(userId && x.id===userId) || (userEmail && String(x.email || '').trim().toLowerCase() === userEmail)) || null;
+  if(!teacher && S.user.role === 'admin' && userEmail === String(ADMIN.email || '').trim().toLowerCase()){
+    return ensurePlatformManagerTeacherRecord();
+  }
+  return teacher ? normalizeTeacherRecord(teacher) : null;
+}
+
+function canUseTeacherWorkspace(){
+  return Boolean(S.user && ["teacher","admin"].includes(S.user.role) && getCurrentTeacherRecord());
+}
+
 function getCurrentLinkedRecord(){
   if(!S.user) return null;
   if(S.user.role === "student") return (S.students||[]).find(x=>x.id===S.user.id || x.email===S.user.email) || null;
-  if(S.user.role === "teacher") return (S.teachers||[]).find(x=>x.id===S.user.id || x.email===S.user.email) || null;
+  if(S.user.role === "teacher") return getCurrentTeacherRecord();
   return null;
 }
 
@@ -2701,10 +2806,11 @@ async function copyStudentAiContext(){
 
 function hydrateAppState(){
   S.students = Array.isArray(S.students) ? S.students.map(normalizeStudentRecord) : [];
-  S.teachers = Array.isArray(S.teachers) ? S.teachers : [];
+  S.teachers = Array.isArray(S.teachers) ? S.teachers.map(normalizeTeacherRecord) : [];
+  ensurePlatformManagerTeacherRecord();
   S.content = S.content || {};
   S.assignmentState = (S.assignmentState && typeof S.assignmentState === "object") ? S.assignmentState : {};
-  S.assignmentState.semByStudent = (S.assignmentState.semByStudent && typeof S.assignmentState.semByStudent === "object") ? S.assignmentState.semByStudent : {};
+  S.assignmentState.assignments = Array.isArray(S.assignmentState.assignments) ? S.assignmentState.assignments : [];
   S.assignmentState.interactions = (S.assignmentState.interactions && typeof S.assignmentState.interactions === "object") ? S.assignmentState.interactions : {};
   S.gradeSheetDraft = (S.gradeSheetDraft && typeof S.gradeSheetDraft === "object") ? S.gradeSheetDraft : {};
   S.gradeSheetDraft.scores = (S.gradeSheetDraft.scores && typeof S.gradeSheetDraft.scores === "object") ? S.gradeSheetDraft.scores : {};
@@ -2721,13 +2827,21 @@ function hydrateAppState(){
       S.user.smartProfile = normalizeStudentContext(S.user.smartProfile);
     }
   } else if(S.user?.role === "teacher"){
-    const teacher = getCurrentLinkedRecord();
+    const teacher = getCurrentTeacherRecord();
     if(teacher){
       teacher.name = S.user.name || teacher.name;
       teacher.email = S.user.email || teacher.email;
+      teacher.rank = S.user.rank || teacher.rank;
+      teacher.spec = S.user.spec || teacher.spec;
+      if(!teacher.branches.length && Array.isArray(S.user.branches)) teacher.branches = normalizeTeacherRecord(S.user).branches;
+      if(!teacher.subjects.length && Array.isArray(S.user.subjects)) teacher.subjects = normalizeTeacherRecord(S.user).subjects;
       teacher.profilePic = teacher.profilePic || S.user.profilePic || "";
       S.user = buildSessionUserFromRecord("teacher", teacher);
+    } else {
+      S.user = buildSessionUserFromRecord("teacher", normalizeTeacherRecord(S.user));
     }
+  } else if(S.user?.role === "admin"){
+    ensurePlatformManagerTeacherRecord();
   }
 }
 
@@ -2814,7 +2928,7 @@ function notify(msg,ic="✅"){
 // NAV
 // ══════════════════════════════════════════════════════
 function buildNav(){
-  const u=S.user; const isAdmin=u?.role==="admin"; const isTeacher=u?.role==="teacher";
+  const u=S.user; const isAdmin=u?.role==="admin"; const isTeacher=u?.role==="teacher"; const canOpenTeacherWorkspace=isTeacher || (isAdmin && !!getCurrentTeacherRecord());
   let h="";
   const items=[
     {id:"home",l:"الرئيسية",always:true},
@@ -2825,7 +2939,7 @@ function buildNav(){
     {id:"dashboard",l:"لوحة التحكم",admin:true},
   ];
   items.forEach(it=>{
-    if(it.always||(it.auth&&u)||(it.admin&&isAdmin)||(it.teacher&&isTeacher)){
+    if(it.always||(it.auth&&u)||(it.admin&&isAdmin)||(it.teacher&&canOpenTeacherWorkspace)){
       h+=`<button class="nb${S.page===it.id?" on":""}" data-p="${it.id}" onclick="goto('${it.id}')">${it.l}</button>`;
     }
   });
@@ -3013,7 +3127,7 @@ function canEditModule(modId){
   if(!S.user) return false;
   if(S.user.role==="admin") return true;
   if(S.user.role==="teacher"){
-    const t=S.teachers.find(x=>x.id===S.user.id);
+    const t=getCurrentTeacherRecord();
     const mod=[...Object.values(CURRICULUM).flatMap(b=>Object.values(b).flat())].find(m=>m.id===modId);
     return t && mod && t.subjects.includes(mod.title);
   }
@@ -3698,9 +3812,10 @@ function retryAdvQuiz(key,modId,itemIdx){
 let _teacherStudentEditId = null;
 
 function getTeacherManagedStudents(teacher){
-  if(!teacher) return [];
+  const normalizedTeacher = normalizeTeacherRecord(teacher);
+  if(!normalizedTeacher) return [];
   return (S.students||[])
-    .filter(student=>student.status === "approved" && teacher.branches.includes(student.branch))
+    .filter(student=>student.status === "approved" && normalizedTeacher.branches.includes(student.branch))
     .map(normalizeStudentRecord);
 }
 
@@ -3728,7 +3843,7 @@ function closeTeacherStudentProfileEditor(){
 }
 
 function saveTeacherStudentProfile(studentId){
-  if(S.user?.role !== 'teacher'){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
+  if(!canUseTeacherWorkspace()){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
   const student = (S.students||[]).find(x=>x.id===studentId);
   if(!student){ notify('تعذّر العثور على الطالب','⚠️'); return; }
   const current = normalizeStudentContext(student.smartProfile);
@@ -3811,14 +3926,21 @@ function renderTeacherStudentEditor(student){
 }
 
 function renderTeacherCourses(){
-  const t=S.teachers.find(x=>x.id===S.user?.id);
-  if(!t) return;
   const sub=document.getElementById("teacher-courses-sub");
-  const managedStudents = getTeacherManagedStudents(t);
-  if(sub) sub.textContent=t.name+" — "+t.rank+" | المقاييس: "+t.subjects.join("، ")+` | الطلبة المتابعون: ${managedStudents.length}`;
   const el=document.getElementById("teacher-courses-content");
-  const myMods=[];
-  t.branches.forEach(b=>{[3,4].forEach(s=>{(CURRICULUM[b]?.[s]||[]).forEach(m=>{if(t.subjects.includes(m.title)) myMods.push({...m,branch:b,sem:s});});});});
+  if(!el) return;
+  const t=getCurrentTeacherRecord();
+  if(!t){
+    if(sub) sub.textContent = 'تعذر تحميل ملف الأستاذ المرتبط بهذه الجلسة';
+    el.innerHTML = `<div class="card"><div class="al alw">تعذر تحميل صفحة الأستاذ لأن الجلسة الحالية غير مرتبطة بسجل أستاذ محلي معتمد. جرّب تسجيل الخروج ثم الدخول مجدداً، وإن استمرت المشكلة فتأكد من اعتماد الحساب وتحديد الشعب والمقاييس له من لوحة المدير.</div></div>`;
+    return;
+  }
+  if(S.user?.role === 'teacher') S.user = buildSessionUserFromRecord('teacher', t);
+  const managedStudents = getTeacherManagedStudents(t);
+  const subjectsLabel = t.subjects.length ? t.subjects.join("، ") : 'لم تُحدد مقاييس بعد';
+  const branchesLabel = t.branches.length ? t.branches.map(getBranchLabel).join(' • ') : 'دون شعب محددة';
+  if(sub) sub.textContent=t.name+" — "+t.rank+" | المقاييس: "+subjectsLabel+` | الطلبة المتابعون: ${managedStudents.length}`;
+  const myMods = getTeacherModules(t);
   const selectedStudent = managedStudents.find(student=>student.id===_teacherStudentEditId) || null;
   const studentsSection = `<div class="card ct ct-t" style="margin-bottom:1rem">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;flex-wrap:wrap;margin-bottom:.85rem">
@@ -3828,7 +3950,7 @@ function renderTeacherCourses(){
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <span class="badge-merged">${managedStudents.length} طالباً</span>
-        <span class="badge-assigned">${t.branches.map(getBranchLabel).join(' • ')}</span>
+        <span class="badge-assigned">${branchesLabel}</span>
       </div>
     </div>
     ${managedStudents.length
@@ -3855,6 +3977,7 @@ function renderTeacherCourses(){
       : `<div class="empty"><div class="eic">🎓</div><p>لا يوجد طلبة مقبولون في الشعب المرتبطة بك حالياً.</p></div>`}
     ${selectedStudent ? renderTeacherStudentEditor(selectedStudent) : `<div class="card" style="margin-top:1rem;background:rgba(255,255,255,.02)"><div style="color:var(--txt3);font-size:.82rem;line-height:1.9">اختر طالباً من الأعلى لفتح نموذج إدخال الجانب الثقافي والاجتماعي والأسري الخاص به.</div></div>`}
   </div>`;
+  const assignmentsSection = renderTeacherAssignmentManager(t, managedStudents, myMods);
   const modulesSection = myMods.length
     ? myMods.map((mod,mi)=>`
     <div class="card ct ct-v" style="margin-bottom:1rem">
@@ -3875,7 +3998,7 @@ function renderTeacherCourses(){
       </div>
     </div>`).join("")
     : '<div class="empty"><div class="eic">📭</div><p>لم يتم تحديد مقاييس لك بعد</p></div>';
-  el.innerHTML=studentsSection+modulesSection;
+  el.innerHTML=studentsSection+assignmentsSection+modulesSection;
 }
 
 // ══════════════════════════════════════════════════════
@@ -5102,7 +5225,123 @@ function renderTranscriptPage(){
 }
 
 function createEmptyAssignmentState(){
-  return {semByStudent:{}, interactions:{}};
+  return {assignments:[], interactions:{}};
+}
+
+const ASSIGNMENT_ATTACHMENT_LIMIT = 750 * 1024;
+const ASSIGNMENT_ATTACHMENT_ACCEPT = '.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp';
+const ASSIGNMENT_REVIEW_MAX_SCORE = 20;
+
+function createEmptyAssignmentInteraction(){
+  return {
+    status:'pending',
+    note:'',
+    responseText:'',
+    responseLink:'',
+    attachment:null,
+    teacherScore:null,
+    teacherFeedback:'',
+    reviewedAt:'',
+    reviewerId:'',
+    reviewerName:'',
+    startedAt:'',
+    submittedAt:'',
+    updatedAt:''
+  };
+}
+
+function normalizeAssignmentAttachment(raw){
+  if(!raw || typeof raw !== 'object') return null;
+  const dataUrl = String(raw.dataUrl || '').trim();
+  if(!dataUrl) return null;
+  const size = parseInt(raw.size, 10);
+  return {
+    name: String(raw.name || 'assignment-attachment'),
+    type: String(raw.type || 'application/octet-stream'),
+    size: Number.isFinite(size) ? Math.max(0, size) : 0,
+    dataUrl,
+  };
+}
+
+function normalizeAssignmentReviewScore(value){
+  const raw = String(value ?? '').trim();
+  if(raw === '') return null;
+  const parsed = parseFloat(raw.replace(',', '.'));
+  return Number.isFinite(parsed) ? Math.max(0, Math.min(ASSIGNMENT_REVIEW_MAX_SCORE, parsed)) : null;
+}
+
+function normalizeAssignmentInteraction(raw){
+  if(!raw || typeof raw !== 'object') return null;
+  const base = createEmptyAssignmentInteraction();
+  return {
+    ...base,
+    ...raw,
+    status: raw.status === 'submitted' ? 'submitted' : (raw.status === 'in-progress' ? 'in-progress' : 'pending'),
+    note: String(raw.note || ''),
+    responseText: String(raw.responseText || ''),
+    responseLink: String(raw.responseLink || '').trim(),
+    attachment: normalizeAssignmentAttachment(raw.attachment),
+    teacherScore: normalizeAssignmentReviewScore(raw.teacherScore),
+    teacherFeedback: String(raw.teacherFeedback || '').trim(),
+    reviewedAt: String(raw.reviewedAt || ''),
+    reviewerId: String(raw.reviewerId || ''),
+    reviewerName: String(raw.reviewerName || ''),
+    startedAt: String(raw.startedAt || ''),
+    submittedAt: String(raw.submittedAt || ''),
+    updatedAt: String(raw.updatedAt || ''),
+  };
+}
+
+function normalizeAssignmentInteractionStore(rawStore){
+  const store = (rawStore && typeof rawStore === 'object') ? rawStore : {};
+  const normalized = {};
+  Object.keys(store).forEach(studentKey=>{
+    const studentEntries = store[studentKey];
+    if(!studentEntries || typeof studentEntries !== 'object') return;
+    const mapped = {};
+    Object.keys(studentEntries).forEach(assignmentId=>{
+      const interaction = normalizeAssignmentInteraction(studentEntries[assignmentId]);
+      if(interaction) mapped[assignmentId] = interaction;
+    });
+    if(Object.keys(mapped).length) normalized[studentKey] = mapped;
+  });
+  return normalized;
+}
+
+function normalizeAssignmentThreshold(value){
+  const n = parseInt(value, 10);
+  return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 0;
+}
+
+function normalizeTeacherAssignment(raw){
+  const conditions = raw?.conditions || {};
+  const branchValue = parseInt(raw?.branch, 10);
+  return {
+    id: String(raw?.id || `asg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,7)}`),
+    teacherId: String(raw?.teacherId || ''),
+    teacherName: String(raw?.teacherName || ''),
+    studentId: String(raw?.studentId || ''),
+    studentName: String(raw?.studentName || ''),
+    studentEmail: String(raw?.studentEmail || ''),
+    branch: Number.isFinite(branchValue) ? Math.max(0, Math.min(2, branchValue)) : 0,
+    sem: parseInt(raw?.sem, 10) === 4 ? 4 : 3,
+    moduleId: String(raw?.moduleId || ''),
+    moduleTitle: String(raw?.moduleTitle || ''),
+    unit: String(raw?.unit || ''),
+    title: String(raw?.title || '').trim(),
+    brief: String(raw?.brief || '').trim(),
+    deliverable: String(raw?.deliverable || '').trim(),
+    availableFrom: String(raw?.availableFrom || '').trim(),
+    dueIso: String(raw?.dueIso || '').trim(),
+    active: raw?.active !== false,
+    createdAt: String(raw?.createdAt || new Date().toISOString()),
+    conditions: {
+      requireProfileForm: !!conditions.requireProfileForm,
+      minProfileCompletion: normalizeAssignmentThreshold(conditions.minProfileCompletion),
+      minOverallProgress: normalizeAssignmentThreshold(conditions.minOverallProgress),
+      minModuleProgress: normalizeAssignmentThreshold(conditions.minModuleProgress),
+    }
+  };
 }
 
 function ensureAssignmentState(){
@@ -5110,153 +5349,614 @@ function ensureAssignmentState(){
   S.assignmentState = {
     ...createEmptyAssignmentState(),
     ...current,
-    semByStudent: (current.semByStudent && typeof current.semByStudent === "object") ? current.semByStudent : {},
-    interactions: (current.interactions && typeof current.interactions === "object") ? current.interactions : {},
+    assignments: Array.isArray(current.assignments) ? current.assignments.map(normalizeTeacherAssignment) : [],
+    interactions: normalizeAssignmentInteractionStore(current.interactions),
   };
   return S.assignmentState;
+}
+
+function getTeacherModules(teacher){
+  const modules = [];
+  const normalizedTeacher = normalizeTeacherRecord(teacher);
+  if(!normalizedTeacher) return modules;
+  normalizedTeacher.branches.forEach(branch=>{
+    [3,4].forEach(sem=>{
+      (CURRICULUM[branch]?.[sem] || []).forEach(module=>{
+        if(normalizedTeacher.subjects.includes(module.title)) modules.push({...module, branch, sem});
+      });
+    });
+  });
+  return modules;
 }
 
 function getAssignmentStudentKey(student){
   return student?.id || student?.email || S.user?.id || S.user?.email || "guest";
 }
 
-function getSelectedAssignmentSemester(student){
-  const state = ensureAssignmentState();
-  const key = getAssignmentStudentKey(student);
-  const saved = state.semByStudent[key];
-  if(saved === 4 || saved === "4") return 4;
-  if(saved === 3 || saved === "3") return 3;
-  return S.sem === 4 ? 4 : 3;
+function getTeacherAssignmentById(assignmentId){
+  return ensureAssignmentState().assignments.find(item=>item.id === assignmentId) || null;
 }
 
-function setSelectedAssignmentSemester(value){
-  if(S.user?.role !== "student") return;
-  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const key = getAssignmentStudentKey(student);
-  const state = ensureAssignmentState();
-  state.semByStudent[key] = parseInt(value, 10) === 4 ? 4 : 3;
-  saveAppState();
-  renderAssignments();
+function getTeacherAssignmentsForTeacher(teacherId){
+  return ensureAssignmentState().assignments
+    .filter(item=>item.teacherId === teacherId)
+    .sort((left, right)=>String(right.createdAt || '').localeCompare(String(left.createdAt || '')));
 }
 
-function buildVirtualAssignments(branch, sem){
-  const modules = getGradeSheetModules(branch, sem);
-  const patterns = [
-    {kind:"تلخيص تحليلي", deliverable:"ملخص من فقرتين مع خلاصة شخصية", intro:"لخّص المفاهيم المركزية في"},
-    {kind:"بطاقة مفاهيم", deliverable:"بطاقة تضم المفاهيم والعلاقات الأساسية", intro:"أنجز بطاقة مفاهيمية حول"},
-    {kind:"تطبيق موجّه", deliverable:"حل تمرينين تطبيقيين مع تعليل مختصر", intro:"طبّق ما درسته في"},
-    {kind:"عرض قصير", deliverable:"عرض قصير من 5 أسطر مع مثال", intro:"أعد عرضاً قصيراً حول"},
-    {kind:"مقارنة علمية", deliverable:"مقارنة بين مفهومين أو اتجاهين", intro:"قارن بين أهم محاور"},
-  ];
-  const now = new Date();
-  return modules.map((module, index) => {
-    const pattern = patterns[index % patterns.length];
-    const due = new Date(now);
-    due.setDate(due.getDate() + 3 + index * 2 + (sem === 4 ? 2 : 0));
-    due.setHours(23, 59, 0, 0);
-    return {
-      id: `${module.id}-asg`,
-      moduleId: module.id,
-      moduleTitle: module.title,
-      unit: module.unit,
-      kind: pattern.kind,
-      title: `${pattern.kind} في ${module.title}`,
-      brief: `${pattern.intro} ${module.title} مع ربطه بمحاور ${module.unit}.`,
-      deliverable: pattern.deliverable,
-      estimatedMinutes: 30 + ((index % 4) * 10),
-      dueIso: due.toISOString(),
-      dueLabel: due.toLocaleDateString("ar-DZ", {year:"numeric", month:"long", day:"numeric"}),
-    };
-  });
+function getAssignmentsForStudent(student){
+  const state = ensureAssignmentState();
+  const studentId = student?.id || '';
+  const studentEmail = student?.email || '';
+  return state.assignments
+    .filter(item=>item.active !== false && ((studentId && item.studentId === studentId) || (studentEmail && item.studentEmail === studentEmail)))
+    .sort((left, right)=>{
+      const leftTime = Date.parse(left.dueIso || left.createdAt || '') || 0;
+      const rightTime = Date.parse(right.dueIso || right.createdAt || '') || 0;
+      return leftTime - rightTime;
+    });
 }
 
 function getAssignmentInteraction(studentKey, assignmentId){
   const state = ensureAssignmentState();
-  return (((state.interactions || {})[studentKey] || {})[assignmentId]) || null;
+  return normalizeAssignmentInteraction((((state.interactions || {})[studentKey] || {})[assignmentId])) || null;
 }
 
 function setAssignmentInteraction(studentKey, assignmentId, patch){
   const state = ensureAssignmentState();
   state.interactions[studentKey] = state.interactions[studentKey] || {};
-  const current = state.interactions[studentKey][assignmentId] || {};
-  state.interactions[studentKey][assignmentId] = {...current, ...patch};
+  const current = normalizeAssignmentInteraction(state.interactions[studentKey][assignmentId]) || createEmptyAssignmentInteraction();
+  state.interactions[studentKey][assignmentId] = normalizeAssignmentInteraction({...current, ...patch});
 }
 
-function getAssignmentStatusMeta(status){
-  if(status === "submitted") return {label:"تم التسليم", cls:"submitted"};
-  if(status === "in-progress") return {label:"قيد الإنجاز", cls:"progress"};
-  return {label:"لم يبدأ", cls:"pending"};
+function updateAssignmentInteractionRecord(studentKey, assignmentId, patch, errorMessage){
+  const state = ensureAssignmentState();
+  state.interactions[studentKey] = state.interactions[studentKey] || {};
+  const previous = state.interactions[studentKey][assignmentId] || null;
+  const current = normalizeAssignmentInteraction(previous) || createEmptyAssignmentInteraction();
+  state.interactions[studentKey][assignmentId] = normalizeAssignmentInteraction({...current, ...patch});
+  if(saveAppState()) return normalizeAssignmentInteraction(state.interactions[studentKey][assignmentId]);
+  if(previous) state.interactions[studentKey][assignmentId] = previous;
+  else delete state.interactions[studentKey][assignmentId];
+  notify(errorMessage || 'تعذر حفظ التغييرات الخاصة بالواجب','⚠️');
+  return null;
+}
+
+function deleteAssignmentInteractionRecord(studentKey, assignmentId, errorMessage){
+  const state = ensureAssignmentState();
+  state.interactions[studentKey] = state.interactions[studentKey] || {};
+  const previous = state.interactions[studentKey][assignmentId] || null;
+  if(!previous) return true;
+  delete state.interactions[studentKey][assignmentId];
+  if(saveAppState()) return true;
+  state.interactions[studentKey][assignmentId] = previous;
+  notify(errorMessage || 'تعذر حذف تفاعل الواجب','⚠️');
+  return false;
+}
+
+function getAssignmentTargetStudent(assignment){
+  return (S.students || []).find(student=>student.id === assignment.studentId || student.email === assignment.studentEmail) || null;
+}
+
+function getAssignmentStoredStudentKey(assignment){
+  return assignment?.studentId || assignment?.studentEmail || assignment?.studentName || '';
+}
+
+function toDateTimeLocalValue(value){
+  const raw = String(value || '').trim();
+  if(!raw) return '';
+  const parsed = new Date(raw);
+  if(Number.isNaN(parsed.getTime())) return raw.slice(0,16);
+  const pad = num => String(num).padStart(2, '0');
+  return `${parsed.getFullYear()}-${pad(parsed.getMonth()+1)}-${pad(parsed.getDate())}T${pad(parsed.getHours())}:${pad(parsed.getMinutes())}`;
+}
+
+function getStudentSubmissionKeys(student){
+  return uniqList([student?.id, student?.email, student?.name]);
+}
+
+function getStudentModuleProgress(student, moduleId){
+  const keys = getStudentSubmissionKeys(student);
+  let totalQuestions = 0;
+  let totalCorrect = 0;
+  let attempts = 0;
+  Object.keys(S.content || {}).forEach(key=>{
+    if(!key.startsWith(`${moduleId}:`)) return;
+    const stored = S.content[key] || {};
+    if(stored.quiz) totalQuestions += stored.quiz.length;
+    if(stored.advQuiz) totalQuestions += stored.advQuiz.length;
+    const submissions = stored.submissions || {};
+    const submission = keys.map(item=>submissions[item]).find(Boolean);
+    if(!submission) return;
+    if(typeof submission.score === 'number'){ totalCorrect += submission.score; attempts++; }
+    if(typeof submission.advScore === 'number'){ totalCorrect += submission.advScore; attempts++; }
+  });
+  const percent = totalQuestions ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+  return {percent, correct: totalCorrect, totalQuestions, attempts};
+}
+
+function formatAssignmentConditionLabels(assignment){
+  const labels = [];
+  if(assignment.availableFrom) labels.push(`يفتح في ${formatIsoDateTime(assignment.availableFrom)}`);
+  if(assignment.dueIso) labels.push(`آخر أجل ${formatIsoDateTime(assignment.dueIso)}`);
+  if(assignment.conditions.requireProfileForm) labels.push('يشترط الاستمارة الذكية');
+  if(assignment.conditions.minProfileCompletion > 0) labels.push(`الملف الذكي ${assignment.conditions.minProfileCompletion}%+`);
+  if(assignment.conditions.minOverallProgress > 0) labels.push(`التقدم العام ${assignment.conditions.minOverallProgress}%+`);
+  if(assignment.conditions.minModuleProgress > 0) labels.push(`تقدم المقياس ${assignment.conditions.minModuleProgress}%+`);
+  return labels;
+}
+
+function evaluateAssignmentForStudent(assignment, student){
+  const now = Date.now();
+  const ctx = normalizeStudentContext(student?.smartProfile);
+  const completion = getSmartProfileCompletion(ctx);
+  const progress = computeStudentProgress(student?.id);
+  const moduleProgress = getStudentModuleProgress(student, assignment.moduleId);
+  const unmet = [];
+  const availableAt = assignment.availableFrom ? Date.parse(assignment.availableFrom) : NaN;
+  const dueAt = assignment.dueIso ? Date.parse(assignment.dueIso) : NaN;
+  const hasProfileForm = Boolean(ctx.formSubmittedAt || ctx.formSyncedAt);
+
+  if(assignment.active === false) unmet.push('الواجب معلق حالياً من طرف الأستاذ');
+  if(Number.isFinite(availableAt) && now < availableAt) unmet.push(`سيُفتح هذا الواجب في ${formatIsoDateTime(assignment.availableFrom)}`);
+  if(assignment.conditions.requireProfileForm && !hasProfileForm) unmet.push('يشترط إرسال أو استيراد الاستمارة الذكية أولاً');
+  if(completion.percent < assignment.conditions.minProfileCompletion) unmet.push(`اكتمال الملف الذكي الحالي ${completion.percent}% والمطلوب ${assignment.conditions.minProfileCompletion}%`);
+  if(progress.percent < assignment.conditions.minOverallProgress) unmet.push(`التقدم الأكاديمي الحالي ${progress.percent}% والمطلوب ${assignment.conditions.minOverallProgress}%`);
+  if(moduleProgress.percent < assignment.conditions.minModuleProgress) unmet.push(`تقدمك في المقياس ${moduleProgress.percent}% والمطلوب ${assignment.conditions.minModuleProgress}%`);
+
+  const overdue = Number.isFinite(dueAt) && now > dueAt;
+  return {
+    completion,
+    progress,
+    moduleProgress,
+    hasProfileForm,
+    unmet,
+    overdue,
+    canStart: assignment.active !== false && !overdue && unmet.length === 0,
+  };
+}
+
+function getAssignmentWorkflowMeta(assignment, evaluation, interaction){
+  if(hasAssignmentTeacherReview(interaction)) return {label:'تم التقييم', cls:'reviewed'};
+  if(interaction?.status === 'submitted') return {label:'تم التسليم', cls:'submitted'};
+  if(evaluation?.overdue) return {label:'انتهى الأجل', cls:'overdue'};
+  if(interaction?.status === 'in-progress' && assignment.active !== false) return {label:'قيد الإنجاز', cls:'progress'};
+  if(evaluation && !evaluation.canStart) return {label:'بانتظار الشروط', cls:'locked'};
+  if(assignment.active === false) return {label:'معلّق', cls:'locked'};
+  return {label:'متاح الآن', cls:'ready'};
+}
+
+function formatAssignmentReviewScore(value){
+  const numeric = Number(value);
+  if(!Number.isFinite(numeric)) return '';
+  return Number.isInteger(numeric) ? `${numeric}` : `${parseFloat(numeric.toFixed(2))}`;
+}
+
+function hasAssignmentTeacherReview(interaction){
+  const current = normalizeAssignmentInteraction(interaction);
+  return Boolean(current && (current.teacherScore !== null || current.teacherFeedback || current.reviewedAt));
+}
+
+function formatAssignmentAttachmentSize(size){
+  const bytes = Math.max(0, parseInt(size, 10) || 0);
+  if(bytes < 1024) return `${bytes} B`;
+  if(bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(bytes >= 100 * 1024 ? 0 : 1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function normalizeAssignmentResponseLink(value){
+  const raw = String(value || '').trim();
+  if(!raw) return '';
+  const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try{
+    return new URL(candidate).href;
+  }catch(e){
+    return null;
+  }
+}
+
+function clearAssignmentAttachmentInput(assignmentId){
+  const input = document.getElementById(`assignment-file-${assignmentId}`);
+  if(input) input.value = '';
+}
+
+function readFileAsDataUrl(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = event => resolve(event.target?.result || '');
+    reader.onerror = ()=> reject(new Error('تعذر قراءة الملف المرفق'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function readAssignmentAttachmentInput(assignmentId, existingAttachment){
+  const input = document.getElementById(`assignment-file-${assignmentId}`);
+  const file = input?.files?.[0];
+  if(!file) return existingAttachment || null;
+  if(file.size > ASSIGNMENT_ATTACHMENT_LIMIT){
+    throw new Error(`حجم المرفق يتجاوز الحد المسموح (${formatAssignmentAttachmentSize(ASSIGNMENT_ATTACHMENT_LIMIT)})`);
+  }
+  const dataUrl = await readFileAsDataUrl(file);
+  return normalizeAssignmentAttachment({
+    name: file.name,
+    type: file.type || 'application/octet-stream',
+    size: file.size,
+    dataUrl,
+  });
+}
+
+function triggerAssignmentAttachmentDownload(attachment){
+  if(!attachment?.dataUrl) return;
+  const anchor = document.createElement('a');
+  anchor.href = attachment.dataUrl;
+  anchor.download = attachment.name || 'assignment-attachment';
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+}
+
+function downloadStudentAssignmentAttachment(assignmentId){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!assignment || !(assignment.studentId === student.id || assignment.studentEmail === student.email)){
+    notify('هذا المرفق لا يخص حسابك','⚠️');
+    return;
+  }
+  const interaction = getAssignmentInteraction(getAssignmentStudentKey(student), assignmentId);
+  if(!interaction?.attachment){ notify('لا يوجد مرفق محفوظ لهذا الواجب','⚠️'); return; }
+  triggerAssignmentAttachmentDownload(interaction.attachment);
+}
+
+function downloadTeacherAssignmentAttachment(assignmentId){
+  if(!canUseTeacherWorkspace()){ notify('هذا الإجراء مخصص للأستاذ','⚠️'); return; }
+  const teacher = getCurrentTeacherRecord();
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!teacher || !assignment || assignment.teacherId !== teacher.id){ notify('لا يمكنك فتح هذا المرفق','⚠️'); return; }
+  const interaction = getAssignmentInteraction(getAssignmentStoredStudentKey(assignment), assignmentId);
+  if(!interaction?.attachment){ notify('لا يوجد مرفق محفوظ لهذا الواجب','⚠️'); return; }
+  triggerAssignmentAttachmentDownload(interaction.attachment);
+}
+
+function removeStudentAssignmentAttachment(assignmentId){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!assignment || !(assignment.studentId === student.id || assignment.studentEmail === student.email)){
+    notify('هذا الواجب غير مسند إلى حسابك','⚠️');
+    return;
+  }
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId);
+  if(!existing?.attachment){ notify('لا يوجد مرفق محفوظ لحذفه','⚠️'); return; }
+  if(existing.status === 'submitted'){ notify('أعد تهيئة الواجب إذا كنت تريد تعديل التسليم بعد الإرسال','⚠️'); return; }
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    attachment: null,
+    updatedAt: new Date().toISOString(),
+  }, 'تعذر حذف المرفق المحفوظ');
+  if(!updated) return;
+  clearAssignmentAttachmentInput(assignmentId);
+  renderAssignments();
+  notify('تم حذف المرفق المحفوظ','✅');
+}
+
+function renderAssignmentSubmissionDetails(interaction, assignmentId, viewer){
+  const current = normalizeAssignmentInteraction(interaction);
+  const hasContent = current?.responseText || current?.responseLink || current?.attachment;
+  if(!hasContent) return '';
+  const textHtml = current.responseText
+    ? `<div class="assign-submission-text">${escapeHtml(current.responseText).replace(/\n/g,'<br>')}</div>`
+    : '';
+  const linkHtml = current.responseLink
+    ? `<div class="assign-attachment-row"><span class="assign-meta-chip">رابط داعم</span><a class="assign-link-anchor" href="${escapeHtml(current.responseLink)}" target="_blank" rel="noopener">${escapeHtml(current.responseLink)}</a></div>`
+    : '';
+  const attachmentHtml = current.attachment
+    ? `<div class="assign-attachment-row"><span class="assign-meta-chip">مرفق محفوظ</span><span>${escapeHtml(current.attachment.name)} (${escapeHtml(formatAssignmentAttachmentSize(current.attachment.size))})</span>${viewer === 'teacher' ? `<button class="btn bt xs" onclick="downloadTeacherAssignmentAttachment('${assignmentId}')">تنزيل المرفق</button>` : `<button class="btn bt xs" onclick="downloadStudentAssignmentAttachment('${assignmentId}')">تنزيل المرفق</button>${current.status !== 'submitted' ? `<button class="btn br xs" onclick="removeStudentAssignmentAttachment('${assignmentId}')">حذف المرفق</button>` : ''}`}</div>`
+    : '';
+  const title = viewer === 'teacher'
+    ? (current.status === 'submitted' ? 'التسليم المرسل للأستاذ' : 'مسودة التسليم الحالية')
+    : (current.status === 'submitted' ? 'نسخة التسليم المحفوظة' : 'مسودة التسليم المحفوظة');
+  return `<div class="assign-submission-box"><div class="assign-submission-title">${title}</div>${textHtml}${linkHtml}${attachmentHtml}</div>`;
+}
+
+function renderAssignmentTeacherReview(interaction, assignmentId, viewer){
+  const current = normalizeAssignmentInteraction(interaction);
+  const hasReview = hasAssignmentTeacherReview(current);
+  if(viewer === 'teacher'){
+    if(current?.status !== 'submitted' && !hasReview) return '';
+    const scoreValue = current.teacherScore === null ? '' : formatAssignmentReviewScore(current.teacherScore);
+    const metaBits = [];
+    if(current.reviewerName) metaBits.push(`بواسطة ${escapeHtml(current.reviewerName)}`);
+    if(current.reviewedAt) metaBits.push(`آخر مراجعة ${escapeHtml(formatIsoDateTime(current.reviewedAt))}`);
+    const metaHtml = metaBits.length
+      ? `<div class="assign-review-meta">${metaBits.join(' • ')}</div>`
+      : `<div class="assign-hint">سجّل نقطة الأستاذ وتعليقه بعد استلام التسليم من الطالب.</div>`;
+    return `<div class="assign-review-box">
+      <div class="assign-review-head">
+        <div class="assign-review-title">تصحيح الأستاذ</div>
+        ${current.teacherScore !== null ? `<span class="assign-review-score">${escapeHtml(scoreValue)}/${ASSIGNMENT_REVIEW_MAX_SCORE}</span>` : ''}
+      </div>
+      ${metaHtml}
+      <div class="assign-response-grid">
+        <div class="fg" style="margin-bottom:0"><label class="fl">النقطة / ${ASSIGNMENT_REVIEW_MAX_SCORE}</label><input class="fi" id="assignment-review-score-${assignmentId}" type="number" min="0" max="${ASSIGNMENT_REVIEW_MAX_SCORE}" step="0.25" value="${escapeHtml(scoreValue)}" placeholder="مثال: 16.5"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">تعليق الأستاذ</label><textarea class="fi" id="assignment-review-feedback-${assignmentId}" rows="4" placeholder="اكتب تغذية راجعة دقيقة حول جوانب القوة والتحسين المطلوبة...">${escapeHtml(current.teacherFeedback || '')}</textarea></div>
+      </div>
+      <div class="assign-actions">
+        <button class="btn bg sm" onclick="saveTeacherAssignmentReview('${assignmentId}')">حفظ التقييم</button>
+        ${hasReview ? `<button class="btn br sm" onclick="clearTeacherAssignmentReview('${assignmentId}')">مسح التقييم</button>` : ''}
+      </div>
+    </div>`;
+  }
+  if(!hasReview) return '';
+  const metaBits = [];
+  if(current.reviewerName) metaBits.push(`الأستاذ: ${escapeHtml(current.reviewerName)}`);
+  if(current.reviewedAt) metaBits.push(`تاريخ المراجعة: ${escapeHtml(formatIsoDateTime(current.reviewedAt))}`);
+  const feedbackHtml = current.teacherFeedback
+    ? `<div class="assign-submission-text">${escapeHtml(current.teacherFeedback).replace(/\n/g,'<br>')}</div>`
+    : `<div class="assign-hint">سجّل الأستاذ نقطة دون تعليق نصي إضافي.</div>`;
+  return `<div class="assign-review-box reviewed">
+    <div class="assign-review-head">
+      <div class="assign-review-title">تغذية الأستاذ الراجعة</div>
+      ${current.teacherScore !== null ? `<span class="assign-review-score">${escapeHtml(formatAssignmentReviewScore(current.teacherScore))}/${ASSIGNMENT_REVIEW_MAX_SCORE}</span>` : ''}
+    </div>
+    ${metaBits.length ? `<div class="assign-review-meta">${metaBits.join(' • ')}</div>` : ''}
+    ${feedbackHtml}
+  </div>`;
 }
 
 function formatAssignmentInteraction(interaction){
-  if(!interaction) return "لم يسجل الطالب أي تعامل مع هذا الواجب بعد.";
-  if(interaction.status === "submitted"){
-    return `سلّم الطالب هذا الواجب ${interaction.submittedAt ? `بتاريخ ${formatIsoDateTime(interaction.submittedAt)}` : "بعد إتمامه"}${interaction.note ? `، مع ملاحظة: ${interaction.note}` : ""}.`;
+  const current = normalizeAssignmentInteraction(interaction);
+  if(!current) return 'لم يسجل الطالب أي تعامل مع هذا الواجب بعد.';
+  const responseParts = [];
+  if(current.responseText) responseParts.push('نصاً للتسليم');
+  if(current.responseLink) responseParts.push('رابطاً داعماً');
+  if(current.attachment) responseParts.push(`مرفقاً بعنوان ${current.attachment.name}`);
+  const responseLabel = responseParts.length ? `، وأرفق ${responseParts.join(' و')}` : '';
+  if(current.status === 'submitted'){
+    return `سلّم الطالب هذا الواجب ${current.submittedAt ? `بتاريخ ${formatIsoDateTime(current.submittedAt)}` : 'بعد إتمامه'}${responseLabel}${current.note ? `، مع ملاحظة: ${current.note}` : ''}${hasAssignmentTeacherReview(current) ? '، وتمت مراجعته من طرف الأستاذ.' : ''}.`;
   }
-  if(interaction.status === "in-progress"){
-    return `بدأ الطالب العمل على هذا الواجب${interaction.startedAt ? ` منذ ${formatIsoDateTime(interaction.startedAt)}` : ""}${interaction.note ? `، ودوّن: ${interaction.note}` : ""}.`;
+  if(current.status === 'in-progress'){
+    return `بدأ الطالب العمل على هذا الواجب${current.startedAt ? ` منذ ${formatIsoDateTime(current.startedAt)}` : ''}${responseLabel}${current.note ? `، ودوّن: ${current.note}` : ''}.`;
   }
-  return "لم يبدأ الطالب هذا الواجب بعد.";
+  return 'لم يبدأ الطالب هذا الواجب بعد.';
 }
 
-function beginVirtualAssignment(assignmentId){
-  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
-  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const studentKey = getAssignmentStudentKey(student);
-  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
-  setAssignmentInteraction(studentKey, assignmentId, {
-    status: existing.status === "submitted" ? "submitted" : "in-progress",
-    startedAt: existing.startedAt || new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-  saveAppState();
-  renderAssignments();
-  notify("تم تسجيل بدء العمل على الواجب","✅");
-}
+function assignTaskFromTeacherPage(){
+  if(!canUseTeacherWorkspace()){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
+  const teacher = getCurrentTeacherRecord();
+  if(!teacher){ notify('تعذّر العثور على ملف الأستاذ','⚠️'); return; }
+  const managedStudents = getTeacherManagedStudents(teacher);
+  const modules = getTeacherModules(teacher);
+  const studentId = document.getElementById('ta-student')?.value || '';
+  const moduleId = document.getElementById('ta-module')?.value || '';
+  const title = (document.getElementById('ta-title')?.value || '').trim();
+  const brief = (document.getElementById('ta-brief')?.value || '').trim();
+  const deliverable = (document.getElementById('ta-deliverable')?.value || '').trim();
+  const availableFrom = (document.getElementById('ta-open')?.value || '').trim();
+  const dueIso = (document.getElementById('ta-due')?.value || '').trim();
+  const minProfileCompletion = normalizeAssignmentThreshold(document.getElementById('ta-cond-profile')?.value);
+  const minOverallProgress = normalizeAssignmentThreshold(document.getElementById('ta-cond-progress')?.value);
+  const minModuleProgress = normalizeAssignmentThreshold(document.getElementById('ta-cond-module')?.value);
+  const requireProfileForm = !!document.getElementById('ta-cond-form')?.checked;
+  const normalizedBrief = brief || deliverable;
+  const normalizedDeliverable = deliverable || brief;
 
-function submitVirtualAssignment(assignmentId){
-  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
-  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const studentKey = getAssignmentStudentKey(student);
-  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
-  setAssignmentInteraction(studentKey, assignmentId, {
-    status: "submitted",
-    startedAt: existing.startedAt || new Date().toISOString(),
-    submittedAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-  saveAppState();
-  renderAssignments();
-  notify("تم تسجيل تسليم الواجب افتراضياً","✅");
-}
+  const student = managedStudents.find(item=>item.id === studentId);
+  const module = modules.find(item=>item.id === moduleId);
+  if(!student || !module){ notify('اختر الطالب والمقياس أولاً','⚠️'); return; }
+  if(!title){ notify('عنوان الواجب مطلوب','⚠️'); return; }
+  if(!normalizedBrief && !normalizedDeliverable){ notify('املأ تعليمات الأستاذ أو المطلوب النهائي على الأقل','⚠️'); return; }
+  if(availableFrom && dueIso && Date.parse(dueIso) < Date.parse(availableFrom)){
+    notify('تاريخ آخر أجل يجب أن يكون بعد تاريخ الفتح','⚠️');
+    return;
+  }
 
-function resetVirtualAssignment(assignmentId){
-  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
-  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const studentKey = getAssignmentStudentKey(student);
   const state = ensureAssignmentState();
-  if(state.interactions[studentKey]) delete state.interactions[studentKey][assignmentId];
+  state.assignments.unshift(normalizeTeacherAssignment({
+    teacherId: teacher.id,
+    teacherName: teacher.name,
+    studentId: student.id,
+    studentName: student.name,
+    studentEmail: student.email,
+    branch: student.branch,
+    sem: module.sem,
+    moduleId: module.id,
+    moduleTitle: module.title,
+    unit: module.unit,
+    title,
+    brief: normalizedBrief,
+    deliverable: normalizedDeliverable || 'إنجاز المطلوب كما حدده الأستاذ',
+    availableFrom,
+    dueIso,
+    active: true,
+    createdAt: new Date().toISOString(),
+    conditions: {
+      requireProfileForm,
+      minProfileCompletion,
+      minOverallProgress,
+      minModuleProgress,
+    }
+  }));
   saveAppState();
-  renderAssignments();
-  notify("تمت إعادة تهيئة تعامل الطالب مع الواجب","✅");
+  renderTeacherCourses();
+  notify(`تم إسناد الواجب إلى الطالب ${student.name}`,'✅');
 }
 
-function saveVirtualAssignmentNote(assignmentId){
-  if(S.user?.role !== "student"){ notify("هذا الإجراء مخصص للطالب","⚠️"); return; }
-  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const studentKey = getAssignmentStudentKey(student);
-  const field = document.getElementById(`assignment-note-${assignmentId}`);
-  const note = (field?.value || "").trim();
-  const existing = getAssignmentInteraction(studentKey, assignmentId) || {};
-  setAssignmentInteraction(studentKey, assignmentId, {
-    note,
-    status: existing.status === "submitted" ? "submitted" : (note || existing.startedAt ? "in-progress" : (existing.status || "pending")),
-    startedAt: existing.startedAt || (note ? new Date().toISOString() : ""),
-    updatedAt: new Date().toISOString(),
+function toggleTeacherAssignmentActive(assignmentId){
+  if(!canUseTeacherWorkspace()){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
+  const assignment = getTeacherAssignmentById(assignmentId);
+  const teacher = getCurrentTeacherRecord();
+  if(!teacher || !assignment || assignment.teacherId !== teacher.id){ notify('الواجب غير موجود أو غير مرتبط بحسابك','⚠️'); return; }
+  assignment.active = !assignment.active;
+  saveAppState();
+  renderTeacherCourses();
+  notify(assignment.active ? 'تم تفعيل الواجب' : 'تم تعليق الواجب','✅');
+}
+
+function deleteTeacherAssignment(assignmentId){
+  if(!canUseTeacherWorkspace()){ notify('هذه الأداة مخصصة للأستاذ','⚠️'); return; }
+  if(!confirm('هل تريد حذف هذا الواجب نهائياً؟')) return;
+  const teacher = getCurrentTeacherRecord();
+  const state = ensureAssignmentState();
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!teacher || !assignment || assignment.teacherId !== teacher.id){ notify('لا يمكنك حذف هذا الواجب','⚠️'); return; }
+  state.assignments = state.assignments.filter(item=>item.id !== assignmentId);
+  Object.keys(state.interactions || {}).forEach(studentKey=>{
+    if(state.interactions[studentKey]) delete state.interactions[studentKey][assignmentId];
   });
   saveAppState();
-  renderAssignments();
-  notify("تم حفظ ملاحظة الطالب حول الواجب","✅");
+  renderTeacherCourses();
+  notify('تم حذف الواجب','✅');
+}
+
+function saveTeacherAssignmentReview(assignmentId){
+  if(!canUseTeacherWorkspace()){ notify('هذا الإجراء مخصص للأستاذ','⚠️'); return; }
+  const teacher = getCurrentTeacherRecord();
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!teacher || !assignment || assignment.teacherId !== teacher.id){ notify('لا يمكنك تقييم هذا الواجب','⚠️'); return; }
+  const studentKey = getAssignmentStoredStudentKey(assignment);
+  const interaction = getAssignmentInteraction(studentKey, assignmentId);
+  if(!interaction || interaction.status !== 'submitted'){ notify('لا يوجد تسليم نهائي قابل للتقييم حالياً','⚠️'); return; }
+  const scoreField = document.getElementById(`assignment-review-score-${assignmentId}`);
+  const feedbackField = document.getElementById(`assignment-review-feedback-${assignmentId}`);
+  const scoreText = String(scoreField?.value || '').trim();
+  const teacherScore = normalizeAssignmentReviewScore(scoreText);
+  if(scoreText && teacherScore === null){ notify(`أدخل نقطة صحيحة بين 0 و ${ASSIGNMENT_REVIEW_MAX_SCORE}`,'⚠️'); return; }
+  const teacherFeedback = String(feedbackField?.value || '').trim();
+  if(teacherScore === null && !teacherFeedback){ notify('أدخل النقطة أو تعليق الأستاذ قبل الحفظ','⚠️'); return; }
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    teacherScore,
+    teacherFeedback,
+    reviewedAt: new Date().toISOString(),
+    reviewerId: String(teacher.id || ''),
+    reviewerName: String(teacher.name || assignment.teacherName || ''),
+    updatedAt: new Date().toISOString(),
+  }, 'تعذر حفظ تقييم الأستاذ لهذا الواجب');
+  if(!updated) return;
+  renderTeacherCourses();
+  notify('تم حفظ تقييم الأستاذ','✅');
+}
+
+function clearTeacherAssignmentReview(assignmentId){
+  if(!canUseTeacherWorkspace()){ notify('هذا الإجراء مخصص للأستاذ','⚠️'); return; }
+  const teacher = getCurrentTeacherRecord();
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!teacher || !assignment || assignment.teacherId !== teacher.id){ notify('لا يمكنك تعديل هذا الواجب','⚠️'); return; }
+  const studentKey = getAssignmentStoredStudentKey(assignment);
+  const interaction = getAssignmentInteraction(studentKey, assignmentId);
+  if(!hasAssignmentTeacherReview(interaction)){ notify('لا يوجد تقييم محفوظ لمسحه','⚠️'); return; }
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    teacherScore: null,
+    teacherFeedback: '',
+    reviewedAt: '',
+    reviewerId: '',
+    reviewerName: '',
+    updatedAt: new Date().toISOString(),
+  }, 'تعذر مسح تقييم الأستاذ');
+  if(!updated) return;
+  renderTeacherCourses();
+  notify('تم مسح تقييم الأستاذ','✅');
+}
+
+function renderTeacherAssignmentManager(teacher, managedStudents, myMods){
+  const assignments = getTeacherAssignmentsForTeacher(teacher.id);
+  const selectedStudentId = managedStudents.some(item=>item.id === _teacherStudentEditId)
+    ? _teacherStudentEditId
+    : (managedStudents[0]?.id || '');
+  const selectedModuleId = myMods[0]?.id || '';
+  const availableAtValue = toDateTimeLocalValue(new Date().toISOString());
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 7);
+  const dueAtValue = toDateTimeLocalValue(dueDate.toISOString());
+  const studentOptions = managedStudents.map(student=>`<option value="${student.id}" ${student.id === selectedStudentId ? 'selected' : ''}>${escapeHtml(student.name)} — ${escapeHtml(getBranchLabel(student.branch))}</option>`).join('');
+  const moduleOptions = myMods.map(module=>`<option value="${module.id}" ${module.id === selectedModuleId ? 'selected' : ''}>${escapeHtml(module.title)} — ${escapeHtml(getBranchLabel(module.branch))} / ${module.sem === 4 ? 'السداسي الرابع' : 'السداسي الثالث'}</option>`).join('');
+  const activeCount = assignments.filter(item=>item.active).length;
+  const submittedCount = assignments.filter(item=>{
+    const interaction = getAssignmentInteraction(getAssignmentStoredStudentKey(item), item.id);
+    return interaction?.status === 'submitted' && !hasAssignmentTeacherReview(interaction);
+  }).length;
+  const reviewedCount = assignments.filter(item=>hasAssignmentTeacherReview(getAssignmentInteraction(getAssignmentStoredStudentKey(item), item.id))).length;
+  const lockedCount = assignments.filter(item=>{
+    const student = getAssignmentTargetStudent(item);
+    if(!student || item.active === false) return false;
+    const interaction = getAssignmentInteraction(getAssignmentStoredStudentKey(item), item.id);
+    const evaluation = evaluateAssignmentForStudent(item, student);
+    const meta = getAssignmentWorkflowMeta(item, evaluation, interaction);
+    return meta.cls === 'locked';
+  }).length;
+  const itemsHtml = assignments.length ? assignments.map(item=>{
+    const student = getAssignmentTargetStudent(item);
+    const interaction = getAssignmentInteraction(getAssignmentStoredStudentKey(item), item.id);
+    const evaluation = student ? evaluateAssignmentForStudent(item, student) : null;
+    const statusMeta = (student || interaction) ? getAssignmentWorkflowMeta(item, evaluation, interaction) : {label:'الطالب غير متاح', cls:'locked'};
+    const conditionChips = formatAssignmentConditionLabels(item).map(label=>`<span class="assign-condition-chip">${escapeHtml(label)}</span>`).join('') || '<span class="assign-condition-chip">بدون شروط إضافية</span>';
+    const lockHtml = evaluation?.unmet?.length ? `<ul class="assign-lock-list">${evaluation.unmet.map(reason=>`<li>${escapeHtml(reason)}</li>`).join('')}</ul>` : '';
+    const submissionHtml = renderAssignmentSubmissionDetails(interaction, item.id, 'teacher');
+    const reviewHtml = renderAssignmentTeacherReview(interaction, item.id, 'teacher');
+    return `<div class="assign-card">
+      <div class="assign-head">
+        <div>
+          <div class="assign-title">${escapeHtml(item.title)}</div>
+          <div class="assign-module">${escapeHtml(item.studentName)} • ${escapeHtml(item.moduleTitle)} • ${item.sem === 4 ? 'السداسي الرابع' : 'السداسي الثالث'}</div>
+        </div>
+        <span class="assign-status ${statusMeta.cls}">${statusMeta.label}</span>
+      </div>
+      <div class="assign-meta">
+        <span class="assign-meta-chip">أنشئ في: ${escapeHtml(formatIsoDateTime(item.createdAt))}</span>
+        <span class="assign-meta-chip">الحالة: ${item.active ? 'نشط' : 'معلّق'}</span>
+      </div>
+      <div class="assign-body">${escapeHtml(item.brief)}<br><span style="color:var(--gold3)">المطلوب:</span> ${escapeHtml(item.deliverable)}</div>
+      <div class="assign-conditions">${conditionChips}</div>
+      ${lockHtml}
+      <div class="assign-interaction">${student ? escapeHtml(formatAssignmentInteraction(interaction)) : 'تعذّر العثور على سجل الطالب المحلي لهذا الواجب.'}</div>
+      ${submissionHtml}
+      ${reviewHtml}
+      <div class="assign-actions">
+        <button class="btn ${item.active ? 'bgh' : 'bt'} xs" onclick="toggleTeacherAssignmentActive('${item.id}')">${item.active ? 'تعليق الواجب' : 'تفعيل الواجب'}</button>
+        ${student ? `<button class="btn bgh xs" onclick="openTeacherStudentProfileEditor('${student.id}')">ملف الطالب</button>` : ''}
+        <button class="btn br xs" onclick="deleteTeacherAssignment('${item.id}')">حذف</button>
+      </div>
+    </div>`;
+  }).join('') : `<div class="card" style="background:rgba(255,255,255,.02)"><div style="color:var(--txt3);font-size:.82rem;line-height:1.9">لم يُسند أي واجب بعد. استخدم النموذج أدناه لإسناد واجب مخصص لطالب مع شروط فتحه.</div></div>`;
+
+  return `<div class="card ct ct-g" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.85rem;flex-wrap:wrap;margin-bottom:.85rem">
+      <div>
+        <h3 style="font-family:'Amiri',serif;font-size:1.18rem;color:var(--gold2)">إسناد الواجبات من صفحة الأستاذ</h3>
+        <p style="color:var(--txt3);font-size:.78rem;line-height:1.8">الأستاذ هو من يسند الواجبات ويحدد شروط فتحها. الطالب لا يرى هنا إلا الواجبات التي سُلّمت له فعلاً.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <span class="badge-merged">${assignments.length} واجباً</span>
+        <span class="badge-assigned">${activeCount} نشط</span>
+      </div>
+    </div>
+
+    <div class="assign-summary-grid">
+      <div class="assign-summary-card"><strong>${assignments.length}</strong><span>إجمالي الواجبات المسندة</span></div>
+      <div class="assign-summary-card"><strong>${activeCount}</strong><span>واجبات نشطة</span></div>
+      <div class="assign-summary-card"><strong>${lockedCount}</strong><span>تنتظر تحقق الشروط</span></div>
+      <div class="assign-summary-card"><strong>${submittedCount}</strong><span>بانتظار التصحيح</span></div>
+      <div class="assign-summary-card"><strong>${reviewedCount}</strong><span>واجبات تم تقييمها</span></div>
+    </div>
+
+    ${managedStudents.length && myMods.length ? `<div class="card" style="margin-bottom:1rem;background:rgba(255,255,255,.02)">
+      <div class="assign-manager-grid">
+        <div class="fg" style="margin-bottom:0"><label class="fl">الطالب</label><select class="fi" id="ta-student">${studentOptions}</select></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">المقياس</label><select class="fi" id="ta-module">${moduleOptions}</select></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">عنوان الواجب</label><input class="fi" id="ta-title" placeholder="مثال: واجب تحليلي حول درس المقياس"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">المطلوب النهائي</label><input class="fi" id="ta-deliverable" placeholder="مثال: ملف موجز أو تحليل أو بطاقة مفاهيم"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">تاريخ فتح الواجب</label><input class="fi" id="ta-open" type="datetime-local" value="${availableAtValue}"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">آخر أجل للتسليم</label><input class="fi" id="ta-due" type="datetime-local" value="${dueAtValue}"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">حد أدنى لاكتمال الملف الذكي (%)</label><input class="fi" id="ta-cond-profile" type="number" min="0" max="100" value="0"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">حد أدنى للتقدم الأكاديمي العام (%)</label><input class="fi" id="ta-cond-progress" type="number" min="0" max="100" value="0"></div>
+        <div class="fg" style="margin-bottom:0"><label class="fl">حد أدنى للتقدم في المقياس (%)</label><input class="fi" id="ta-cond-module" type="number" min="0" max="100" value="0"></div>
+      </div>
+      <div class="fg" style="margin-top:.75rem"><label class="fl">تعليمات الأستاذ</label><textarea class="fi" id="ta-brief" rows="3" placeholder="اختياري إذا تم تحديد المطلوب النهائي. صف بإيجاز ما الذي يجب على الطالب إنجازه وكيفية إنجازه."></textarea></div>
+      <label style="display:flex;align-items:center;gap:8px;color:var(--txt2);font-size:.82rem;cursor:pointer;margin:.25rem 0 .85rem"><input id="ta-cond-form" type="checkbox" style="accent-color:var(--gold)"> يشترط إرسال أو استيراد الاستمارة الذكية قبل بدء الواجب</label>
+      <div style="display:flex;justify-content:flex-end"><button class="btn bg" onclick="assignTaskFromTeacherPage()">إسناد الواجب للطالب</button></div>
+    </div>` : `<div class="card" style="margin-bottom:1rem;background:rgba(255,255,255,.02)"><div style="color:var(--txt3);font-size:.82rem;line-height:1.9">لا يمكن إسناد واجبات حالياً. تأكد من وجود طلبة مرتبطين بك ومقاييس مسندة لك.</div></div>`}
+
+    <div class="assign-cards">${itemsHtml}</div>
+  </div>`;
 }
 
 function renderAssignments(){
@@ -5267,77 +5967,200 @@ function renderAssignments(){
     return;
   }
   if(S.user.role !== "student"){
-    el.innerHTML = `<div class="card"><div class="al ali">تفاعلات الواجبات تُسجَّل داخل حسابات الطلبة. ادخل بحساب طالب لمشاهدة التعامل مع الواجبات أو لاستخدام الصفحة كتجربة فعلية.</div><div style="color:var(--txt2);line-height:1.9;font-size:.84rem">المنصة أصبحت تدعم واجبات افتراضية مرتبطة بالمقاييس، مع حالات مثل: لم يبدأ، قيد الإنجاز، وتم التسليم.</div></div>`;
+    el.innerHTML = `<div class="card"><div class="al ali">إسناد الواجبات يتم من صفحة الأستاذ ضمن قسم <strong>مقرراتي</strong>. أما هذه الصفحة فتُظهر ما أُسند للطالب فقط بعد تحقق شروط الفتح.</div><div style="margin-top:1rem"><button class="btn bt" onclick="goto('my-courses')">الذهاب إلى صفحة الأستاذ</button></div></div>`;
     return;
   }
 
   const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
-  const state = ensureAssignmentState();
   const studentKey = getAssignmentStudentKey(student);
-  const sem = getSelectedAssignmentSemester(student);
-  const assignments = buildVirtualAssignments(student.branch, sem);
+  const assignments = getAssignmentsForStudent(student);
+  if(!assignments.length){
+    el.innerHTML = `<div class="card"><div class="al ali">لا توجد واجبات مسندة لك حالياً من طرف الأستاذ.</div><div style="color:var(--txt2);line-height:1.9;font-size:.84rem">ستظهر هنا الواجبات التي يخصصها الأستاذ لك بعد إسنادها وتحديد شروط فتحها.</div></div>`;
+    return;
+  }
   const rows = assignments.map(assignment => {
     const interaction = getAssignmentInteraction(studentKey, assignment.id);
-    const statusMeta = getAssignmentStatusMeta(interaction?.status);
-    return {assignment, interaction, statusMeta};
+    const evaluation = evaluateAssignmentForStudent(assignment, student);
+    const statusMeta = getAssignmentWorkflowMeta(assignment, evaluation, interaction);
+    return {assignment, interaction, evaluation, statusMeta};
   });
-  const pendingCount = rows.filter(row => row.statusMeta.cls === "pending").length;
-  const progressCount = rows.filter(row => row.statusMeta.cls === "progress").length;
+  const availableCount = rows.filter(row => row.statusMeta.cls === "ready" || row.statusMeta.cls === "progress").length;
+  const lockedCount = rows.filter(row => row.statusMeta.cls === "locked").length;
   const submittedCount = rows.filter(row => row.statusMeta.cls === "submitted").length;
+  const reviewedCount = rows.filter(row => row.statusMeta.cls === "reviewed").length;
 
-  const cards = rows.map(({assignment, interaction, statusMeta}) => `
+  const cards = rows.map(({assignment, interaction, evaluation, statusMeta}) => {
+    const conditionChips = formatAssignmentConditionLabels(assignment).map(label=>`<span class="assign-condition-chip">${escapeHtml(label)}</span>`).join('') || '<span class="assign-condition-chip">بدون شروط إضافية</span>';
+    const hasReview = hasAssignmentTeacherReview(interaction);
+    const canEdit = !hasReview && !evaluation.overdue && assignment.active !== false && interaction?.status !== 'submitted' && (interaction?.startedAt || evaluation.canStart);
+    const canStart = !hasReview && interaction?.status !== 'submitted' && (canEdit || evaluation.canStart);
+    const canSubmit = canEdit;
+    const showNote = canEdit || Boolean(interaction?.note);
+    const showSubmissionForm = canEdit || Boolean(interaction?.responseText || interaction?.responseLink || interaction?.attachment);
+    const submissionHtml = renderAssignmentSubmissionDetails(interaction, assignment.id, 'student');
+    const reviewHtml = renderAssignmentTeacherReview(interaction, assignment.id, 'student');
+    const lockHtml = evaluation.unmet.length && !interaction?.startedAt
+      ? `<div class="al alw"><div style="font-size:.78rem;margin-bottom:.35rem">هذا الواجب لن يبدأ قبل تحقق الشروط التالية:</div><ul class="assign-lock-list">${evaluation.unmet.map(reason=>`<li>${escapeHtml(reason)}</li>`).join('')}</ul></div>`
+      : '';
+    return `
     <div class="assign-card">
       <div class="assign-head">
         <div>
           <div class="assign-title">${escapeHtml(assignment.title)}</div>
-          <div class="assign-module">${escapeHtml(assignment.moduleTitle)} • ${escapeHtml(assignment.unit)}</div>
+          <div class="assign-module">${escapeHtml(assignment.moduleTitle)} • ${escapeHtml(assignment.unit)} • ${assignment.sem === 4 ? 'السداسي الرابع' : 'السداسي الثالث'}</div>
         </div>
         <span class="assign-status ${statusMeta.cls}">${statusMeta.label}</span>
       </div>
       <div class="assign-meta">
-        <span class="assign-meta-chip">الاستحقاق: ${escapeHtml(assignment.dueLabel)}</span>
-        <span class="assign-meta-chip">النوع: ${escapeHtml(assignment.kind)}</span>
-        <span class="assign-meta-chip">الزمن المتوقع: ${assignment.estimatedMinutes} دقيقة</span>
+        <span class="assign-meta-chip">الأستاذ: ${escapeHtml(assignment.teacherName)}</span>
+        ${assignment.availableFrom ? `<span class="assign-meta-chip">يفتح: ${escapeHtml(formatIsoDateTime(assignment.availableFrom))}</span>` : ''}
+        ${assignment.dueIso ? `<span class="assign-meta-chip">آخر أجل: ${escapeHtml(formatIsoDateTime(assignment.dueIso))}</span>` : ''}
       </div>
       <div class="assign-body">${escapeHtml(assignment.brief)}<br><span style="color:var(--gold3)">المطلوب:</span> ${escapeHtml(assignment.deliverable)}</div>
+      <div class="assign-conditions">${conditionChips}</div>
+      ${lockHtml}
       <div class="assign-interaction">${escapeHtml(formatAssignmentInteraction(interaction))}</div>
-      <div class="assign-note-box">
-        <div class="assign-note-title">تعامل الطالب مع الواجب</div>
-        <textarea class="fi" id="assignment-note-${assignment.id}" rows="3" placeholder="اكتب كيف بدأ الطالب، الصعوبات التي واجهها، أو ملاحظته على الإنجاز...">${escapeHtml(interaction?.note || "")}</textarea>
-      </div>
+      ${showNote ? `<div class="assign-note-box"><div class="assign-note-title">مذكرة الطالب حول الإنجاز</div><textarea class="fi" id="assignment-note-${assignment.id}" rows="3" placeholder="اكتب تقدمك أو الصعوبات التي واجهتك..." ${canEdit ? '' : 'disabled'}>${escapeHtml(interaction?.note || '')}</textarea></div>` : ''}
+      ${showSubmissionForm ? `<div class="assign-submission-box"><div class="assign-submission-title">تسليم الطالب</div><div class="assign-response-grid"><div class="fg" style="margin-bottom:0"><label class="fl">نص التسليم</label><textarea class="fi" id="assignment-response-${assignment.id}" rows="4" placeholder="اكتب الجواب النهائي أو الملخص الذي سترسله للأستاذ..." ${canEdit ? '' : 'disabled'}>${escapeHtml(interaction?.responseText || '')}</textarea></div><div class="fg" style="margin-bottom:0"><label class="fl">رابط داعم</label><input class="fi" id="assignment-link-${assignment.id}" placeholder="https://example.com/your-work" value="${escapeHtml(interaction?.responseLink || '')}" ${canEdit ? '' : 'disabled'}></div><div class="fg" style="margin-bottom:0"><label class="fl">إرفاق ملف مصغر</label><input class="fi" id="assignment-file-${assignment.id}" type="file" accept="${ASSIGNMENT_ATTACHMENT_ACCEPT}" ${canEdit ? '' : 'disabled'}></div></div><div class="assign-hint">يمكنك حفظ مسودة للتسليم قبل الإرسال النهائي. لحماية التخزين المحلي، حجم المرفق الواحد محدود بـ ${formatAssignmentAttachmentSize(ASSIGNMENT_ATTACHMENT_LIMIT)}. إن كان الملف أكبر، أدرج رابطاً إليه داخل خانة الرابط الداعم.</div>${submissionHtml}</div>` : ''}
+      ${reviewHtml}
       <div class="assign-actions">
-        <button class="btn bt sm" onclick="beginVirtualAssignment('${assignment.id}')">بدء العمل</button>
-        <button class="btn bg sm" onclick="submitVirtualAssignment('${assignment.id}')">تسجيل التسليم</button>
-        <button class="btn bgh sm" onclick="saveVirtualAssignmentNote('${assignment.id}')">حفظ الملاحظة</button>
-        <button class="btn br sm" onclick="resetVirtualAssignment('${assignment.id}')">إعادة التهيئة</button>
+        <button class="btn bt sm" ${canStart ? '' : 'disabled'} onclick="beginStudentAssignedAssignment('${assignment.id}')">بدء العمل</button>
+        <button class="btn bg sm" ${canSubmit ? '' : 'disabled'} onclick="submitStudentAssignedAssignment('${assignment.id}')">تسجيل التسليم</button>
+        ${showSubmissionForm ? `<button class="btn bgh sm" ${canEdit ? '' : 'disabled'} onclick="saveStudentAssignmentSubmission('${assignment.id}')">حفظ مسودة التسليم</button>` : ''}
+        ${showNote ? `<button class="btn bgh sm" ${canEdit ? '' : 'disabled'} onclick="saveStudentAssignmentNote('${assignment.id}')">حفظ الملاحظة</button>` : ''}
+        ${interaction && !hasReview ? `<button class="btn br sm" onclick="resetStudentAssignedAssignment('${assignment.id}')">إعادة التهيئة</button>` : ''}
       </div>
-    </div>`).join("");
+    </div>`;
+  }).join("");
 
   el.innerHTML = `
     <div class="assign-summary-grid">
-      <div class="assign-summary-card"><strong>${assignments.length}</strong><span>إجمالي الواجبات الافتراضية</span></div>
-      <div class="assign-summary-card"><strong>${pendingCount}</strong><span>لم يبدأها الطالب بعد</span></div>
-      <div class="assign-summary-card"><strong>${progressCount}</strong><span>واجبات قيد الإنجاز</span></div>
-      <div class="assign-summary-card"><strong>${submittedCount}</strong><span>واجبات تم تسليمها</span></div>
+      <div class="assign-summary-card"><strong>${assignments.length}</strong><span>إجمالي الواجبات المسندة</span></div>
+      <div class="assign-summary-card"><strong>${availableCount}</strong><span>واجبات متاحة الآن</span></div>
+      <div class="assign-summary-card"><strong>${lockedCount}</strong><span>بانتظار تحقق الشروط</span></div>
+      <div class="assign-summary-card"><strong>${submittedCount}</strong><span>بانتظار التصحيح</span></div>
+      <div class="assign-summary-card"><strong>${reviewedCount}</strong><span>واجبات قيّمها الأستاذ</span></div>
     </div>
 
     <div class="card" style="margin-bottom:1rem">
       <div class="assign-toolbar">
         <div>
-          <h3 style="font-family:'Amiri',serif;color:var(--gold2);font-size:1.18rem;margin-bottom:.25rem">واجبات افتراضية للطالب ${escapeHtml(student.name || "")}</h3>
-          <div style="color:var(--txt2);font-size:.82rem;line-height:1.8">${escapeHtml(getBranchLabel(student.branch))} • ${sem === 4 ? "السداسي الرابع" : "السداسي الثالث"} • كل واجب مرتبط بمقياس موجود فعلاً في المنصة.</div>
+          <h3 style="font-family:'Amiri',serif;color:var(--gold2);font-size:1.18rem;margin-bottom:.25rem">الواجبات المسندة للطالب ${escapeHtml(student.name || "")}</h3>
+          <div style="color:var(--txt2);font-size:.82rem;line-height:1.8">هذه الصفحة تعرض فقط الواجبات التي أسندها الأستاذ إليك فعلياً. يبدأ كل واجب عندما تتحقق شروطه التي حددها الأستاذ.</div>
         </div>
-        <div class="fg" style="min-width:190px;margin-bottom:0">
-          <label class="fl">السداسي المعروض</label>
-          <select class="fi" onchange="setSelectedAssignmentSemester(this.value)">
-            <option value="3" ${sem === 3 ? "selected" : ""}>السداسي الثالث</option>
-            <option value="4" ${sem === 4 ? "selected" : ""}>السداسي الرابع</option>
-          </select>
-        </div>
+        <div style="display:flex;gap:.45rem;flex-wrap:wrap"><span class="badge-assigned">${escapeHtml(getBranchLabel(student.branch))}</span></div>
       </div>
     </div>
 
     <div class="assign-cards">${cards}</div>`;
+}
+
+function beginStudentAssignedAssignment(assignmentId){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!assignment || assignment.active === false){ notify('هذا الواجب غير متاح حالياً','⚠️'); return; }
+  if(!(assignment.studentId === student.id || assignment.studentEmail === student.email)){ notify('هذا الواجب غير مسند إلى حسابك','⚠️'); return; }
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || createEmptyAssignmentInteraction();
+  if(existing.status === 'submitted'){ notify('تم إرسال هذا الواجب بالفعل. استخدم إعادة التهيئة إذا أردت بدء تسليم جديد.','⚠️'); return; }
+  const evaluation = evaluateAssignmentForStudent(assignment, student);
+  if(!evaluation.canStart){ notify('لم تتحقق شروط بدء هذا الواجب بعد','⚠️'); renderAssignments(); return; }
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    status: existing.status === 'submitted' ? 'submitted' : 'in-progress',
+    startedAt: existing.startedAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }, 'تعذر فتح الواجب داخل التخزين المحلي');
+  if(!updated) return;
+  renderAssignments();
+  notify('تم فتح الواجب وبدء العمل عليه','✅');
+}
+
+async function saveStudentAssignmentSubmission(assignmentId, markSubmitted=false){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!assignment || assignment.active === false){ notify('هذا الواجب غير متاح حالياً','⚠️'); return; }
+  if(!(assignment.studentId === student.id || assignment.studentEmail === student.email)){ notify('هذا الواجب غير مسند إلى حسابك','⚠️'); return; }
+  const evaluation = evaluateAssignmentForStudent(assignment, student);
+  if(evaluation.overdue){ notify('انتهى أجل تسليم هذا الواجب','⚠️'); renderAssignments(); return; }
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || createEmptyAssignmentInteraction();
+  if(existing.status === 'submitted'){ notify('هذا الواجب مسجل كتسليم نهائي بالفعل','⚠️'); return; }
+  if(!existing.startedAt && !evaluation.canStart){ notify('ابدأ الواجب أولاً أو انتظر تحقق شروط فتحه','⚠️'); return; }
+
+  const responseText = (document.getElementById(`assignment-response-${assignmentId}`)?.value || '').trim();
+  const linkFieldValue = (document.getElementById(`assignment-link-${assignmentId}`)?.value || '').trim();
+  const responseLink = normalizeAssignmentResponseLink(linkFieldValue);
+  if(linkFieldValue && !responseLink){ notify('أدخل رابطاً صحيحاً يبدأ بـ http أو https','⚠️'); return; }
+
+  let attachment = existing.attachment || null;
+  try{
+    attachment = await readAssignmentAttachmentInput(assignmentId, attachment);
+  }catch(error){
+    notify(error?.message || 'تعذر قراءة الملف المرفق','⚠️');
+    return;
+  }
+
+  if(markSubmitted && !responseText && !responseLink && !attachment){
+    notify('أضف نص التسليم أو رابطاً أو ملفاً قبل تسجيل التسليم','⚠️');
+    return;
+  }
+
+  const nowIso = new Date().toISOString();
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    responseText,
+    responseLink: responseLink || '',
+    attachment,
+    status: markSubmitted ? 'submitted' : ((existing.startedAt || responseText || responseLink || attachment || existing.note) ? 'in-progress' : 'pending'),
+    startedAt: existing.startedAt || ((responseText || responseLink || attachment || existing.note) ? nowIso : ''),
+    submittedAt: markSubmitted ? nowIso : existing.submittedAt,
+    updatedAt: nowIso,
+  }, markSubmitted ? 'تعذر تسجيل التسليم محلياً. قد يكون المرفق كبيراً على التخزين المحلي.' : 'تعذر حفظ مسودة التسليم محلياً. قد يكون المرفق كبيراً على التخزين المحلي.');
+  if(!updated) return;
+  clearAssignmentAttachmentInput(assignmentId);
+  renderAssignments();
+  notify(markSubmitted ? 'تم تسجيل تسليم الواجب' : 'تم حفظ مسودة التسليم','✅');
+}
+
+function submitStudentAssignedAssignment(assignmentId){
+  return saveStudentAssignmentSubmission(assignmentId, true);
+}
+
+function saveStudentAssignmentNote(assignmentId){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const assignment = getTeacherAssignmentById(assignmentId);
+  if(!assignment || assignment.active === false){ notify('هذا الواجب غير متاح حالياً','⚠️'); return; }
+  if(!(assignment.studentId === student.id || assignment.studentEmail === student.email)){ notify('هذا الواجب غير مسند إلى حسابك','⚠️'); return; }
+  const evaluation = evaluateAssignmentForStudent(assignment, student);
+  const studentKey = getAssignmentStudentKey(student);
+  const existing = getAssignmentInteraction(studentKey, assignmentId) || createEmptyAssignmentInteraction();
+  if(!existing.startedAt && !evaluation.canStart){ notify('لن تتمكن من تدوين التقدم قبل فتح الواجب','⚠️'); return; }
+  if(existing.status === 'submitted'){ notify('تم إرسال هذا الواجب نهائياً. استخدم إعادة التهيئة إذا أردت بدء نسخة جديدة.','⚠️'); return; }
+  const field = document.getElementById(`assignment-note-${assignmentId}`);
+  const note = (field?.value || '').trim();
+  const updated = updateAssignmentInteractionRecord(studentKey, assignmentId, {
+    note,
+    status: existing.status === 'submitted' ? 'submitted' : (existing.startedAt || note ? 'in-progress' : 'pending'),
+    startedAt: existing.startedAt || (note ? new Date().toISOString() : ''),
+    updatedAt: new Date().toISOString(),
+  }, 'تعذر حفظ ملاحظتك حول الواجب');
+  if(!updated) return;
+  renderAssignments();
+  notify('تم حفظ ملاحظتك حول الواجب','✅');
+}
+
+function resetStudentAssignedAssignment(assignmentId){
+  if(S.user?.role !== 'student'){ notify('هذا الإجراء مخصص للطالب','⚠️'); return; }
+  const student = getCurrentStudentRecord() || {...S.user, smartProfile: normalizeStudentContext(S.user.smartProfile)};
+  const studentKey = getAssignmentStudentKey(student);
+  const interaction = getAssignmentInteraction(studentKey, assignmentId);
+  if(hasAssignmentTeacherReview(interaction)){ notify('تم تقييم هذا الواجب من طرف الأستاذ، لذلك لا يمكن إعادة تهيئته من حساب الطالب','⚠️'); return; }
+  if(!deleteAssignmentInteractionRecord(studentKey, assignmentId, 'تعذر إعادة تهيئة الواجب')) return;
+  clearAssignmentAttachmentInput(assignmentId);
+  renderAssignments();
+  notify('تمت إعادة تهيئة تفاعلك مع الواجب','✅');
 }
 
 // ── Browse Questions ──────────────────────────────────
@@ -5839,7 +6662,9 @@ async function importUdQuestions(){
 function saveAppState(){
   try{
     localStorage.setItem('minasat_S_v1', JSON.stringify(S));
+    return true;
   }catch(e){ console.warn('saveAppState failed',e); }
+  return false;
 }
 function loadAppState(){
   try{
