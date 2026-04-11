@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>دفتر الدرجات</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>البريد</th>
+        <th>النتيجة</th>
+        <th>%</th>
+        <th>التفاصيل</th>
+        <th>شهادة</th>
+        <th>التاريخ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in attempts %}
+      <tr>
+        <td>{{ a.id }}</td>
+        <td>{{ a.email or '—' }}</td>
+        <td>{{ a.score }} / {{ a.total }}</td>
+        <td>{{ a.percent }}%</td>
+        <td style="max-width:40rem">
+          <ol>
+            {% for d in a.details %}
+              <li>{{ d.text }} — إجابتك: {{ d.options[d.selected] if d.selected is not none and d.selected < (d.options|length) else 'لا إجابة' }} | الصحيح: {{ d.options[d.correct] if d.correct is not none and d.correct < (d.options|length) else '—' }}</li>
+            {% endfor %}
+          </ol>
+        </td>
+        <td>
+          {% if a.cert_exists %}
+            <a class="btn btn-sm btn-outline-success" href="{{ url_for('download_certificate', filename=a.cert_file) }}">تحميل</a>
+          {% endif %}
+          <form method="post" action="{{ url_for('admin_generate_certificate', attempt_id=a.id) }}" style="display:inline;margin-left:6px">
+            <input type="hidden" name="send" value="1">
+            <button class="btn btn-sm btn-primary">توليد وإرسال</button>
+          </form>
+        </td>
+        <td>{{ a.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
