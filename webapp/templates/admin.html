@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>لوحة المشرف</h2>
-  <div class="mb-3">
-    <a href="{{ url_for('upload_pdf') }}" class="btn btn-primary">رفع PDF وتوليد أسئلة</a>
-    <a href="{{ url_for('admin_questions') }}" class="btn btn-secondary">عرض بنك الأسئلة ({{ qcount or 0 }})</a>
-    <a href="{{ url_for('admin_grades') }}" class="btn btn-info">دفتر الدرجات</a>
-  </div>
+  <p class="text-muted mb-3">هذه اللوحة مخصّصة لإدارة طلبات التسجيل ومتابعة استمارة الملف الذكي.</p>
   <table class="table table-striped">
     <thead>
       <tr>
