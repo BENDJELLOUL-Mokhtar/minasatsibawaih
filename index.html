@@ -651,42 +651,6 @@ select.fi{cursor:pointer}
 </div>
 
 <!-- ══ MODALS ══ -->
-  <!-- ══ PAGES: ADDITIONAL LMS SERVICES (PLACEHOLDERS) ══ -->
-  <div id="page-notifications" class="page">
-    <div class="sec">
-      <h2 class="sec-title">الإشعارات</h2>
-      <p class="sec-sub">تلقي الإشعارات المتعلقة بالمقررات والواجبات والاختبارات.</p>
-      <div class="hr"></div>
-      <div id="notifications-content">
-        <div class="card">لا توجد إشعارات حالياً. سجّل الدخول لعرض الإشعارات الأخيرة.</div>
-        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول لعرض الإشعارات</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-messages" class="page">
-    <div class="sec">
-      <h2 class="sec-title">الرسائل</h2>
-      <p class="sec-sub">صندوق الرسائل الخاص بك للتواصل مع الأساتذة وزملاء الدراسة.</p>
-      <div class="hr"></div>
-      <div id="messages-content">
-        <div class="card">سجّل الدخول للاطلاع على صندوق الرسائل الخاص بك.</div>
-        <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-calendar" class="page">
-    <div class="sec">
-      <h2 class="sec-title">التقويم</h2>
-      <p class="sec-sub">عرض الجداول الزمنية للمحاضرات، مواعيد التسليم والاختبارات.</p>
-      <div class="hr"></div>
-      <div id="calendar-content">
-        <div class="card">هذا تقويم افتراضي. سيعرض الأحداث بعد ربط المقررات بالمواعيد.</div>
-      </div>
-    </div>
-  </div>
-
   <div id="page-assignments" class="page">
     <div class="sec">
       <h2 class="sec-title">الواجبات</h2>
@@ -932,17 +896,6 @@ select.fi{cursor:pointer}
     </div>
   </div>
 
-  <div id="page-reports" class="page">
-    <div class="sec">
-      <h2 class="sec-title">التقارير</h2>
-      <p class="sec-sub">تقارير الأداء، الحضور، وإحصاءات المقررات.</p>
-      <div class="hr"></div>
-      <div id="reports-content">
-        <div class="card">لوحة تقارير بسيطة — متاحة للمديرين والأساتذة.</div>
-      </div>
-    </div>
-  </div>
-
   <div id="page-transcript" class="page">
     <div class="sec">
       <div class="screen-only">
@@ -980,17 +933,6 @@ select.fi{cursor:pointer}
       <div id="profile-content">
         <div class="card">سجّل الدخول لعرض وتعديل ملفك الشخصي.</div>
         <div style="margin-top:1rem"><button class="btn bg" onclick="openM('modal-login')">دخول</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-settings" class="page">
-    <div class="sec">
-      <h2 class="sec-title">الإعدادات</h2>
-      <p class="sec-sub">إعدادات الحساب، الإشعارات، اللغة والخصوصية.</p>
-      <div class="hr"></div>
-      <div id="settings-content">
-        <div class="card">صفحة إعدادات أساسية — تُكمّل لاحقاً بخيارات المستخدم.</div>
       </div>
     </div>
   </div>
@@ -1110,6 +1052,7 @@ select.fi{cursor:pointer}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="./auth.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════
@@ -2959,17 +2902,11 @@ function buildNav(){
     // view button for UD questions
     navEl.insertAdjacentHTML('beforeend', '<button id="nav-view-ud-btn" class="nb" onclick="showUdList()" title="عرض أسئلة UD">عرض UD</button>');
   }
-  // إضافة خدمات شائعة في منصات التعليم
-  if(navEl && !document.getElementById('nav-notifs-btn')){
-    navEl.insertAdjacentHTML('beforeend', '<button id="nav-notifs-btn" class="nb" onclick="goto(\'notifications\')" title="الإشعارات">🔔 إشعارات</button>');
-    navEl.insertAdjacentHTML('beforeend', '<button id="nav-messages-btn" class="nb" onclick="goto(\'messages\')" title="الرسائل">✉️ رسائل</button>');
-    navEl.insertAdjacentHTML('beforeend', '<button id="nav-calendar-btn" class="nb" onclick="goto(\'calendar\')" title="التقويم">📅 تقويم</button>');
+  if(navEl && !document.getElementById('nav-assign-btn')){
     navEl.insertAdjacentHTML('beforeend', '<button id="nav-assign-btn" class="nb" onclick="goto(\'assignments\')" title="الواجبات">📝 واجبات</button>');
     navEl.insertAdjacentHTML('beforeend', '<button id="nav-grades-btn" class="nb" onclick="goto(\'grades\')" title="الدرجات">📊 الدرجات</button>');
-    navEl.insertAdjacentHTML('beforeend', '<button id="nav-reports-btn" class="nb" onclick="goto(\'reports\')" title="التقارير">📈 تقارير</button>');
     navEl.insertAdjacentHTML('beforeend', '<button id="nav-help-btn" class="nb" onclick="goto(\'help\')" title="مساعدة">❓ مساعدة</button>');
     navEl.insertAdjacentHTML('beforeend', '<button id="nav-profile-btn" class="nb" onclick="goto(\'profile\')" title="الملف الشخصي">👤 الملف</button>');
-    navEl.insertAdjacentHTML('beforeend', '<button id="nav-settings-btn" class="nb" onclick="goto(\'settings\')" title="الإعدادات">⚙️ إعدادات</button>');
   }
   // Avatar (update dynamically each build)
   if(navEl){
@@ -3021,67 +2958,434 @@ function goto(id){
 // ══════════════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════════════
-function doLogin(){
-  const email=document.getElementById("li-email").value.trim();
+function getFirebaseAuthBridge(){
+  const bridge = window.minasatAuth;
+  return bridge && bridge.ready ? bridge : null;
+}
+
+function findPlatformUserByEmail(email){
+  const normalizedEmail = String(email || '').trim().toLowerCase();
+  const teacher = (S.teachers || []).find(x=>String(x.email || '').trim().toLowerCase() === normalizedEmail);
+  if(teacher) return {role:"teacher", record:teacher};
+  const student = (S.students || []).find(x=>String(x.email || '').trim().toLowerCase() === normalizedEmail);
+  if(student) return {role:"student", record:student};
+  return null;
+}
+
+function isFirebaseManagedRecord(record){
+  return Boolean(record && (record.authProvider === "firebase" || record.firebaseUid));
+}
+
+function syncRecordFirebaseIdentity(record, firebaseUser){
+  if(!record || !firebaseUser) return false;
+  let changed = false;
+  if(record.firebaseUid !== firebaseUser.uid){
+    record.firebaseUid = firebaseUser.uid;
+    changed = true;
+  }
+  if(record.authProvider !== "firebase"){
+    record.authProvider = "firebase";
+    changed = true;
+  }
+  return changed;
+}
+
+async function logoutFirebaseSession(){
+  const bridge = getFirebaseAuthBridge();
+  if(!bridge) return;
+  try{
+    await bridge.logout();
+  }catch(e){
+    console.warn('firebase logout failed', e);
+  }
+}
+
+function getFirebaseDataBridge(){
+  const bridge = getFirebaseAuthBridge();
+  return bridge && typeof bridge.savePlatformUsers === "function" ? bridge : null;
+}
+
+function serializeStudentRecordForRemote(student){
+  const normalized = normalizeStudentRecord(student || {});
+  return {
+    id: String(normalized.id || ''),
+    name: String(normalized.name || ''),
+    email: String(normalized.email || '').trim().toLowerCase(),
+    branch: Number.isFinite(parseInt(normalized.branch, 10)) ? parseInt(normalized.branch, 10) : 0,
+    status: String(normalized.status || 'pending'),
+    date: String(normalized.date || ''),
+    profilePic: String(normalized.profilePic || ''),
+    firebaseUid: String(normalized.firebaseUid || ''),
+    authProvider: String(normalized.authProvider || ''),
+    smartProfile: normalizeStudentContext(normalized.smartProfile),
+  };
+}
+
+function serializeTeacherRecordForRemote(teacher){
+  const normalized = normalizeTeacherRecord(teacher || {});
+  return {
+    id: String(normalized.id || ''),
+    name: String(normalized.name || ''),
+    email: String(normalized.email || '').trim().toLowerCase(),
+    rank: String(normalized.rank || ''),
+    spec: String(normalized.spec || ''),
+    status: String(normalized.status || 'pending'),
+    branches: Array.isArray(normalized.branches) ? normalized.branches : [],
+    subjects: Array.isArray(normalized.subjects) ? normalized.subjects : [],
+    date: String(normalized.date || ''),
+    profilePic: String(normalized.profilePic || ''),
+    firebaseUid: String(normalized.firebaseUid || ''),
+    authProvider: String(normalized.authProvider || ''),
+  };
+}
+
+function buildRemotePlatformPayload(){
+  return {
+    students: (S.students || []).map(serializeStudentRecordForRemote),
+    teachers: (S.teachers || []).map(serializeTeacherRecordForRemote),
+  };
+}
+
+function getRemotePlatformSignature(payload){
+  try{ return JSON.stringify(payload || {}); }
+  catch(e){ console.warn('remote platform signature failed', e); }
+  return '';
+}
+
+function findRecordIndexByIdentity(list, record){
+  const recordId = String(record?.id || '').trim();
+  const recordEmail = String(record?.email || '').trim().toLowerCase();
+  return (Array.isArray(list) ? list : []).findIndex(item=>{
+    const itemId = String(item?.id || '').trim();
+    const itemEmail = String(item?.email || '').trim().toLowerCase();
+    return (recordId && itemId === recordId) || (recordEmail && itemEmail === recordEmail);
+  });
+}
+
+function mergePlatformCollection(localItems, remoteItems, role){
+  const normalizer = role === 'student' ? normalizeStudentRecord : normalizeTeacherRecord;
+  const merged = Array.isArray(localItems) ? localItems.map(item=>normalizer(item)) : [];
+  (Array.isArray(remoteItems) ? remoteItems : []).forEach(rawItem=>{
+    const remote = normalizer(rawItem);
+    const idx = findRecordIndexByIdentity(merged, remote);
+    if(idx === -1){
+      merged.push(remote);
+      return;
+    }
+    const existing = merged[idx];
+    const combined = normalizer({...existing, ...remote});
+    if(!remote.pw && existing?.pw) combined.pw = existing.pw;
+    if(role === 'student' && existing?.smartProfile){
+      combined.smartProfile = normalizeStudentContext({...existing.smartProfile, ...(remote.smartProfile || {})});
+    }
+    merged[idx] = combined;
+  });
+  return merged;
+}
+
+let _firebasePlatformSyncTimer = null;
+let _firebasePlatformSyncPending = false;
+let _firebasePlatformSyncInFlight = false;
+let _firebasePlatformSyncSignature = '';
+let _firebasePlatformListenerStarted = false;
+let _firebasePlatformSeeded = false;
+
+function queueRemotePlatformSync(){
+  const bridge = getFirebaseDataBridge();
+  if(!bridge) return false;
+  if(_firebasePlatformSyncInFlight){
+    _firebasePlatformSyncPending = true;
+    return true;
+  }
+  if(_firebasePlatformSyncTimer) return true;
+  _firebasePlatformSyncTimer = setTimeout(flushRemotePlatformSync, 250);
+  return true;
+}
+
+async function flushRemotePlatformSync(){
+  _firebasePlatformSyncTimer = null;
+  const bridge = getFirebaseDataBridge();
+  if(!bridge) return false;
+  const payload = buildRemotePlatformPayload();
+  const signature = getRemotePlatformSignature(payload);
+  if(signature && signature === _firebasePlatformSyncSignature) return true;
+  _firebasePlatformSyncInFlight = true;
+  try{
+    await bridge.savePlatformUsers(payload);
+    _firebasePlatformSyncSignature = signature;
+    _firebasePlatformSeeded = true;
+    return true;
+  }catch(e){
+    console.warn('remote platform sync failed', e);
+  }finally{
+    _firebasePlatformSyncInFlight = false;
+    if(_firebasePlatformSyncPending){
+      _firebasePlatformSyncPending = false;
+      queueRemotePlatformSync();
+    }
+  }
+  return false;
+}
+
+function refreshSessionUserFromCollections(){
+  if(!S.user || S.user.role === 'admin') return;
+  const previousStatus = String(S.user.status || '');
+  const linked = S.user.role === 'student' ? getCurrentStudentRecord() : getCurrentTeacherRecord();
+  if(!linked){
+    S.user = null;
+    S.page = 'home';
+    saveAppState({skipRemotePlatformSync:true});
+    logoutFirebaseSession();
+    buildNav();
+    goto('home');
+    return;
+  }
+  if(linked.status !== 'approved'){
+    S.user = null;
+    S.page = 'home';
+    saveAppState({skipRemotePlatformSync:true});
+    logoutFirebaseSession();
+    buildNav();
+    goto('home');
+    if(previousStatus !== linked.status){
+      notify(linked.status === 'pending' ? 'الحساب ما يزال بانتظار الموافقة' : 'تم تعليق هذا الحساب','⚠️');
+    }
+    return;
+  }
+  S.user = buildSessionUserFromRecord(S.user.role, linked);
+}
+
+function refreshUiAfterPlatformSync(){
+  buildNav();
+  if(S.page === 'dashboard'){ renderDashStats(); renderDashContent(); }
+  if(S.page === 'profile'){ renderProfile(); }
+  if(S.page === 'my-courses'){ renderTeacherCourses(); }
+  if(S.page === 'courses'){ renderCourses(); }
+  if(S.page === 'assignments'){ renderAssignments(); }
+}
+
+function applyRemotePlatformUsers(payload){
+  const remotePayload = {
+    students: Array.isArray(payload?.students) ? payload.students : [],
+    teachers: Array.isArray(payload?.teachers) ? payload.teachers : [],
+  };
+  const normalizedRemotePayload = {
+    students: remotePayload.students.map(serializeStudentRecordForRemote),
+    teachers: remotePayload.teachers.map(serializeTeacherRecordForRemote),
+  };
+  const incomingSignature = getRemotePlatformSignature(normalizedRemotePayload);
+  if(incomingSignature && incomingSignature === _firebasePlatformSyncSignature && _firebasePlatformSeeded) return;
+  S.students = mergePlatformCollection(S.students, remotePayload.students, 'student');
+  S.teachers = mergePlatformCollection(S.teachers, remotePayload.teachers, 'teacher');
+  ensurePlatformManagerTeacherRecord();
+  _firebasePlatformSyncSignature = getRemotePlatformSignature(buildRemotePlatformPayload());
+  _firebasePlatformSeeded = true;
+  refreshSessionUserFromCollections();
+  saveAppState({skipRemotePlatformSync:true});
+  refreshUiAfterPlatformSync();
+}
+
+function startFirebasePlatformSync(){
+  if(_firebasePlatformListenerStarted) return;
+  const bridge = getFirebaseDataBridge();
+  if(!bridge) return;
+  _firebasePlatformListenerStarted = true;
+  const handlePayload = payload=>{
+    const students = Array.isArray(payload?.students) ? payload.students : [];
+    const teachers = Array.isArray(payload?.teachers) ? payload.teachers : [];
+    if(!students.length && !teachers.length){
+      if(!_firebasePlatformSeeded){
+        _firebasePlatformSeeded = true;
+        queueRemotePlatformSync();
+      }
+      return;
+    }
+    applyRemotePlatformUsers({students, teachers});
+  };
+  if(typeof bridge.subscribePlatformUsers === 'function'){
+    bridge.subscribePlatformUsers(handlePayload, error=>console.warn('firebase platform subscribe failed', error));
+    return;
+  }
+  if(typeof bridge.loadPlatformUsers === 'function'){
+    bridge.loadPlatformUsers().then(handlePayload).catch(error=>console.warn('firebase platform load failed', error));
+  }
+}
+
+async function doLogin(){
+  const email=document.getElementById("li-email").value.trim().toLowerCase();
   const pw=document.getElementById("li-pw").value;
   const err=document.getElementById("login-err");
   err.style.display="none";
-  if(email===ADMIN.email&&pw===ADMIN.pw){
+  if(email===String(ADMIN.email || '').trim().toLowerCase()&&pw===ADMIN.pw){
     S.user={role:"admin",name:"أ.د. بن جلول مختار",email};
     closeM("modal-login"); buildNav(); goto("dashboard"); notify("مرحباً أستاذ بن جلول! 👋"); return;
   }
-  const t=S.teachers.find(x=>x.email===email&&x.pw===pw);
-  if(t){
-    if(t.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
-    if(t.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
-    S.user=buildSessionUserFromRecord("teacher",t);
-    closeM("modal-login"); buildNav(); goto("my-courses"); notify("مرحباً "+t.name+"! 👨‍🏫"); return;
+  const platformUser = findPlatformUserByEmail(email);
+  if(!platformUser){err.textContent="البريد أو كلمة السر غير صحيحة";err.style.display="block";return;}
+  const bridge = getFirebaseAuthBridge();
+  const requiresFirebase = isFirebaseManagedRecord(platformUser.record);
+  let firebaseUser = null;
+  let authenticated = false;
+  if(bridge){
+    try{
+      const credential = await bridge.login(email, pw);
+      firebaseUser = credential?.user || null;
+      authenticated = true;
+    }catch(e){
+      if(requiresFirebase){
+        err.textContent = bridge.getErrorMessage ? bridge.getErrorMessage(e) : "تعذر تسجيل الدخول";
+        err.style.display="block";
+        return;
+      }
+    }
+  }else if(requiresFirebase){
+    err.textContent="خدمة Firebase غير جاهزة حالياً";
+    err.style.display="block";
+    return;
   }
-  const s=S.students.find(x=>x.email===email&&x.pw===pw);
-  if(!s){err.textContent="البريد أو كلمة السر غير صحيحة";err.style.display="block";return;}
-  if(s.status==="pending"){err.textContent="طلبك قيد المراجعة من قِبَل المدير";err.style.display="block";return;}
-  if(s.status==="rejected"){err.textContent="تم رفض طلب التسجيل";err.style.display="block";return;}
-  S.user=buildSessionUserFromRecord("student",s);
-  closeM("modal-login"); buildNav(); goto("courses"); notify("مرحباً "+s.name+"! 🎓");
+  if(!authenticated && platformUser.record.pw !== pw){
+    err.textContent="البريد أو كلمة السر غير صحيحة";
+    err.style.display="block";
+    return;
+  }
+  if(authenticated && syncRecordFirebaseIdentity(platformUser.record, firebaseUser)) saveAppState();
+  if(platformUser.record.status==="pending"){
+    await logoutFirebaseSession();
+    err.textContent="طلبك قيد المراجعة من قِبَل المدير";
+    err.style.display="block";
+    return;
+  }
+  if(platformUser.record.status==="rejected"){
+    await logoutFirebaseSession();
+    err.textContent="تم رفض طلب التسجيل";
+    err.style.display="block";
+    return;
+  }
+  if(platformUser.role === "teacher"){
+    S.user=buildSessionUserFromRecord("teacher",platformUser.record);
+    closeM("modal-login"); buildNav(); goto("my-courses"); notify("مرحباً "+platformUser.record.name+"! 👨‍🏫"); return;
+  }
+  S.user=buildSessionUserFromRecord("student",platformUser.record);
+  closeM("modal-login"); buildNav(); goto("courses"); notify("مرحباً "+platformUser.record.name+"! 🎓");
 }
 
-function doLogout(){ S.user=null; S.page="home"; buildNav(); goto("home"); }
+async function doLogout(){ await logoutFirebaseSession(); S.user=null; S.page="home"; buildNav(); goto("home"); }
 
-function doRegStudent(){
-  const name=document.getElementById("rs-name").value.trim();
-  const email=document.getElementById("rs-email").value.trim();
-  const branch=document.getElementById("rs-branch").value;
-  const pw=document.getElementById("rs-pw").value;
-  if(!name||!email||!pw||branch===""){notify("يرجى ملء جميع الحقول","⚠️");return;}
+function createPendingStudentRegistration(record){
   S.students.push({
     id:"s"+Date.now(),
-    name,
-    email,
-    pw,
-    branch:parseInt(branch),
+    name:record.name,
+    email:record.email,
+    pw:record.pw,
+    firebaseUid:String(record.firebaseUid || ""),
+    authProvider:String(record.authProvider || "local"),
+    branch:parseInt(record.branch,10),
     status:"pending",
     date:new Date().toISOString().slice(0,10),
     profilePic:"",
     smartProfile:createEmptyStudentContext(),
   });
-  saveAppState();
-  closeM("modal-register");
-  notify("تم إرسال طلبك — انتظر موافقة الأستاذ 📤");
 }
 
-function doRegTeacher(){
+function createPendingTeacherRegistration(record){
+  S.teachers.push({
+    id:"t"+Date.now(),
+    name:record.name,
+    email:record.email,
+    pw:record.pw,
+    firebaseUid:String(record.firebaseUid || ""),
+    authProvider:String(record.authProvider || "local"),
+    rank:record.rank,
+    spec:record.spec,
+    status:"pending",
+    branches:Array.isArray(record.branches) ? record.branches : [],
+    subjects:Array.isArray(record.subjects) ? record.subjects : [],
+    date:new Date().toISOString().slice(0,10),
+  });
+}
+
+async function doRegStudent(){
+  const name=document.getElementById("rs-name").value.trim();
+  const email=document.getElementById("rs-email").value.trim().toLowerCase();
+  const branch=document.getElementById("rs-branch").value;
+  const pw=document.getElementById("rs-pw").value;
+  if(!name||!email||!pw||branch===""){notify("يرجى ملء جميع الحقول","⚠️");return;}
+  if(email === String(ADMIN.email || '').trim().toLowerCase() || findPlatformUserByEmail(email)){
+    notify("هذا البريد مسجل بالفعل","⚠️");
+    return;
+  }
+  const bridge = getFirebaseAuthBridge();
+  if(!bridge){
+    createPendingStudentRegistration({name,email,pw,branch,authProvider:"local"});
+    saveAppState();
+    closeM("modal-register");
+    notify("جسر Firebase غير جاهز، لذلك تم حفظ طلب الطالب محلياً فقط","⚠️");
+    return;
+  }
+  let firebaseUid = "";
+  try{
+    const credential = await bridge.register(email, pw);
+    firebaseUid = credential?.user?.uid || "";
+  }catch(e){
+    if(!(bridge.shouldUseLocalAuthFallback && bridge.shouldUseLocalAuthFallback(e))){
+      notify(bridge.getErrorMessage ? bridge.getErrorMessage(e) : "تعذر إنشاء الحساب","⚠️");
+      return;
+    }
+    createPendingStudentRegistration({name,email,pw,branch,authProvider:"local"});
+    saveAppState();
+    closeM("modal-register");
+    notify("تعذر إنشاء حساب Firebase، لذلك تم حفظ طلب الطالب محلياً فقط","⚠️");
+    return;
+  }
+  createPendingStudentRegistration({name,email,pw:"",firebaseUid,branch,authProvider:"firebase"});
+  saveAppState();
+  await logoutFirebaseSession();
+  closeM("modal-register");
+  notify("تم إنشاء الحساب عبر Firebase وإرسال طلبك للمراجعة 📤");
+}
+
+async function doRegTeacher(){
   const name=document.getElementById("rt-name").value.trim();
-  const email=document.getElementById("rt-email").value.trim();
+  const email=document.getElementById("rt-email").value.trim().toLowerCase();
   const rank=document.getElementById("rt-rank").value;
   const spec=document.getElementById("rt-spec").value.trim();
   const pw=document.getElementById("rt-pw").value;
   if(!name||!email||!pw){notify("يرجى ملء الحقول الإلزامية","⚠️");return;}
+  if(email === String(ADMIN.email || '').trim().toLowerCase() || findPlatformUserByEmail(email)){
+    notify("هذا البريد مسجل بالفعل","⚠️");
+    return;
+  }
   const branches=[0,1,2].filter(i=>document.getElementById("rt-b"+i)?.checked);
   const checked = document.querySelectorAll("#rt-subjects-list input:checked");
   const subjects=[...checked].map(c=>c.value);
-  S.teachers.push({id:"t"+Date.now(),name,email,pw,rank,spec,status:"pending",branches,subjects,date:new Date().toISOString().slice(0,10)});
+  const bridge = getFirebaseAuthBridge();
+  if(!bridge){
+    createPendingTeacherRegistration({name,email,pw,rank,spec,branches,subjects,authProvider:"local"});
+    saveAppState();
+    closeM("modal-teacher-register");
+    notify("جسر Firebase غير جاهز، لذلك تم حفظ طلب الأستاذ محلياً فقط","⚠️");
+    return;
+  }
+  let firebaseUid = "";
+  try{
+    const credential = await bridge.register(email, pw);
+    firebaseUid = credential?.user?.uid || "";
+  }catch(e){
+    if(!(bridge.shouldUseLocalAuthFallback && bridge.shouldUseLocalAuthFallback(e))){
+      notify(bridge.getErrorMessage ? bridge.getErrorMessage(e) : "تعذر إنشاء الحساب","⚠️");
+      return;
+    }
+    createPendingTeacherRegistration({name,email,pw,rank,spec,branches,subjects,authProvider:"local"});
+    saveAppState();
+    closeM("modal-teacher-register");
+    notify("تعذر إنشاء حساب Firebase، لذلك تم حفظ طلب الأستاذ محلياً فقط","⚠️");
+    return;
+  }
+  createPendingTeacherRegistration({name,email,pw:"",firebaseUid,rank,spec,branches,subjects,authProvider:"firebase"});
+  saveAppState();
+  await logoutFirebaseSession();
   closeM("modal-teacher-register");
-  notify("تم إرسال طلبك — انتظر موافقة الأستاذ المدير 👨‍🏫");
+  notify("تم إنشاء الحساب عبر Firebase وإرسال طلبك للمراجعة 👨‍🏫");
 }
 
 // Update subjects list when branch checkboxes change
@@ -4415,6 +4719,7 @@ function approveUser(type, id){
   const arr=type==="student"?S.students:S.teachers;
   const u=arr.find(x=>x.id===id); if(!u) return;
   u.status="approved";
+  saveAppState();
   renderDashStats(); renderDashContent();
   notify("تم قبول "+u.name+" وإرسال البريد ✉️");
 }
@@ -4422,6 +4727,7 @@ function rejectUser(type, id){
   const arr=type==="student"?S.students:S.teachers;
   const u=arr.find(x=>x.id===id); if(!u) return;
   u.status="rejected";
+  saveAppState();
   renderDashStats(); renderDashContent();
   notify("تم رفض "+u.name+" وإشعاره 📨");
 }
@@ -4429,61 +4735,6 @@ function rejectUser(type, id){
 // ══════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════
-// ══════════════════════════════════════════════════════
-// SAMPLE UD — قاعدة بيانات عيّنة مدمجة للاختبار دون تنزيل
-// ══════════════════════════════════════════════════════
-const SAMPLE_UD = [
-  { id:'s1', text:'جاءَ الطّالبُ مسرعًا.', tokens:[
-    {form:'جاءَ', lemma:'جاء', upos:'VERB', feats:{}, head:0, deprel:'root'},
-    {form:'الطّالبُ', lemma:'طالب', upos:'NOUN', feats:{Case:'Nom'}, head:1, deprel:'nsubj'},
-    {form:'مسرعًا', lemma:'مسرع', upos:'ADV', feats:{}, head:1, deprel:'advmod'}
-  ]},
-  { id:'s2', text:'قرأتِ المعلمةُ الكتابَ.', tokens:[
-    {form:'قرأتِ', lemma:'قرأ', upos:'VERB', feats:{}, head:0, deprel:'root'},
-    {form:'المعلمةُ', lemma:'معلمة', upos:'NOUN', feats:{Case:'Nom'}, head:1, deprel:'nsubj'},
-    {form:'الكتابَ', lemma:'كتاب', upos:'NOUN', feats:{Case:'Acc'}, head:1, deprel:'obj'}
-  ]},
-  { id:'s3', text:'السماءُ صافيةٌ اليومَ.', tokens:[
-    {form:'السماءُ', lemma:'سماء', upos:'NOUN', feats:{Case:'Nom'}, head:2, deprel:'nsubj'},
-    {form:'صافيةٌ', lemma:'صافي', upos:'ADJ', feats:{}, head:2, deprel:'root'},
-    {form:'اليومَ', lemma:'يوم', upos:'NOUN', feats:{Case:'Acc'}, head:2, deprel:'obl'}
-  ]},
-  { id:'s4', text:'الطلابُ يدرسون بجدٍّ.', tokens:[
-    {form:'الطلابُ', lemma:'طالب', upos:'NOUN', feats:{Case:'Nom'}, head:2, deprel:'nsubj'},
-    {form:'يدرسون', lemma:'درس', upos:'VERB', feats:{Mood:'Ind'}, head:0, deprel:'root'},
-    {form:'بجدٍّ', lemma:'بجد', upos:'ADV', feats:{}, head:2, deprel:'advmod'}
-  ]},
-  { id:'s5', text:'هذا كتابٌ جديدٌ.', tokens:[
-    {form:'هذا', lemma:'هذا', upos:'PRON', feats:{PronType:'Dem'}, head:2, deprel:'det'},
-    {form:'كتابٌ', lemma:'كتاب', upos:'NOUN', feats:{Case:'Nom'}, head:0, deprel:'root'},
-    {form:'جديدٌ', lemma:'جديد', upos:'ADJ', feats:{}, head:2, deprel:'amod'}
-  ]}
-];
-
-function importSampleUD(){
-  S.sampleKeys = [];
-  const posPool = ['NOUN','VERB','ADJ','ADV','PRON','DET','ADP','NUM','PROPN'];
-  SAMPLE_UD.forEach((s,i)=>{
-    const key = `SAMPLE:${i}`;
-    S.sampleKeys.push(key);
-    S.content[key] = S.content[key] || { content: s.text, quiz: [], pdfUrl: null };
-    const tokens = s.tokens.filter(t=>t.upos && t.upos!=='PUNCT');
-    for(let j=0;j<Math.min(2,tokens.length);j++){
-      const tok = tokens[j];
-      let choices = [tok.upos];
-      const others = posPool.filter(p=>p!==tok.upos);
-      shuffle(others);
-      while(choices.length<4 && others.length) choices.push(others.pop());
-      shuffle(choices);
-      const correctIdx = choices.indexOf(tok.upos);
-      S.content[key].quiz.push({q:`ما فئة الكلام للكلمة «${tok.form}» في الجملة: «${s.text}»؟`,options:choices,correct:correctIdx,explain:`UPOS=${tok.upos}`});
-    }
-  });
-  notify('تم استيراد قاعدة العيّنة محلياً. استخدم viewSample(index) للعرض','✅');
-}
-
-function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } }
-
 // ══════════════════════════════════════════════════════
 // ══════════════════════════════════════════════════════
 // STATIC NAHW QUIZ (FROM nahw_db.json) — ADVANCED
@@ -5399,13 +5650,6 @@ function getAssignmentsForStudent(student){
 function getAssignmentInteraction(studentKey, assignmentId){
   const state = ensureAssignmentState();
   return normalizeAssignmentInteraction((((state.interactions || {})[studentKey] || {})[assignmentId])) || null;
-}
-
-function setAssignmentInteraction(studentKey, assignmentId, patch){
-  const state = ensureAssignmentState();
-  state.interactions[studentKey] = state.interactions[studentKey] || {};
-  const current = normalizeAssignmentInteraction(state.interactions[studentKey][assignmentId]) || createEmptyAssignmentInteraction();
-  state.interactions[studentKey][assignmentId] = normalizeAssignmentInteraction({...current, ...patch});
 }
 
 function updateAssignmentInteractionRecord(studentKey, assignmentId, patch, errorMessage){
@@ -6483,44 +6727,6 @@ window.toggleAqType = toggleAqType;
 window.renderNahwHistory = renderNahwHistory;
 window.saveNahwSessionResult = saveNahwSessionResult;
 
-function viewSample(index){
-  const key = `SAMPLE:${index}`;
-  const stored = S.content[key] || {};
-  let html = `
-    <div style="position:sticky;top:68px;background:var(--bg);z-index:100;padding:.75rem 0;border-bottom:1px solid var(--bdr);margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-      <button class="btn bgh sm" onclick="goto('courses')">← العودة</button>
-      <h2 style="font-family:'Amiri',serif;font-size:1.35rem;color:var(--gold2);flex:1">${stored.content || 'نص العينة'}</h2>
-    </div>`;
-  if(stored.content) html += `<div class="card" style="margin-bottom:1rem"><div style="white-space:pre-wrap;color:var(--txt)">${stored.content}</div></div>`;
-  html += `<div class="qbox"><div class="qhdr"><h3>الاختبار (عيّنة)</h3></div>`;
-  if(!stored.quiz || stored.quiz.length===0){
-    html += `<div class="al alw">لا توجد أسئلة لهذه العيّنة.</div>`;
-  } else {
-    const ans = stored.sampleAnswers || {};
-    const submitted = stored.sampleSubmitted || false;
-    stored.quiz.forEach((q,qi)=>{
-      html += `<div class="qcard"><p>${qi+1}. ${q.q}</p><div class="qopts">`;
-      q.options.forEach((o,oi)=>{
-        let cls = "qo";
-        if(submitted){ if(oi===q.correct) cls += " ok"; else if(ans[qi]===oi) cls += " bad"; }
-        else if(ans[qi]===oi) cls += " sel";
-        const nameAttr = `sample_${index}_${qi}`;
-        html += `<label class="${cls}"><input type="radio" name="${nameAttr}" value="${oi}" ${ans[qi]===oi?"checked":""} onchange="setSampleAns('${key}',${qi},${oi})">&nbsp;${o}</label>`;
-      });
-      html += `</div></div>`;
-    });
-    if(!submitted){
-      const allAns = Object.keys(stored.sampleAnswers||{}).length === stored.quiz.length;
-      html += `<button class="btn bg" ${allAns? '':'disabled'} onclick="submitSampleQuiz('${key}')">${allAns? 'تسليم' : 'أجب على جميع الأسئلة'}</button>`;
-    } else {
-      const score = stored.sampleScore || 0;
-      html += `<div class="sbox"><div class="sbig">${score}/${stored.quiz.length}</div></div>`;
-    }
-  }
-  html += `</div>`;
-  document.getElementById('courses-content').innerHTML = `<div style="max-width:860px;margin:0 auto">${html}</div>`;
-}
-
 // ══════════════════════════════════════════════════════
 // UD VIEWER: list + per-item viewer for imported UD questions
 // ══════════════════════════════════════════════════════
@@ -6602,37 +6808,6 @@ function submitUdQuiz(key, index){
   if(score===quiz.length) notify('أحسنت! 🎉'); else notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
   viewUd(index);
 }
-
-function retryUdQuiz(key, index){
-  if(!S.user){ notify('سجّل الدخول أولاً','⚠️'); return; }
-  const sid = S.user.id || S.user.email || S.user.name;
-  if(S.content[key] && S.content[key].submissions && S.content[key].submissions[sid]){
-    delete S.content[key].submissions[sid].quizAnswers;
-    S.content[key].submissions[sid].quizSubmitted=false;
-    delete S.content[key].submissions[sid].score;
-  }
-  viewUd(index);
-}
-
-function setSampleAns(key,qi,oi){
-  S.content[key] = S.content[key] || {};
-  S.content[key].sampleAnswers = S.content[key].sampleAnswers || {};
-  S.content[key].sampleAnswers[qi] = oi;
-  const idx = parseInt(key.split(':')[1]);
-  viewSample(idx);
-}
-
-function submitSampleQuiz(key){
-  const stored = S.content[key] || {};
-  const quiz = stored.quiz || [];
-  const ans = stored.sampleAnswers || {};
-  const score = quiz.filter((q,i)=>ans[i]===q.correct).length;
-  S.content[key].sampleSubmitted = true;
-  S.content[key].sampleScore = score;
-  notify(`تم التسليم — النتيجة ${score}/${quiz.length}`,'ℹ️');
-  const idx = parseInt(key.split(':')[1]);
-  viewSample(idx);
-}
 // ══════════════════════════════════════════════════════
 // UD JSON Loader — attempts to import data/ud_questions.json into S.content
 // Each question becomes a content item under module ID 'UD_IMPORT'
@@ -6659,24 +6834,30 @@ async function importUdQuestions(){
   }
 }
 // Persistence: save/load to localStorage
-function saveAppState(){
+function persistLocalAppState(){
   try{
     localStorage.setItem('minasat_S_v1', JSON.stringify(S));
     return true;
   }catch(e){ console.warn('saveAppState failed',e); }
   return false;
 }
+function saveAppState(options){
+  const opts = (options && typeof options === 'object' && !('type' in options)) ? options : {};
+  const saved = persistLocalAppState();
+  if(saved && !opts.skipRemotePlatformSync) queueRemotePlatformSync();
+  return saved;
+}
 function loadAppState(){
   try{
     const v = localStorage.getItem('minasat_S_v1');
-    if(v){ const parsed = JSON.parse(v); if(parsed){ S = parsed; notify('تم استعادة الحالة من localStorage','✅'); }
+    if(v){ const parsed = JSON.parse(v); if(parsed){ S = parsed; S.students = Array.isArray(S.students) ? S.students.map(normalizeStudentRecord) : []; S.teachers = Array.isArray(S.teachers) ? S.teachers.map(normalizeTeacherRecord) : []; notify('تم استعادة الحالة من localStorage','✅'); }
     }
   }catch(e){ console.warn('loadAppState failed',e); }
 }
 function autoSaveSetup(){
   if(window._minasat_autosave) return;
-  window._minasat_autosave = setInterval(saveAppState, 10000);
-  window.addEventListener('beforeunload', saveAppState);
+  window._minasat_autosave = setInterval(()=>saveAppState(), 10000);
+  window.addEventListener('beforeunload', ()=>saveAppState());
 }
 
 function resetAppState(){
@@ -6764,9 +6945,14 @@ async function pushStateToServer(){
 // Load saved state, import if needed, initialize UI and autosave
 loadAppState();
 hydrateAppState();
+if(!document.getElementById(`page-${S.page}`)){
+  S.page = 'home';
+}
 if(!S.udImportKeys || S.udImportKeys.length===0) importUdQuestions();
 buildNav();
 autoSaveSetup();
+if(getFirebaseDataBridge()) startFirebasePlatformSync();
+else window.addEventListener('minasat-auth-ready', startFirebasePlatformSync, {once:true});
 // Warn if opened directly as file:// (PDFs won't embed)
 if(location.protocol==='file:'){
   const banner=document.createElement('div');
